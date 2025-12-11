@@ -8,8 +8,8 @@ import {
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
 import { ChevronRight, Circle, Menu } from "lucide-react";
-import { TypographyMuted } from "../Typography/small-muted";
-import { TypographyLarge } from "../Typography/large";
+import { TypographyMuted } from "../typography/small-muted";
+import { TypographyLarge } from "../typography/large";
 import Link from "next/link";
 
 type OptionsTypes = {
