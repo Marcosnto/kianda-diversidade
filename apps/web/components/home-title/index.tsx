@@ -1,3 +1,5 @@
+import { cn } from "@workspace/ui/lib/utils";
+
 type HomeTitleProps = {
   children?: React.ReactNode;
   iconType?: "completeMoon" | "halfMoon";
@@ -7,10 +9,14 @@ type HomeTitleProps = {
   className?: string;
 };
 
-const HomeTitle = ({ children }: HomeTitleProps) => {
+const HomeTitle = ({ children, className }: HomeTitleProps) => {
   return (
     <div>
-      <span className="mt-[6px] text-[18px] md:text-[24px] lg:text-[34px]">
+      <span
+        className={cn(
+          `mt-[6px] text-[18px] md:text-[24px] lg:text-[34px]) ${className}`
+        )}
+      >
         {children}
       </span>
     </div>
