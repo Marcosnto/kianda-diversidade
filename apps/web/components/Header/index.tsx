@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import {
   Sheet,
@@ -11,6 +12,7 @@ import { ChevronRight, Circle, Menu } from "lucide-react";
 import { TypographyMuted } from "../typography/small-muted";
 import { TypographyLarge } from "../typography/large";
 import Link from "next/link";
+import { useState } from "react";
 
 type OptionsTypes = {
   label: string;
@@ -19,7 +21,7 @@ type OptionsTypes = {
 };
 
 const menuOptions: OptionsTypes[] = [
-  { label: "Como atuamos", path: "howKiandaAct", isPage: false },
+  { label: "Como atuamos", path: "how-kianda-act", isPage: false },
   // { label: "Cursos e aulas", path: "courses", isPage: false },
   { label: "Sobre", path: "about", isPage: false },
   { label: "Artigos e Publicações", path: "/posts", isPage: true },
@@ -27,6 +29,8 @@ const menuOptions: OptionsTypes[] = [
 ];
 
 export default function HeaderMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="h-16 bg-k-olive-light items-center justify-between flex pl-4 pr-4">
       <Image
@@ -36,7 +40,7 @@ export default function HeaderMenu() {
         width={181}
         height={37}
       />
-      <Sheet>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger>
           <Menu size={32} />
         </SheetTrigger>
@@ -49,13 +53,30 @@ export default function HeaderMenu() {
               <TypographyMuted>Escolha uma sessão</TypographyMuted>
             </SheetTitle>
             <SheetDescription className="flex flex-col gap-10">
-              {menuOptions.map((option) => (
-                <div className="flex items-center gap-2">
+              {menuOptions.map((option, index) => (
+                <span
+                  className="flex items-center gap-2"
+                  key={`${option.label}-${index}`}
+                >
                   <ChevronRight size={15} className="text-k-amber" />
-                  <Link href={option.path} className="text-base">
-                    {option.label}
-                  </Link>
-                </div>
+                  {option.isPage ? (
+                    <Link
+                      href={option.path}
+                      className="text-base"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {option.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={`#${option.path}`}
+                      className="text-base"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {option.label}
+                    </a>
+                  )}
+                </span>
               ))}
             </SheetDescription>
           </SheetHeader>

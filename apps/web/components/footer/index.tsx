@@ -8,7 +8,7 @@ import Section from "../section";
 
 export default function Footer() {
   return (
-    <Section mobilePadding="px-0">
+    <Section mobilePadding="px-0" id="contact">
       <div className="w-full mb-5">
         <div className="row-span-2 flex h-[254px] flex-col place-content-between bg-k-olive-medium pb-[61px] pl-[29px] pr-[18px] pt-[22px] md:mr-[36px] md:h-auto md:items-end md:justify-between md:bg-transparent md:p-0 md:pl-[1rem] text-k-yellow-light lg:mr-0 lg:text-black">
           <div className="flex flex-col items-start gap-2 lg:items-start lg:gap-4 lg:pr-10 xl:items-center">
