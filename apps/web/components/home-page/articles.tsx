@@ -3,9 +3,12 @@ import HomeTitle from "@/components/home-title";
 import Section from "@/components/section";
 
 export default async function Articles() {
-  const data = await fetch("https://api.vercel.app/blog");
-  const posts = await data.json();
-  const example = posts.slice(0, 3);
+  // const data = await fetch("https://api.vercel.app/blog");
+  // const posts = await data.json();
+
+  const example: { id: string; title: string; author: string; date: string }[] =
+    [];
+
   return (
     <Section className="mb-3">
       <HomeTitle>Artigos e Publicações</HomeTitle>
