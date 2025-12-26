@@ -2,7 +2,7 @@
 const nextConfig = {
   transpilePackages: ["@workspace/ui"],
   images: {
-    remotePatterns: [new URL("https://api.slingacademy.com/**")],
+    remotePatterns: [new URL("http://cms.kiandadiversidade.com/**")],
   },
 };
 

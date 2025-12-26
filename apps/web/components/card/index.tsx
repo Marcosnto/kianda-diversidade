@@ -7,14 +7,21 @@ type ArticleCardProps = {
   title: string;
   date: string;
   author: string;
+  coverImage: string;
 };
 
-const ArticleCard = ({ id, title, author, date }: ArticleCardProps) => {
+const ArticleCard = ({
+  id,
+  title,
+  author,
+  date,
+  coverImage,
+}: ArticleCardProps) => {
   return (
     <div key={id} className="flex h-[140] gap-3">
       <Image
-        className="rounded-3xl"
-        src="https://api.slingacademy.com/public/sample-photos/1.jpeg"
+        className="rounded-3xl object-cover"
+        src={`${process.env.API_BASE_URL}${coverImage}`}
         alt="alt imagem"
         width={151}
         height={140}
