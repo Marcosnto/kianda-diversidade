@@ -1,5 +1,5 @@
+import Section from "@/components/section";
 import Image from "next/image";
-import Section from "../section";
 
 const Banner = () => {
   return (

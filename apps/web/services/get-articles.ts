@@ -5,6 +5,7 @@ type DataType = {
   Resumo: string;
   author: string;
   Publicacao: string;
+  Destaque: boolean;
   Capa: {
     id: string | number;
     name: string;

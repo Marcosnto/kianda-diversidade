@@ -1,7 +1,7 @@
-import About from "@/components/home-page/about";
-import Articles from "@/components/home-page/articles";
-import Banner from "@/components/home-page/banner";
-import { KiandaCarousel } from "@/components/home-page/how-kianda-act";
+import About from "@/pages/home/about";
+import Articles from "@/pages/home/articles";
+import Banner from "@/pages/home/banner";
+import { KiandaCarousel } from "@/pages/home/how-kianda-act";
 
 export default function Page() {
   return (

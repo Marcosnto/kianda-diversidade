@@ -6,11 +6,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@workspace/ui/components/carousel";
-import Section from "../section";
+
 import Image, { StaticImageData } from "next/image";
 import { useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
-import HomeTitle from "../home-title";
+import Section from "@/components/section";
+import HomeTitle from "@/components/home-title";
 
 export type StaticCardType = {
   id?: string;
