@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { TypographyLarge } from "../typography/large";
 import { TypographyMuted } from "../typography/small-muted";
+import Link from "next/link";
 
 type ArticleCardProps = {
   id: string;
@@ -18,7 +19,7 @@ const ArticleCard = ({
   coverImage,
 }: ArticleCardProps) => {
   return (
-    <div key={id} className="flex h-[140] gap-3">
+    <Link key={id} className="flex h-[140] gap-3" href={`/posts/${id}`}>
       <Image
         className="rounded-3xl object-cover"
         src={`${process.env.API_BASE_URL}${coverImage}`}
@@ -35,7 +36,7 @@ const ArticleCard = ({
           <li className="text-[11px]">{date}</li>
         </TypographyMuted>
       </div>
-    </div>
+    </Link>
   );
 };
 

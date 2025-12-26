@@ -1,6 +1,6 @@
-"use server";
 type DataType = {
   id: string;
+  documentId: string;
   Titulo: string;
   Resumo: string;
   author: string;
@@ -17,7 +17,7 @@ type DataType = {
 }[];
 
 export async function getArticles() {
-  const articles = await fetch(
+  const response = await fetch(
     `${process.env.API_BASE_URL}/api/articles?populate=*`,
     {
       headers: {
@@ -28,10 +28,12 @@ export async function getArticles() {
     }
   );
 
-  //TODO Filtrar somente os 3 primeiros com o Destaque === true
-  const { data }: { data: DataType } = await articles.json();
+  if (!response.ok) {
+    return null;
+  }
 
-  return {
-    data,
-  };
+  //TODO Filtrar somente os 3 primeiros com o Destaque === true
+  const { data }: { data: DataType } = await response.json();
+
+  return data;
 }
