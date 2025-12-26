@@ -1,39 +1,10 @@
 import ArticleCard from "@/components/card";
 import HomeTitle from "@/components/home-title";
 import Section from "@/components/section";
-
-type DataType = {
-  id: string;
-  Titulo: string;
-  Resumo: string;
-  author: string;
-  Publicacao: string;
-  Capa: {
-    id: string | number;
-    name: string;
-    alternativeText?: string;
-    width: number;
-    heigth: number;
-    ext: string;
-    url: string;
-  };
-}[];
+import { getArticles } from "@/services/get-articles";
 
 export default async function Articles() {
-  //TODO Adequar esse get ao padrão next
-  const articles = await fetch(
-    `${process.env.API_BASE_URL}/api/articles?populate=*`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.API_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      cache: "no-cache",
-    }
-  );
-
-  //TODO Filtrar somente os 3 primeiros com o Destaque === true
-  const { data }: { data: DataType } = await articles.json();
+  const { data } = await getArticles();
 
   return (
     <Section className="mb-3">
