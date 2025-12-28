@@ -89,7 +89,7 @@ export function KiandaCarousel() {
       <HomeTitle>Como Kianda Atua</HomeTitle>
 
       <Carousel
-        className="w-full max-w-xs md:hidden"
+        className="w-full max-w-xs md:hidden justify-self-center"
         plugins={[plugin.current]}
         opts={{ loop: true }}
       >

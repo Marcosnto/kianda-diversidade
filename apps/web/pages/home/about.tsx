@@ -4,8 +4,8 @@ import Image from "next/image";
 
 const About = () => {
   return (
-    <Section className="bg-k-olive-light text-k-off-white" id="about">
-      <HomeTitle>Sobre</HomeTitle>
+    <Section className="bg-k-olive-light text-k-off-white py-2" id="about">
+      <HomeTitle borderColor="border-k-off-white">Sobre</HomeTitle>
       <section className="pb-10">
         <p className="lg:area-text">
           A <b className="font-semibold">KIANDA</b> é uma empresa comprometida

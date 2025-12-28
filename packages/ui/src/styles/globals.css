@@ -46,6 +46,9 @@
   --color-green-olive-dark-kianda: #273618;
   --color-green-olive-light-kianda: #606C38;
   --color-green-olive-medium-kianda: #4B5331;
+  --color-olive-deep-kianda: #203012;
+  --color-olive-deep-light-kianda: #273618;
+  --color-olive-deep-dark-kianda: #1a250e;
   --color-amber-kianda: #DCA05E;
   --color-bronze-kianda: #C98B31;
   --color-cinnamon-kianda: #BB6C25;
@@ -93,6 +96,9 @@
   --color-green-olive-dark-kianda: #A7B797;
   --color-green-olive-light-kianda: #B7C2A4;
   --color-green-olive-medium-kianda: #7F8960;
+  --color-olive-deep-kianda: #203012;
+  --color-olive-deep-light-kianda: #273618;
+  --color-olive-deep-dark-kianda: #1a250e;
   --color-amber-kianda: #715328;
   --color-bronze-kianda: #513f21;
   --color-cinnamon-kianda: #A86F37;
@@ -146,6 +152,9 @@
   --color-k-olive-dark: var(--color-green-olive-dark-kianda);
   --color-k-olive-light: var(--color-green-olive-light-kianda);
   --color-k-olive-medium: var(--color-green-olive-medium-kianda);
+  --color-k-olive-deep: var(--color-olive-deep-kianda);
+  --color-k-olive-deep-light: var(--color-olive-deep-light-kianda);
+  --color-k-olive-deep-dark: var(--color-olive-deep-dark-kianda);
   --color-k-amber: var(--color-amber-kianda);
   --color-k-bronze: var(--color-bronze-kianda);
   --color-k-cinnamon: var(--color-cinnamon-kianda);

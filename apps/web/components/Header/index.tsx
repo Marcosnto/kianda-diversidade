@@ -32,17 +32,18 @@ export default function HeaderMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="h-16 bg-k-olive-light items-center justify-between flex pl-4 pr-4">
-      <Image
-        className="fill-k-bronze"
-        src="/imgs/kianda_name.svg"
-        alt="Kianda Logo"
-        width={181}
-        height={37}
-      />
+    <div className="h-[71px] bg-k-olive-deep items-center justify-between flex pl-4 pr-4">
+      <Link href="/">
+        <Image
+          src="/imgs/kianda_name-1.svg"
+          alt="Kianda Logo"
+          width={181}
+          height={37}
+        />
+      </Link>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger>
-          <Menu size={32} />
+          <Menu size={32} className="text-k-off-white" />
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
