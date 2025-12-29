@@ -11,7 +11,7 @@ const About = () => {
       <HomeTitle borderColor="border-k-off-white md:border-black md:text-k-olive-dark">
         Sobre
       </HomeTitle>
-      <section className="pb-10 text-justify md:bg-k-olive-light md:text-white md:rounded-xl p-4 md:text-xl">
+      <section className="pb-10 text-justify md:bg-k-olive-light md:text-white md:rounded-xl md:p-4 md:text-xl">
         <p className="lg:area-text">
           A <b className="font-semibold">KIANDA</b> é uma empresa comprometida
           em tornar os ambientes empresariais e educacionais mais{" "}
@@ -25,20 +25,12 @@ const About = () => {
             permanência.
           </i>
         </p>
-        <span className="flex justify-center mb-2 mt-2">
+        <span className="relative flex self-center mb-2 mt-2 w-[162px] h-[258px] md:w-[245px] md:h-[435px]">
           <Image
-            className="md:hidden"
+            className="h-full object-fill"
             src="/imgs/about_full.svg"
-            width={162}
-            height={258}
             alt="alt"
-          />
-          <Image
-            className="my-5"
-            src="/imgs/about_full.svg"
-            width={245}
-            height={435}
-            alt="alt"
+            fill
           />
         </span>
         <p className="lg:area-text2">
