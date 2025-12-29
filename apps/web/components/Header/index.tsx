@@ -13,6 +13,7 @@ import { TypographyMuted } from "../typography/small-muted";
 import { TypographyLarge } from "../typography/large";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@workspace/ui/components/button";
 
 type OptionsTypes = {
   label: string;
@@ -32,57 +33,81 @@ export default function HeaderMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="h-[71px] bg-k-olive-deep items-center justify-between flex pl-4 pr-4">
-      <Link href="/">
-        <Image
-          src="/imgs/kianda_name-1.svg"
-          alt="Kianda Logo"
-          width={181}
-          height={37}
-        />
-      </Link>
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger>
-          <Menu size={32} className="text-k-off-white" />
-        </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle className="text-center mb-10">
-              <TypographyLarge className="text-k-brown">
-                Kianda Menu
-              </TypographyLarge>
-              <TypographyMuted>Escolha uma sessão</TypographyMuted>
-            </SheetTitle>
-            <SheetDescription className="flex flex-col gap-10">
-              {menuOptions.map((option, index) => (
-                <span
-                  className="flex items-center gap-2"
-                  key={`${option.label}-${index}`}
-                >
-                  <ChevronRight size={15} className="text-k-amber" />
-                  {option.isPage ? (
-                    <Link
-                      href={option.path}
-                      className="text-base"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {option.label}
-                    </Link>
-                  ) : (
-                    <a
-                      href={`#${option.path}`}
-                      className="text-base"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {option.label}
-                    </a>
-                  )}
-                </span>
-              ))}
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
-    </div>
+    <>
+      <div className="h-[71px] bg-k-olive-deep items-center justify-between flex pl-4 pr-4 xl:hidden">
+        <Link href="/">
+          <Image
+            src="/imgs/kianda_name-1.svg"
+            alt="Kianda Logo"
+            width={181}
+            height={37}
+          />
+        </Link>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger>
+            <Menu size={32} className="text-k-off-white" />
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle className="text-center mb-10">
+                <TypographyLarge className="text-k-brown">
+                  Kianda Menu
+                </TypographyLarge>
+                <TypographyMuted>Escolha uma sessão</TypographyMuted>
+              </SheetTitle>
+              <SheetDescription className="flex flex-col gap-10">
+                {menuOptions.map((option, index) => (
+                  <span
+                    className="flex items-center gap-2"
+                    key={`${option.label}-${index}`}
+                  >
+                    <ChevronRight size={15} className="text-k-amber" />
+                    {option.isPage ? (
+                      <Link
+                        href={option.path}
+                        className="text-base"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {option.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={`#${option.path}`}
+                        className="text-base"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {option.label}
+                      </a>
+                    )}
+                  </span>
+                ))}
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      </div>
+      <span>
+        <nav className="hidden absolute top-0 left-0 xl:flex w-full bg-k-olive-light/30 justify-center items-center pointer-events-auto select-none shadow-none p-4 z-40">
+          <ul className="flex gap-5 md:gap-12 w-full justify-center text-2xl font-semibold text-white hover:text-k-amber transition-colors">
+            {menuOptions.map((option, index) => (
+              <li key={`${option.label}-overlay-${index}`}>
+                {option.isPage ? (
+                  <Link href={option.path}>{option.label}</Link>
+                ) : (
+                  <a href={`#${option.path}`}>{option.label}</a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <Button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-6 right-6 px-3 py-3 rounded-lg text-k-off-white bg-k-olive-deep border border-k-brown hover:bg-k-amber transition-colors text-lg font-semibold shadow z-50"
+          aria-label="Voltar ao topo"
+        >
+          ↑
+        </Button>
+      </span>
+    </>
   );
 }

@@ -48,7 +48,7 @@ export default function Footer() {
             <span>contato@kiandadiversidade.com</span>
           </div>
         </div>
-        <div className="px-4 md:px-0 md:flex md:flex-col-reverse w-full lg:w-[508px]">
+        <div className="px-4 md:px-0 md:flex md:flex-col-reverse w-full lg:w-[508px] xl:w-[58%]">
           <div>
             <div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] lg:text-[28px] xl:text-[36px]">
               <h1>Receba nossos conteúdos por email:</h1>
@@ -67,14 +67,14 @@ export default function Footer() {
       </div>
 
       <div className="flex flex-col items-center justify-center text-sm md:col-span-3">
-        {/* <ItalicTitle
+        <HomeTitle
+          showDivider
           className="hidden xl:flex"
           iconType="completeMoon"
-          showDivider={true}
-          italic={false}
         >
           2025
-        </ItalicTitle> */}
+        </HomeTitle>
+
         <div className="flex gap-3 md:col-span-3">
           <Link href="/privacy-police">Política de Privicidade</Link>
           <Link href="/cookies-police">Política de Cookies</Link>

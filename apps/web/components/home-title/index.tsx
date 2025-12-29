@@ -21,7 +21,7 @@ const HomeTitle = ({
     : "border-none";
 
   return (
-    <div className={cn(`mb-4 mt-4 ${hasDivider} ${borderColor}`).trim()}>
+    <div className={cn(`mb-4 mt-4 ${hasDivider} ${borderColor} w-full`).trim()}>
       <span
         className={cn(
           `text-[18px] md:text-[24px] lg:text-[34px] flex  italic ${className}`,
