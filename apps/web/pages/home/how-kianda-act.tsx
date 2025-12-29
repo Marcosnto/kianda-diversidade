@@ -88,9 +88,9 @@ export function KiandaCarousel() {
     <Section id="how-kianda-act" className="mb-5">
       <HomeTitle>Como Kianda Atua</HomeTitle>
 
-      <div className="relative">
+      <div className="relative md:hidden">
         <Carousel
-          className="w-full md:hidden justify-self-center"
+          className="w-full justify-self-center"
           plugins={[plugin.current]}
           opts={{ loop: true }}
         >
@@ -142,7 +142,7 @@ export function KiandaCarousel() {
         </Carousel>
       </div>
 
-      <div className="3xl:grid-cols-4 mb-[87.5px] hidden w-full justify-items-center md:grid md:grid-cols-2 md:gap-9 lg:gap-y-16">
+      <div className="3xl:grid-cols-4 mb-[87.5px] hidden w-full justify-items-center md:grid md:grid-cols-2 md:gap-9 lg:gap-y-16 2xl:grid-cols-4">
         {cards.map((card) => (
           <div className="w-[321px] md:w-[350px] lg:w-[396px]" key={card.id}>
             <div className="relative h-[294px] sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px]">

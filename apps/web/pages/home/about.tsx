@@ -1,5 +1,6 @@
 import HomeTitle from "@/components/home-title";
 import Section from "@/components/section";
+import { cn } from "@workspace/ui/lib/utils";
 import Image from "next/image";
 
 const About = () => {
@@ -12,7 +13,14 @@ const About = () => {
         Sobre
       </HomeTitle>
       <div className="md:bg-k-olive-light lg:rounded-2xl">
-        <section className="lg:grid lg:grid-cols-[38%_62%] lg:[grid-template-areas:'figure_text'_'figure_text-2'_'figure_text-2'] pb-10 text-justify md:text-white md:rounded-xl md:p-4 md:text-xl lg:p-[70px] lg:text-2xl">
+        <section
+          className={cn(
+            `pb-10 text-justify`,
+            `md:text-white md:rounded-xl md:p-4 md:text-xl `,
+            `lg:grid lg:grid-cols-[38%_62%] lg:[grid-template-areas:'figure_text'_'figure_text-2'_'figure_text-2'] lg:p-[70px] lg:text-2xl`,
+            `2xl:justify-items-center 2xl:items-center 2xl:text-3xl`
+          )}
+        >
           <p className="lg:[grid-area:text] lg:mb-8">
             A <b className="font-semibold">KIANDA</b> é uma empresa comprometida
             em tornar os ambientes empresariais e educacionais mais{" "}
@@ -26,7 +34,14 @@ const About = () => {
               permanência.
             </i>
           </p>
-          <span className="lg:[grid-area:figure] relative flex self-center mb-2 mt-2 w-[162px] h-[258px] md:w-[245px] md:h-[435px] lg:w-[272px] lg:h-[483px]">
+          <span
+            className={cn(
+              `relative flex self-center mb-2 mt-2 w-[162px] h-[258px]`,
+              `md:w-[245px] md:h-[435px]`,
+              `lg:[grid-area:figure] lg:w-[272px] lg:h-[483px]`,
+              `2xl:w-[313px] 2xl:h-[556px] 2xl:self-center`
+            ).trim()}
+          >
             <Image
               className="h-full object-fill"
               src="/imgs/about_full.svg"
