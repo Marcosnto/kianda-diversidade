@@ -5,12 +5,14 @@ import SocialMediaIcon from "./social-media-icons";
 import { JSXElementConstructor, ReactElement } from "react";
 import { socialMediaInfos } from "./social-media-icons/infos";
 import Section from "../section";
+import HomeTitle from "../home-title";
 
 export default function Footer() {
   return (
-    <Section mobilePadding="px-0" id="contact">
-      <div className="w-full mb-5">
-        <div className="row-span-2 flex h-[254px] flex-col place-content-between bg-k-olive-medium pb-[61px] pl-[29px] pr-[18px] pt-[22px] md:mr-[36px] md:h-auto md:items-end md:justify-between md:bg-transparent md:p-0 md:pl-[1rem] text-k-yellow-light lg:mr-0 lg:text-black">
+    <Section mobilePadding="px-0" className="md:px-4" id="contact">
+      <HomeTitle showDivider></HomeTitle>
+      <div className="w-full mb-5 md:flex md:flex-row-reverse">
+        <div className="row-span-2 flex h-[254px] flex-col place-content-between bg-k-olive-medium pb-[61px] pl-[29px] pr-[18px] pt-[22px] md:mr-[36px] md:h-auto md:items-end md:justify-between md:bg-transparent md:p-0 md:pl-[1rem] text-k-yellow-light lg:mr-0 md:text-k-olive-deep-light">
           <div className="flex flex-col items-start gap-2 lg:items-start lg:gap-4 lg:pr-10 xl:items-center">
             <p className="text-[18px] font-medium md:text-[28px] xl:text-[36px]">
               Canais para contato
@@ -46,19 +48,21 @@ export default function Footer() {
             <span>contato@kiandadiversidade.com</span>
           </div>
         </div>
-        <div className="px-4">
-          <div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] lg:text-[28px] xl:text-[36px]">
-            <h1>Receba nossos conteúdos por email:</h1>
+        <div className="px-4 md:px-0 md:flex md:flex-col-reverse w-full">
+          <div>
+            <div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] lg:text-[28px] xl:text-[36px]">
+              <h1>Receba nossos conteúdos por email:</h1>
+            </div>
+            <NewsletterForm />
           </div>
-          <NewsletterForm />
-        </div>
-        <div className="px-4 relative h-[275px] w-full md:flex md:h-[371px] ">
-          <Image
-            src="/imgs/footer_img-fullhd.png"
-            alt=""
-            fill
-            className="h-full object-fill sm:object-cover"
-          />
+          <div className="px-4 relative h-[275px] w-full md:flex md:h-[371px] ">
+            <Image
+              src="/imgs/footer_img-fullhd.png"
+              alt=""
+              fill
+              className="h-full object-fill sm:object-cover"
+            />
+          </div>
         </div>
       </div>
 

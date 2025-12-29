@@ -88,57 +88,59 @@ export function KiandaCarousel() {
     <Section id="how-kianda-act" className="mb-5">
       <HomeTitle>Como Kianda Atua</HomeTitle>
 
-      <Carousel
-        className="w-full max-w-xs md:hidden justify-self-center"
-        plugins={[plugin.current]}
-        opts={{ loop: true }}
-      >
-        <CarouselContent>
-          {cards.map(
-            ({
-              title,
-              imageClassName,
-              imageWidth = 413,
-              imageHeigth = 413,
-              imageAlt,
-              imageURL,
-              id,
-              summary,
-              backgroundColor,
-            }) => (
-              <CarouselItem
-                key={id}
-                className="flex basis-full justify-center sm:basis-1/2"
-              >
-                <div className="w-[321px] md:w-[350px] lg:w-[396px]">
-                  <Image
-                    className={`mb-[6px] h-[294px] rounded-[1.75rem] object-cover sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px] ${imageClassName}`.trim()}
-                    width={imageWidth}
-                    height={imageHeigth}
-                    alt={imageAlt}
-                    src={imageURL}
-                  />
-                  <div
-                    className={`${colorMap[backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[299px]`}
-                  >
-                    <h1
-                      className="] border-b-2 border-b-k_yellow_light pb-[12.5px] pt-[11.77px] text-[25px]/[25px] font-normal text-white md:text-[30px]/[35px] xl:text-[36.55px]"
-                      dangerouslySetInnerHTML={{ __html: title }}
+      <div className="relative">
+        <Carousel
+          className="w-full md:hidden justify-self-center"
+          plugins={[plugin.current]}
+          opts={{ loop: true }}
+        >
+          <CarouselContent>
+            {cards.map(
+              ({
+                title,
+                imageClassName,
+                imageWidth = 413,
+                imageHeigth = 413,
+                imageAlt,
+                imageURL,
+                id,
+                summary,
+                backgroundColor,
+              }) => (
+                <CarouselItem
+                  key={id}
+                  className="flex basis-full justify-center sm:basis-1/2"
+                >
+                  <div className="w-[321px] md:w-[350px] lg:w-[396px]">
+                    <Image
+                      className={`mb-[6px] h-[294px] rounded-[1.75rem] object-cover sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px] ${imageClassName}`.trim()}
+                      width={imageWidth}
+                      height={imageHeigth}
+                      alt={imageAlt}
+                      src={imageURL}
                     />
-                    <p
-                      className={`${colorMap[backgroundColor]} rounded-xl px-[15px] py-[7px] text-left text-[0.94rem] font-light text-white md:py-[18px] lg:text-[21.5px]`}
+                    <div
+                      className={`${colorMap[backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[299px]`}
                     >
-                      {summary}
-                    </p>
+                      <h1
+                        className="] border-b-2 border-b-k_yellow_light pb-[12.5px] pt-[11.77px] text-[25px]/[25px] font-normal text-white md:text-[30px]/[35px] xl:text-[36.55px]"
+                        dangerouslySetInnerHTML={{ __html: title }}
+                      />
+                      <p
+                        className={`${colorMap[backgroundColor]} rounded-xl px-[15px] py-[7px] text-left text-[0.94rem] font-light text-white md:py-[18px] lg:text-[21.5px]`}
+                      >
+                        {summary}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </CarouselItem>
-            )
-          )}
-        </CarouselContent>
-        <CarouselPrevious className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow" />
-        <CarouselNext className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow" />
-      </Carousel>
+                </CarouselItem>
+              )
+            )}
+          </CarouselContent>
+          <CarouselPrevious className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow" />
+          <CarouselNext className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow" />
+        </Carousel>
+      </div>
     </Section>
   );
 }

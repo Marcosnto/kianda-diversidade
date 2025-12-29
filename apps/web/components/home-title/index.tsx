@@ -24,7 +24,8 @@ const HomeTitle = ({
     <div className={cn(`mb-4 mt-4 ${hasDivider} ${borderColor}`).trim()}>
       <span
         className={cn(
-          `text-[18px] md:text-[24px] lg:text-[34px] flex justify-between italic ${className}`
+          `text-[18px] md:text-[24px] lg:text-[34px] flex  italic ${className}`,
+          children ? "justify-between" : "justify-end"
         )}
       >
         {children}

@@ -4,13 +4,16 @@ import Image from "next/image";
 const Banner = () => {
   return (
     <Section>
-      <div className=" flex justify-center mt-5 mb-5">
-        <Image
-          src="/imgs/baner_medium.png"
-          width={348}
-          height={510}
-          alt="Imagem do baner"
-        />
+      <div className=" flex justify-center my-5 sm:h-[836px] sm:max-w-[600px] md:h-[936px] md:max-w-full ">
+        <div className="relative w-full h-auto aspect-[348/510]">
+          <Image
+            src="/imgs/baner_medium.png"
+            fill
+            className="object-cover"
+            alt="Imagem do baner"
+            sizes="100vw"
+          />
+        </div>
       </div>
     </Section>
   );

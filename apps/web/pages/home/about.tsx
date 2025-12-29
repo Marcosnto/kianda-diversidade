@@ -4,9 +4,14 @@ import Image from "next/image";
 
 const About = () => {
   return (
-    <Section className="bg-k-olive-light text-k-off-white py-2" id="about">
-      <HomeTitle borderColor="border-k-off-white">Sobre</HomeTitle>
-      <section className="pb-10">
+    <Section
+      className="bg-k-olive-light text-k-off-white py-2 md:bg-transparent"
+      id="about"
+    >
+      <HomeTitle borderColor="border-k-off-white md:border-black md:text-k-olive-dark">
+        Sobre
+      </HomeTitle>
+      <section className="pb-10 text-justify md:bg-k-olive-light md:text-white md:rounded-xl p-4 md:text-xl">
         <p className="lg:area-text">
           A <b className="font-semibold">KIANDA</b> é uma empresa comprometida
           em tornar os ambientes empresariais e educacionais mais{" "}
@@ -22,9 +27,17 @@ const About = () => {
         </p>
         <span className="flex justify-center mb-2 mt-2">
           <Image
+            className="md:hidden"
             src="/imgs/about_full.svg"
             width={162}
             height={258}
+            alt="alt"
+          />
+          <Image
+            className="my-5"
+            src="/imgs/about_full.svg"
+            width={245}
+            height={435}
             alt="alt"
           />
         </span>
