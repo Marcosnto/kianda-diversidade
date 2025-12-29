@@ -145,13 +145,14 @@ export function KiandaCarousel() {
       <div className="3xl:grid-cols-4 mb-[87.5px] hidden w-full justify-items-center md:grid md:grid-cols-2 md:gap-9 lg:gap-y-16">
         {cards.map((card) => (
           <div className="w-[321px] md:w-[350px] lg:w-[396px]" key={card.id}>
-            <Image
-              className={`mb-[6px] h-[294px] rounded-[1.75rem] object-cover sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px]`.trim()}
-              width={350}
-              height={320}
-              alt={card.imageAlt}
-              src={card.imageURL}
-            />
+            <div className="relative h-[294px] sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px]">
+              <Image
+                className={`mb-[6px]  rounded-[1.75rem] object-cover `.trim()}
+                fill
+                alt={card.imageAlt}
+                src={card.imageURL}
+              />
+            </div>
             <div
               className={`${colorMap[card.backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[299px]`}
             >

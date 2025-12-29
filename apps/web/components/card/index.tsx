@@ -33,8 +33,8 @@ const ArticleCard = ({
           <li className="bold line-clamp-2">{title}</li>
         </TypographyLarge>
         <TypographyMuted>
-          <li>{author}</li>
-          <li className="text-[11px]">{date}</li>
+          <li className="font-semibold lg:text-xl">{author}</li>
+          <li className="text-[11px] lg:text-sm">{date}</li>
         </TypographyMuted>
       </div>
     </Link>

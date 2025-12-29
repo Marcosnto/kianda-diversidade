@@ -8,6 +8,8 @@ export function TypographyLarge({
   className?: string;
 }) {
   return (
-    <div className={cn("text-lg font-semibold", className)}>{children}</div>
+    <div className={cn("text-lg lg:text-2xl font-semibold", className)}>
+      {children}
+    </div>
   );
 }
