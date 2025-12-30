@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Banner = () => {
   return (
-    <Section className="xl:p-0">
+    <Section className="xl:p-0 2xl:p-0">
       <div className=" flex justify-center my-5 sm:h-[836px] sm:max-w-[600px] md:h-[936px] md:max-w-full xl:m-0">
         <div className="relative w-full h-auto aspect-[348/510]">
           <Image

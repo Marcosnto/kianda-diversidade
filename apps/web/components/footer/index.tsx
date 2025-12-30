@@ -13,7 +13,7 @@ export default function Footer() {
       <HomeTitle showDivider></HomeTitle>
       <div className="w-full mb-5 md:flex md:flex-row-reverse lg:justify-between">
         <div className="row-span-2 flex h-[254px] flex-col place-content-between bg-k-olive-medium pb-[61px] pl-[29px] pr-[18px] pt-[22px] md:mr-[36px] md:h-auto md:items-end md:justify-between md:bg-transparent md:p-0 md:pl-[1rem] text-k-yellow-light lg:mr-0 md:text-k-olive-deep-light">
-          <div className="flex flex-col items-start gap-2 lg:items-start lg:gap-4 lg:pr-10 xl:items-center">
+          <div className="flex flex-col items-start gap-2 lg:items-start lg:gap-4 lg:pr-10 ">
             <p className="text-[18px] font-medium md:text-[28px] xl:text-[36px]">
               Canais para contato
             </p>
@@ -38,7 +38,7 @@ export default function Footer() {
               ))}
             </div>
 
-            <p className="hidden flex-col items-center gap-7 font-medium lg:flex lg:w-full xl:text-[30px] lg:hidden">
+            <p className="hidden flex-col items-center gap-7 font-medium lg:w-full xl:text-[30px] lg:hidden">
               contato@kiandadiversidade.com
             </p>
           </div>
@@ -50,12 +50,12 @@ export default function Footer() {
         </div>
         <div className="px-4 md:px-0 md:flex md:flex-col-reverse w-full lg:w-[508px] xl:w-[58%]">
           <div>
-            <div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] lg:text-[28px] xl:text-[36px]">
+            <div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] xl:text-xl">
               <h1>Receba nossos conteúdos por email:</h1>
             </div>
             <NewsletterForm />
           </div>
-          <div className="px-4 relative h-[275px] w-full md:flex md:h-[371px]">
+          <div className="px-4 relative h-[275px] w-full md:flex md:h-[371px] 2xl:h-[649px]">
             <Image
               src="/imgs/footer_img-fullhd.png"
               alt=""

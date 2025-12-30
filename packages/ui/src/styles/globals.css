@@ -162,6 +162,8 @@
   --color-k-vivid-orange: var(--color-vivid-orange-kianda);
   --color-k-off-white: var(--color-off-white-kianda);
   --color-k-yellow-light: var(--color-yellow-light);
+
+  --breakpoint-4xl: 1920px;
 }
 
 @layer base {

@@ -12,6 +12,7 @@ import { useNewsletter } from "./newsletter";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Loader2 } from "lucide-react";
+import { cn } from "@workspace/ui/lib/utils";
 
 export const NewsletterForm = () => {
   const {
@@ -37,7 +38,10 @@ export const NewsletterForm = () => {
                 <Input
                   {...field}
                   placeholder="exemplo@email.com"
-                  className="h-[17px] w-full rounded-md border-black bg-white text-black placeholder:text-[10px] placeholder:font-normal placeholder:italic placeholder:text-[#AAAAAA] md:h-[32px] md:rounded-lg md:placeholder:text-[16px] lg:h-12 lg:placeholder:text-[21px] xl:rounded-[17px]"
+                  className={cn(
+                    `h-[24px] w-full border-black bg-white text-black placeholder:text-[12px] placeholder:font-normal placeholder:self-center placeholder:italic placeholder:text-[#AAAAAA]`,
+                    `md:h-[32px] md:placeholder:text-[16px]`
+                  )}
                 />
               </FormControl>
               <FormMessage />
@@ -48,7 +52,10 @@ export const NewsletterForm = () => {
         <Button
           // disabled={isNewsletterPending}
           type="submit"
-          className="h-[17px] w-[25%] flex-grow-0 rounded-md bg-k-olive-dark text-[12px] font-medium text-k-yellow-light md:h-[31px] md:rounded-lg md:text-[19px] lg:h-12 lg:text-[28.39px] xl:rounded-[17px]"
+          className={cn(
+            `h-[24px] w-[25%] flex-grow-0 rounded-md bg-k-olive-dark text-[12px] font-medium text-k-yellow-light`,
+            `md:h-[32px] md:rounded-lg md:text-[19px]`
+          )}
         >
           Assinar
           {/* {isNewsletterPending && (

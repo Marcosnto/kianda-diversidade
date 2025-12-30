@@ -13,7 +13,9 @@ export default function Section({
 }) {
   return (
     <section id={id} className="">
-      <div className={cn("", className, mobilePadding)}>{children}</div>
+      <div className={cn("2xl:px-16", className, mobilePadding)}>
+        {children}
+      </div>
     </section>
   );
 }
