@@ -9,25 +9,32 @@ const Posts = async () => {
     <p>Não há artigos para serem mostrados</p>;
   }
 
+  console.log("data", data);
+
   return (
-    <ul
-      className={cn(
-        `flex flex-col gap-8 my-10 ml-3`,
-        `md:flex-row md:flex-wrap`
-      )}
-    >
-      {data?.map(({ id, Titulo, Resumo, Publicacao, Capa, documentId }) => (
-        <ArticleCard
-          key={id}
-          id={documentId}
-          title={Titulo}
-          author={"Autor Teste"}
-          date={Publicacao}
-          coverImage={Capa.url}
-          linkClassName=""
-        />
-      ))}
-    </ul>
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 max-w-7xl mx-auto">
+      <ul
+        className={cn(
+          "flex flex-col gap-6 sm:gap-8 my-6 sm:my-10",
+          "md:flex-row md:flex-wrap md:justify-start",
+          "lg:gap-10",
+          "xl:gap-12 xl:my-12",
+          "2xl:gap-14 2xl:my-16",
+        )}
+      >
+        {data?.map(({ id, Titulo, Resumo, Publicacao, Capa, documentId }) => (
+          <ArticleCard
+            key={id}
+            id={documentId}
+            title={Titulo}
+            author={"Autor Teste"}
+            date={Publicacao}
+            coverImage={Capa.url}
+            linkClassName=""
+          />
+        ))}
+      </ul>
+    </div>
   );
 };
 
