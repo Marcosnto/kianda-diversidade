@@ -81,7 +81,7 @@ export function KiandaCarousel() {
       stopOnFocusIn: true,
       jump: false,
       playOnInit: true,
-    })
+    }),
   );
 
   return (
@@ -123,7 +123,7 @@ export function KiandaCarousel() {
                       className={`${colorMap[backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[299px]`}
                     >
                       <h1
-                        className="] border-b-2 border-b-k_yellow_light pb-[12.5px] pt-[11.77px] text-[25px]/[25px] font-normal text-white md:text-[30px]/[35px] xl:text-[36.55px]"
+                        className="border-b-2 border-b-k_yellow_light pb-[12.5px] pt-[11.77px] text-[25px]/[25px] font-normal text-white md:text-[30px]/[35px] xl:text-[36.55px]"
                         dangerouslySetInnerHTML={{ __html: title }}
                       />
                       <p
@@ -134,7 +134,7 @@ export function KiandaCarousel() {
                     </div>
                   </div>
                 </CarouselItem>
-              )
+              ),
             )}
           </CarouselContent>
           <CarouselPrevious className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-2 shadow" />
@@ -142,26 +142,26 @@ export function KiandaCarousel() {
         </Carousel>
       </div>
 
-      <div className="3xl:grid-cols-4 mb-[87.5px] hidden w-full justify-items-center md:grid md:grid-cols-2 md:gap-9 lg:gap-y-16 2xl:grid-cols-4">
+      <div className="mb-[87.5px] hidden w-full md:grid md:grid-cols-2 md:gap-9 lg:gap-y-16 xl:grid-cols-2 xl:gap-x-12 2xl:grid-cols-4 2xl:gap-x-8">
         {cards.map((card) => (
-          <div className="w-[321px] md:w-[350px] lg:w-[396px]" key={card.id}>
-            <div className="relative h-[294px] sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px]">
+          <div className="w-full max-w-[396px] justify-self-center" key={card.id}>
+            <div className="relative h-[294px] sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px] xl:h-[380px] 2xl:h-[362px]">
               <Image
-                className={`mb-[6px]  rounded-[1.75rem] object-cover `.trim()}
+                className="mb-[6px] rounded-[1.75rem] object-cover"
                 fill
                 alt={card.imageAlt}
                 src={card.imageURL}
               />
             </div>
             <div
-              className={`${colorMap[card.backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[299px]`}
+              className={`${colorMap[card.backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[299px] xl:h-[320px] 2xl:h-[299px]`}
             >
               <h1
-                className="] border-b-2 border-b-k_yellow_light pb-[12.5px] pt-[11.77px] text-[25px]/[25px] font-normal text-white md:text-[30px]/[35px] xl:text-[36.55px]"
+                className="border-b-2 border-b-k_yellow_light pb-[12.5px] pt-[11.77px] text-[25px]/[25px] font-normal text-white md:text-[30px]/[35px] xl:text-[36.55px]"
                 dangerouslySetInnerHTML={{ __html: card.title }}
               />
               <p
-                className={`${colorMap[card.backgroundColor]} rounded-xl px-[15px] py-[7px] text-left text-[0.94rem] font-light text-white md:py-[18px] lg:text-[21.5px]`}
+                className={`${colorMap[card.backgroundColor]} rounded-xl px-[15px] py-[7px] text-left text-[0.94rem] font-light text-white md:py-[18px] lg:text-[21.5px] xl:text-[22px]`}
               >
                 {card.summary}
               </p>
