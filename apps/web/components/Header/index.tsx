@@ -14,6 +14,8 @@ import { TypographyLarge } from "../typography/large";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@workspace/ui/components/button";
+import { usePathname } from "next/navigation";
+import { cn } from "@workspace/ui/lib/utils";
 
 type OptionsTypes = {
   label: string;
@@ -31,10 +33,19 @@ const menuOptions: OptionsTypes[] = [
 
 export default function HeaderMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
 
   return (
     <>
-      <div className="h-[71px] bg-k-olive-deep items-center justify-between flex pl-4 pr-4 xl:hidden">
+      <div
+        className={cn(
+          "h-[71px] items-center justify-between flex pl-4 pr-4 xl:hidden",
+          isHomePage
+            ? "bg-k-olive-deep"
+            : "bg-k-olive-deep fixed top-0 left-0 right-0 z-40",
+        )}
+      >
         <Link href="/">
           <Image
             src="/imgs/kianda_name-1.svg"
@@ -87,7 +98,14 @@ export default function HeaderMenu() {
         </Sheet>
       </div>
       <span>
-        <nav className="hidden absolute top-0 left-0 xl:flex w-full bg-k-olive-light/30 justify-center items-center pointer-events-auto select-none shadow-none p-4 z-40">
+        <nav
+          className={cn(
+            "hidden xl:flex w-full justify-center items-center pointer-events-auto select-none shadow-none p-4 z-40",
+            isHomePage
+              ? "absolute top-0 left-0 bg-k-olive-light/30"
+              : "fixed top-0 left-0 bg-k-olive-light",
+          )}
+        >
           <ul className="flex gap-5 md:gap-12 w-full justify-center text-2xl font-semibold text-white hover:text-k-amber transition-colors">
             {menuOptions.map((option, index) => (
               <li key={`${option.label}-overlay-${index}`}>
