@@ -1,5 +1,6 @@
 import ArticleCard from "@/components/card";
 import { getArticles } from "@/services/get-articles";
+import { cn } from "@workspace/ui/lib/utils";
 
 const Posts = async () => {
   const data = await getArticles();
@@ -9,7 +10,12 @@ const Posts = async () => {
   }
 
   return (
-    <ul className="flex flex-col gap-8 my-10 ml-3">
+    <ul
+      className={cn(
+        `flex flex-col gap-8 my-10 ml-3`,
+        `md:flex-row md:flex-wrap`
+      )}
+    >
       {data?.map(({ id, Titulo, Resumo, Publicacao, Capa, documentId }) => (
         <ArticleCard
           key={id}
@@ -18,6 +24,7 @@ const Posts = async () => {
           author={"Autor Teste"}
           date={Publicacao}
           coverImage={Capa.url}
+          linkClassName=""
         />
       ))}
     </ul>

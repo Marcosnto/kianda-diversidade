@@ -11,6 +11,8 @@ type ArticleCardProps = {
   author: string;
   coverImage: string;
   bgColor?: string;
+  linkClassName?: string;
+  imageSizeClassName?: string;
 };
 
 const ArticleCard = ({
@@ -19,26 +21,19 @@ const ArticleCard = ({
   author,
   date,
   coverImage,
-  bgColor = "bg-k-brown",
+  bgColor,
+  linkClassName,
+  imageSizeClassName,
 }: ArticleCardProps) => {
-  console.log("bg", bgColor);
+  console.log(bgColor);
   return (
     <Link
       key={id}
-      className={cn(
-        `flex gap-3`,
-        `lg:flex-col lg:overflow-hidden lg:w-[500px] lg:ml-[2%] lg:mr-[2%]`,
-        `2xl:w-[500px] 2xl:mr-0 4xl:ml-0`
-      )}
+      className={cn(`flex gap-3  w-[25ch] md:w-[55ch]`, linkClassName)}
       href={`/posts/${id}`}
     >
       <div
-        className={cn(
-          `relative w-[151px] h-[140px]`,
-          `md:w-[368px]`,
-          `lg:w-full lg:h-[300px]`,
-          `2xl:h-[450px]`
-        )}
+        className={cn(`relative min-w-[151px] h-[140px]`, imageSizeClassName)}
       >
         <Image
           className="rounded-3xl lg:rounded-b-2xl object-cover w-full h-full"
@@ -51,7 +46,7 @@ const ArticleCard = ({
         className={cn(
           "flex flex-col",
           "lg:p-4 lg:rounded-b-3xl",
-          bgColor && `${bgColor}`
+          bgColor && `${bgColor}`,
         )}
       >
         <TypographyLarge className="mb-0.5 lg:text-white">

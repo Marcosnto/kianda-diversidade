@@ -54,6 +54,8 @@ export default async function Articles() {
                 date={Publicacao}
                 coverImage={Capa.url}
                 bgColor={bgColor}
+                linkClassName="lg:flex-col lg:overflow-hidden lg:ml-[2%] lg:mr-[2%] 2xl:mr-0 4xl:ml-0"
+                imageSizeClassName="md:w-[350px] md:h-[250px] lg:w-full lg:h-[300px] 2xl:h-[450px]"
               />
             );
           }
