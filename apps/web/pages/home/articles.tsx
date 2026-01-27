@@ -20,7 +20,6 @@ export default async function Articles() {
     return <p>Não há artigos</p>;
   }
 
-  // Sort by publication date descending
   const sortedArticles = [...articlesData].sort((a, b) => {
     const dateA = new Date(a.Publicacao).getTime();
     const dateB = new Date(b.Publicacao).getTime();
@@ -55,10 +54,10 @@ export default async function Articles() {
                 coverImage={Capa.url}
                 bgColor={bgColor}
                 linkClassName="lg:flex-col lg:overflow-hidden lg:ml-[2%] lg:mr-[2%] 2xl:mr-0 4xl:ml-0"
-                imageSizeClassName="md:w-[350px] md:h-[250px] lg:w-full lg:h-[300px] 2xl:h-[450px]"
+                imageSizeClassName="md:w-[350px] md:h-[250px] lg:w-full lg:h-[300px] xl:w-full xl:h-[380px] 2xl:w-full 2xl:h-[450px]"
               />
             );
-          }
+          },
         )}
       </div>
       <div className="flex justify-center mt-6 md:mt-8">
@@ -67,7 +66,7 @@ export default async function Articles() {
           className={cn(
             `rounded-lg px-6 bg-k-olive-dark text-k-yellow-light hover:bg-k-olive-deep hover:text-k-yellow-light transition-colors text-sm font-medium shadow-sm`,
             `md:text-base md:px-8 py-2 md:py-3`,
-            `lg:text-lg`
+            `lg:text-lg`,
           )}
         >
           <Link href="/posts">Ver todos</Link>
