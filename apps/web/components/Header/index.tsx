@@ -12,9 +12,9 @@ import { ChevronRight, Circle, Menu } from "lucide-react";
 import { TypographyMuted } from "../typography/small-muted";
 import { TypographyLarge } from "../typography/large";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@workspace/ui/components/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@workspace/ui/lib/utils";
 
 type OptionsTypes = {
@@ -33,8 +33,66 @@ const menuOptions: OptionsTypes[] = [
 
 export default function HeaderMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [pendingScroll, setPendingScroll] = useState<string | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
   const isHomePage = pathname === "/";
+
+  const handleSectionClick = (e: React.MouseEvent, path: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isHomePage) {
+      setPendingScroll(path);
+      setIsOpen(false);
+    } else {
+      setIsOpen(false);
+      router.push(`/#${path}`);
+    }
+  };
+
+  useEffect(() => {
+    if (!isOpen && pendingScroll && isHomePage) {
+      const scrollToSection = () => {
+        const element = document.getElementById(pendingScroll);
+        if (element) {
+          const headerHeight = 71;
+          const rect = element.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const offsetPosition = rect.top + scrollTop - headerHeight;
+          
+          window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: "smooth",
+          });
+          setPendingScroll(null);
+        } else {
+          setTimeout(scrollToSection, 100);
+        }
+      };
+      
+      setTimeout(scrollToSection, 500);
+    }
+  }, [isOpen, pendingScroll, isHomePage]);
+
+  useEffect(() => {
+    if (isHomePage && window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          const headerHeight = 71;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }, 300);
+    }
+  }, [isHomePage, pathname]);
 
   return (
     <>
@@ -82,13 +140,13 @@ export default function HeaderMenu() {
                         {option.label}
                       </Link>
                     ) : (
-                      <a
-                        href={`#${option.path}`}
-                        className="text-base"
-                        onClick={() => setIsOpen(false)}
+                      <button
+                        type="button"
+                        className="text-base text-left"
+                        onClick={(e) => handleSectionClick(e, option.path)}
                       >
                         {option.label}
-                      </a>
+                      </button>
                     )}
                   </span>
                 ))}
@@ -112,7 +170,13 @@ export default function HeaderMenu() {
                 {option.isPage ? (
                   <Link href={option.path}>{option.label}</Link>
                 ) : (
-                  <a href={`#${option.path}`}>{option.label}</a>
+                  <button
+                    type="button"
+                    onClick={(e) => handleSectionClick(e, option.path)}
+                    className="hover:text-k-amber transition-colors"
+                  >
+                    {option.label}
+                  </button>
                 )}
               </li>
             ))}
