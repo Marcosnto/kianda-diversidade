@@ -2,8 +2,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
-import HeaderMenu from "@/components/header/index";
+
 import Footer from "@/components/footer/index";
+import HeaderMenu from "@/components/header";
 
 const fontSans = Geist({
   subsets: ["latin"],
