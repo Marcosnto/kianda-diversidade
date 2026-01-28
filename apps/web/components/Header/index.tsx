@@ -24,6 +24,7 @@ type OptionsTypes = {
 };
 
 const menuOptions: OptionsTypes[] = [
+  { label: "Inicio", path: "/", isPage: false },
   { label: "Como atuamos", path: "how-kianda-act", isPage: false },
   // { label: "Cursos e aulas", path: "courses", isPage: false },
   { label: "Sobre", path: "about", isPage: false },
@@ -38,11 +39,21 @@ export default function HeaderMenu() {
   const router = useRouter();
   const isHomePage = pathname === "/";
 
+  const filteredMenuOptions = menuOptions.filter(
+    (option) => !(option.path === "/" && isHomePage),
+  );
+
   const handleSectionClick = (e: React.MouseEvent, path: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    if (isHomePage) {
+
+    if (path === "/") {
+      setIsOpen(false);
+      router.push("/");
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 100);
+    } else if (isHomePage) {
       setPendingScroll(path);
       setIsOpen(false);
     } else {
@@ -58,9 +69,10 @@ export default function HeaderMenu() {
         if (element) {
           const headerHeight = 71;
           const rect = element.getBoundingClientRect();
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
           const offsetPosition = rect.top + scrollTop - headerHeight;
-          
+
           window.scrollTo({
             top: Math.max(0, offsetPosition),
             behavior: "smooth",
@@ -70,7 +82,7 @@ export default function HeaderMenu() {
           setTimeout(scrollToSection, 100);
         }
       };
-      
+
       setTimeout(scrollToSection, 500);
     }
   }, [isOpen, pendingScroll, isHomePage]);
@@ -83,8 +95,9 @@ export default function HeaderMenu() {
         if (element) {
           const headerHeight = 71;
           const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-          
+          const offsetPosition =
+            elementPosition + window.pageYOffset - headerHeight;
+
           window.scrollTo({
             top: offsetPosition,
             behavior: "smooth",
@@ -125,7 +138,7 @@ export default function HeaderMenu() {
                 <TypographyMuted>Escolha uma sessão</TypographyMuted>
               </SheetTitle>
               <SheetDescription className="flex flex-col gap-10">
-                {menuOptions.map((option, index) => (
+                {filteredMenuOptions.map((option, index) => (
                   <span
                     className="flex items-center gap-2"
                     key={`${option.label}-${index}`}
@@ -134,7 +147,7 @@ export default function HeaderMenu() {
                     {option.isPage ? (
                       <Link
                         href={option.path}
-                        className="text-base"
+                        className="text-base cursor-pointer"
                         onClick={() => setIsOpen(false)}
                       >
                         {option.label}
@@ -142,7 +155,7 @@ export default function HeaderMenu() {
                     ) : (
                       <button
                         type="button"
-                        className="text-base text-left"
+                        className="text-base text-left cursor-pointer"
                         onClick={(e) => handleSectionClick(e, option.path)}
                       >
                         {option.label}
@@ -161,19 +174,24 @@ export default function HeaderMenu() {
             "hidden xl:flex w-full justify-center items-center pointer-events-auto select-none shadow-none p-4 z-40",
             isHomePage
               ? "absolute top-0 left-0 bg-k-olive-light/30"
-              : "fixed top-0 left-0 bg-k-olive-light",
+              : "fixed top-0 left-0 bg-k-olive-dark",
           )}
         >
-          <ul className="flex gap-5 md:gap-12 w-full justify-center text-2xl font-semibold text-white hover:text-k-amber transition-colors">
-            {menuOptions.map((option, index) => (
+          <ul className="flex gap-5 md:gap-12 w-full justify-center text-2xl font-semibold text-white">
+            {filteredMenuOptions.map((option, index) => (
               <li key={`${option.label}-overlay-${index}`}>
                 {option.isPage ? (
-                  <Link href={option.path}>{option.label}</Link>
+                  <Link
+                    href={option.path}
+                    className="hover:text-k-amber transition-colors cursor-pointer"
+                  >
+                    {option.label}
+                  </Link>
                 ) : (
                   <button
                     type="button"
                     onClick={(e) => handleSectionClick(e, option.path)}
-                    className="hover:text-k-amber transition-colors"
+                    className="hover:text-k-amber transition-colors cursor-pointer"
                   >
                     {option.label}
                   </button>
