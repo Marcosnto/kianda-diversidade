@@ -40,7 +40,7 @@ export default async function Articles() {
   return (
     <Section className="mb-3">
       <HomeTitle>Artigos e Publicações</HomeTitle>
-      <div className="flex flex-col gap-2 mb-2 lg:flex-row lg:justify-center lg:gap-y-14 lg:flex-wrap">
+      <div className="grid grid-cols-1 gap-4 mb-2 md:grid-cols-1 md:gap-6 lg:grid-cols-2 lg:gap-8 xl:grid-cols-2 xl:gap-8 2xl:grid-cols-4 2xl:gap-8">
         {articlesToDisplay.map(
           ({ id, Titulo, Resumo, Publicacao, Capa, documentId }, index) => {
             const bgColor = bgColors[index % bgColors.length];
@@ -53,8 +53,8 @@ export default async function Articles() {
                 date={Publicacao}
                 coverImage={Capa.url}
                 bgColor={bgColor}
-                linkClassName="lg:flex-col lg:overflow-hidden lg:ml-[2%] lg:mr-[2%] 2xl:mr-0 4xl:ml-0"
-                imageSizeClassName="md:w-[350px] md:h-[250px] lg:w-full lg:h-[300px] xl:w-full xl:h-[380px] 2xl:w-full 2xl:h-[450px]"
+                linkClassName="lg:flex-col lg:overflow-hidden w-full max-w-full"
+                imageSizeClassName="md:w-[350px] md:h-[250px] lg:w-full lg:h-[300px] xl:w-full xl:h-[350px] 2xl:w-full 2xl:h-[400px]"
               />
             );
           },

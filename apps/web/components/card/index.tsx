@@ -29,12 +29,9 @@ const ArticleCard = ({
     <Link
       key={id}
       className={cn(
-        "flex gap-3 w-full",
-        "sm:w-auto sm:min-w-[280px] sm:max-w-[320px]",
-        "md:min-w-[300px] md:flex-1 md:max-w-none",
-        "lg:min-w-[350px] lg:max-w-[450px]",
-        "xl:min-w-[400px] xl:max-w-[500px] xl:gap-4",
-        "2xl:min-w-[450px] 2xl:max-w-[550px] 2xl:gap-5",
+        "flex gap-3 w-full min-w-0",
+        "sm:gap-3",
+        "lg:flex-col lg:gap-x-0",
         linkClassName,
       )}
       href={`/posts/${id}`}
@@ -67,7 +64,9 @@ const ArticleCard = ({
           bgColor && `${bgColor}`,
         )}
       >
-        <TypographyLarge className={cn("mb-0.5 xl:mb-1", bgColor && "lg:text-white")}>
+        <TypographyLarge
+          className={cn("mb-0.5 xl:mb-1", bgColor && "lg:text-white")}
+        >
           <span className="bold line-clamp-2">{title}</span>
         </TypographyLarge>
         <TypographyMuted className="flex flex-col">
