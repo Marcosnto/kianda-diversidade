@@ -4,8 +4,8 @@ import { NewsletterForm } from "./newsletter-form/newsletter-form";
 import SocialMediaIcon from "./social-media-icons";
 import { JSXElementConstructor, ReactElement } from "react";
 import { socialMediaInfos } from "./social-media-icons/infos";
-import Section from "../section";
-import HomeTitle from "../home-title";
+import Section from "@/components/section";
+import HomeTitle from "@/components/home-title";
 
 export default function Footer() {
   return (

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { TypographyLarge } from "../typography/large";
-import { TypographyMuted } from "../typography/small-muted";
+import { TypographyLarge } from "@/components/typography/large";
+import { TypographyMuted } from "@/components/typography/small-muted";
 import Link from "next/link";
 import { cn } from "@workspace/ui/lib/utils";
 
