@@ -42,8 +42,7 @@ const ArticleCard = ({
           "w-[120px] h-[100px]",
           "sm:w-[140px] sm:h-[120px]",
           "md:w-[151px] md:h-[140px]",
-          "xl:w-[180px] xl:h-[160px]",
-          "2xl:w-[200px] 2xl:h-[180px]",
+          "lg:w-full lg:h-auto lg:aspect-video",
           imageSizeClassName,
         )}
       >

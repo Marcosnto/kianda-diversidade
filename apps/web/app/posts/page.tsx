@@ -13,23 +13,24 @@ const Posts = async () => {
     <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 max-w-7xl mx-auto">
       <ul
         className={cn(
-          "flex flex-col gap-6 sm:gap-8 my-6 sm:my-10",
-          "md:flex-row md:flex-wrap md:justify-start",
-          "lg:gap-10 py-12",
+          "grid grid-cols-1 gap-6 my-6 sm:gap-8 sm:my-10",
+          "md:grid-cols-1",
+          "lg:grid-cols-3 lg:gap-10 lg:py-12",
           "xl:gap-12",
           "2xl:gap-14 2xl:py-16",
         )}
       >
         {data?.map(({ id, Titulo, Resumo, Publicacao, Capa, documentId }) => (
-          <ArticleCard
-            key={id}
-            id={documentId}
-            title={Titulo}
-            author={"Autor Teste"}
-            date={Publicacao}
-            coverImage={Capa.url}
-            linkClassName=""
-          />
+          <li key={id} className="w-full">
+            <ArticleCard
+              id={documentId}
+              title={Titulo}
+              author={"Autor Teste"}
+              date={Publicacao}
+              coverImage={Capa.url}
+              linkClassName="w-full"
+            />
+          </li>
         ))}
       </ul>
     </div>
