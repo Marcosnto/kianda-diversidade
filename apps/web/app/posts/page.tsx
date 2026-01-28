@@ -20,7 +20,7 @@ const Posts = async () => {
           "2xl:gap-14 2xl:py-16",
         )}
       >
-        {data?.map(({ id, Titulo, Resumo, Publicacao, Capa, documentId }) => (
+        {data?.map(({ id, Titulo, Publicacao, Capa, documentId }) => (
           <li key={id} className="w-full">
             <ArticleCard
               id={documentId}

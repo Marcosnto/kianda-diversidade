@@ -30,8 +30,11 @@ export default function Footer() {
                   link={icon.link}
                   icon={
                     icon.icon as ReactElement<
-                      any,
-                      string | JSXElementConstructor<any>
+                      { className?: string | undefined },
+                      | string
+                      | JSXElementConstructor<{
+                          className?: string | undefined;
+                        }>
                     >
                   }
                 />

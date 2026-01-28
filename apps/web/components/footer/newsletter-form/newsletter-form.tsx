@@ -5,13 +5,11 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@workspace/ui/components/form";
 import { useNewsletter } from "./newsletter";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
-import { Loader2 } from "lucide-react";
 import { cn } from "@workspace/ui/lib/utils";
 
 export const NewsletterForm = () => {

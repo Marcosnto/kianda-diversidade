@@ -13,8 +13,6 @@ type SocialMediaInfosType = {
   key: string;
 };
 
-const style = "py-[1px] px-[1px]";
-
 export const socialMediaInfos: SocialMediaInfosType[] = [
   {
     link: "https://www.instagram.com/kiandadiversidade/",

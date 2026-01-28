@@ -7,7 +7,10 @@ export default function SocialMediaIcon({
   icon,
 }: {
   link: string;
-  icon: ReactElement<any, string | JSXElementConstructor<any>>;
+  icon: ReactElement<
+    { className?: string },
+    string | JSXElementConstructor<{ className?: string }>
+  >;
 }) {
   return (
     <Link href={link}>

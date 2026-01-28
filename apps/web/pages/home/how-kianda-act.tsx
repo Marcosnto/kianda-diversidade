@@ -13,7 +13,7 @@ import Autoplay from "embla-carousel-autoplay";
 import Section from "@/components/section";
 import HomeTitle from "@/components/home-title";
 
-export type StaticCardType = {
+type StaticCardType = {
   id?: string;
   title: string;
   summary: string;
@@ -72,7 +72,7 @@ const cards: StaticCardType[] = [
   },
 ];
 
-export function KiandaCarousel() {
+export default function KiandaCarousel() {
   //TODO: try to use this lib from ui
   const plugin = useRef(
     Autoplay({
@@ -144,7 +144,10 @@ export function KiandaCarousel() {
 
       <div className="mb-[87.5px] hidden w-full md:grid md:grid-cols-2 md:gap-9 lg:gap-y-16 xl:grid-cols-2 xl:gap-x-12 2xl:grid-cols-4 2xl:gap-x-8">
         {cards.map((card) => (
-          <div className="w-full max-w-[396px] justify-self-center" key={card.id}>
+          <div
+            className="w-full max-w-[396px] justify-self-center"
+            key={card.id}
+          >
             <div className="relative h-[294px] sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px] xl:h-[380px] 2xl:h-[362px]">
               <Image
                 className="mb-[6px] rounded-[1.75rem] object-cover"

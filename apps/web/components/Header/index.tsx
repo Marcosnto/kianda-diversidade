@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
-import { ChevronRight, Circle, Menu } from "lucide-react";
+import { ChevronRight, Menu } from "lucide-react";
 import { TypographyMuted } from "../typography/small-muted";
 import { TypographyLarge } from "../typography/large";
 import Link from "next/link";

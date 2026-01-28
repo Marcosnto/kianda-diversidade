@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { cn } from "@workspace/ui/lib/utils";
 
 type HomeTitleProps = {
@@ -31,18 +32,27 @@ const HomeTitle = ({
         {children}
         <span className="mt-[8px]">
           {iconType === "completeMoon" ? (
-            <img alt="half moon" src="/imgs/complete_moon.svg" />
+            <Image
+              alt="half moon"
+              src="/imgs/complete_moon.svg"
+              width={48}
+              height={48}
+            />
           ) : (
             <span>
-              <img
+              <Image
                 className="md:hidden"
                 alt="half moon"
                 src="/imgs/half_moon_mobile.svg"
+                width={48}
+                height={48}
               />
-              <img
+              <Image
                 className="hidden md:block"
                 alt="half moon"
                 src="/imgs/half_moon.svg"
+                width={48}
+                height={48}
               />
             </span>
           )}
