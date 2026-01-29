@@ -4,7 +4,7 @@ import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
 
 import Footer from "@/components/footer/index";
-import HeaderMenu from "@/components/header";
+// import HeaderMenu from "@/components/header";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -27,7 +27,7 @@ export default function RootLayout({
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased bg-k-yellow-light`}
       >
         <Providers>
-          <HeaderMenu />
+          {/* <HeaderMenu /> */}
           {children}
           <Footer />
         </Providers>
