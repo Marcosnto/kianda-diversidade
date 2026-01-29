@@ -5,6 +5,7 @@ import {
 } from "@/components/typography-types";
 import Link from "next/link";
 import { cn } from "@workspace/ui/lib/utils";
+import formatDatePtBR from "@/utils/format-date";
 
 type ArticleCardProps = {
   id: string;
@@ -87,7 +88,7 @@ const ArticleCard = ({
               bgColor && "lg:text-white/80",
             )}
           >
-            {date}
+            {formatDatePtBR(date)}
           </span>
         </TypographyMuted>
       </div>

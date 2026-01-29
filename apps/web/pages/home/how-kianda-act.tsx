@@ -157,7 +157,7 @@ export default function KiandaCarousel() {
               />
             </div>
             <div
-              className={`${colorMap[card.backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[299px] xl:h-[320px] 2xl:h-[299px]`}
+              className={`${colorMap[card.backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[299px] xl:h-[380px] 2xl:h-[390px]`}
             >
               <h1
                 className="border-b-2 border-b-k_yellow_light pb-[12.5px] pt-[11.77px] text-[25px]/[25px] font-normal text-white md:text-[30px]/[35px] xl:text-[36.55px]"

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@workspace/ui/lib/utils";
+import formatDatePtBR from "@/utils/format-date";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -70,7 +71,7 @@ export default async function PostPage({ params }: Props) {
               Por: {article.Autor || "Autor Teste"}
             </p>
             <p className="text-[11px] text-black break-words sm:text-xs lg:text-base">
-              {article.Publicacao}
+              {formatDatePtBR(article.Publicacao)}
             </p>
           </div>
         </div>

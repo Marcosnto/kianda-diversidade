@@ -18,7 +18,7 @@ const About = () => {
             `pb-10 text-justify`,
             `md:text-white md:rounded-xl md:p-4 md:text-xl `,
             `lg:grid lg:grid-cols-[38%_62%] lg:[grid-template-areas:'figure_text'_'figure_text-2'_'figure_text-2'] lg:p-[70px] lg:text-2xl`,
-            `2xl:justify-items-center 2xl:items-center 2xl:text-3xl`
+            `2xl:justify-items-center 2xl:items-center 2xl:text-3xl`,
           )}
         >
           <p className="lg:[grid-area:text] lg:mb-8">
@@ -36,10 +36,10 @@ const About = () => {
           </p>
           <span
             className={cn(
-              `relative flex self-center mb-2 mt-2 w-[162px] h-[258px]`,
-              `md:w-[245px] md:h-[435px]`,
-              `lg:[grid-area:figure] lg:w-[272px] lg:h-[483px]`,
-              `2xl:w-[313px] 2xl:h-[556px] 2xl:self-center`
+              `relative flex self-center mb-2 mt-2 h-[258px] w-full`,
+              `md:h-[435px]`,
+              `lg:[grid-area:figure] lg:h-[483px]`,
+              `2xl:h-[556px] 2xl:self-center`,
             ).trim()}
           >
             <Image
