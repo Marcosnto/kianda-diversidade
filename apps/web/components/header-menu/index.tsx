@@ -9,7 +9,10 @@ import {
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
 import { ChevronRight, Menu } from "lucide-react";
-import { TypographyLarge, TypographyMuted } from "@/components/typography";
+import {
+  TypographyLarge,
+  TypographyMuted,
+} from "@/components/typography-types";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "@workspace/ui/components/button";
