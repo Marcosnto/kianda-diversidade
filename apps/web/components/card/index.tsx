@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { TypographyLarge, TypographyMuted } from "@/components/typography";
+// import { TypographyLarge, TypographyMuted } from "@/components/typography";
 import Link from "next/link";
 import { cn } from "@workspace/ui/lib/utils";
 
@@ -62,31 +62,31 @@ const ArticleCard = ({
           bgColor && `${bgColor}`,
         )}
       >
-        <TypographyLarge
+        {/* <TypographyLarge
           className={cn("mb-0.5 xl:mb-1", bgColor && "lg:text-white")}
         >
           <span className="bold line-clamp-2">{title}</span>
         </TypographyLarge>
-        <TypographyMuted className="flex flex-col">
-          <span
-            className={cn(
-              "font-semibold text-xs sm:text-sm lg:text-xl",
-              "xl:text-2xl",
-              bgColor && "lg:text-white",
-            )}
-          >
-            {author}
-          </span>
-          <span
-            className={cn(
-              "text-[10px] sm:text-[11px] lg:text-sm",
-              "xl:text-base",
-              bgColor && "lg:text-white/80",
-            )}
-          >
-            {date}
-          </span>
-        </TypographyMuted>
+        <TypographyMuted className="flex flex-col"> */}
+        <span
+          className={cn(
+            "font-semibold text-xs sm:text-sm lg:text-xl",
+            "xl:text-2xl",
+            bgColor && "lg:text-white",
+          )}
+        >
+          {author}
+        </span>
+        <span
+          className={cn(
+            "text-[10px] sm:text-[11px] lg:text-sm",
+            "xl:text-base",
+            bgColor && "lg:text-white/80",
+          )}
+        >
+          {date}
+        </span>
+        {/* </TypographyMuted> */}
       </div>
     </Link>
   );
