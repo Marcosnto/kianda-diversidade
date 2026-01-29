@@ -4,7 +4,7 @@ import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
 
 import Footer from "@/components/footer";
-import HeaderMenu from "@/components/header";
+import HeaderMenu from "@/components/header/index";
 
 const fontSans = Geist({
   subsets: ["latin"],
