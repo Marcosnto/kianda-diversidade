@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
 import { ChevronRight, Menu } from "lucide-react";
-// import { h2, TypographyMuted } from "@/components/typography";
+import { TypographyLarge, TypographyMuted } from "@/components/typography";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button } from "@workspace/ui/components/button";
@@ -131,8 +131,10 @@ export default function HeaderMenu() {
           <SheetContent>
             <SheetHeader>
               <SheetTitle className="text-center mb-10">
-                <h2 className="text-k-brown">Kianda Menu</h2>
-                <p>Escolha uma sessão</p>
+                <TypographyLarge className="text-k-brown">
+                  Kianda Menu
+                </TypographyLarge>
+                <TypographyMuted>Escolha uma sessão</TypographyMuted>
               </SheetTitle>
               <SheetDescription className="flex flex-col gap-10">
                 {filteredMenuOptions.map((option, index) => (
