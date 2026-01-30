@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@workspace/ui/lib/utils";
 import formatDatePtBR from "@/utils/format-date";
+import { getAuthorFullName } from "@/utils/get-author-full-name";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -43,10 +44,12 @@ function processRichTextContent(html: string): string {
 export default async function PostPage({ params }: Props) {
   const { id } = await params;
   const article = await getArticleById(id);
-  console.log(article);
+
   if (!article) {
     notFound();
   }
+
+  const { Titulo, Publicacao, Capa, Conteudo, createdBy } = article;
 
   return (
     <article className="w-full min-w-0 px-4 sm:px-6 lg:px-8 xl:px-12 max-w-7xl mx-auto pt-[88px] pb-6 sm:pt-28 sm:pb-8 lg:pt-32 lg:pb-12">
@@ -58,11 +61,11 @@ export default async function PostPage({ params }: Props) {
         )}
       >
         <div className="flex flex-col min-w-0 lg:w-[30%] lg:flex-shrink-0">
-          {article.Capa?.url && (
+          {Capa?.url && (
             <div className="relative w-full min-w-0 mb-3 aspect-[16/10] sm:aspect-[4/3] lg:aspect-square lg:mb-6 overflow-hidden">
               <Image
-                src={`${process.env.API_BASE_URL}${article.Capa.url}`}
-                alt={article.Titulo || "Imagem do artigo"}
+                src={`${process.env.API_BASE_URL}${Capa.url}`}
+                alt={Titulo || "Imagem do artigo"}
                 fill
                 className="rounded-lg object-cover sm:rounded-xl"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 30vw"
@@ -71,15 +74,15 @@ export default async function PostPage({ params }: Props) {
           )}
 
           <h1 className="text-base font-bold mb-2 text-black leading-tight break-words sm:text-lg sm:mb-3 lg:text-2xl xl:text-3xl">
-            {article.Titulo}
+            {Titulo}
           </h1>
 
           <div className="flex flex-col gap-1 mb-4 sm:mb-0 min-w-0">
             <p className="text-xs font-semibold text-black break-words sm:text-sm lg:text-lg">
-              Por: {article.Autor || "Autor Teste"}
+              Por: {getAuthorFullName(createdBy)}
             </p>
             <p className="text-[11px] text-black break-words sm:text-xs lg:text-base">
-              {formatDatePtBR(article.Publicacao)}
+              {formatDatePtBR(Publicacao)}
             </p>
           </div>
         </div>
@@ -112,7 +115,7 @@ export default async function PostPage({ params }: Props) {
                 "[&_blockquote]:border-l-4 [&_blockquote]:border-white/30 [&_blockquote]:pl-4 [&_blockquote]:my-4 [&_blockquote]:italic",
               )}
               dangerouslySetInnerHTML={{
-                __html: processRichTextContent(article.Conteudo1) || "",
+                __html: processRichTextContent(Conteudo) || "",
               }}
             />
           </div>

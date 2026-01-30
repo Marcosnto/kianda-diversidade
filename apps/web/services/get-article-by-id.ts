@@ -1,6 +1,8 @@
+import { DataType } from "./get-articles";
+
 export async function getArticleById(documentId: string) {
   const response = await fetch(
-    `${process.env.API_BASE_URL}/api/articles/${documentId}?populate=*`,
+    `${process.env.API_BASE_URL}/api/articles/${documentId}?populate[0]=Capa&populate[1]=createdBy`,
     {
       headers: {
         Authorization: `Bearer ${process.env.API_TOKEN}`,
@@ -14,6 +16,6 @@ export async function getArticleById(documentId: string) {
     return null;
   }
 
-  const { data } = await response.json();
+  const { data }: { data: DataType } = await response.json();
   return data;
 }
