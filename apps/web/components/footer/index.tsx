@@ -52,12 +52,12 @@ export default function Footer() {
           </div>
         </div>
         <div className="px-4 md:px-0 md:flex md:flex-col-reverse w-full lg:w-[508px] xl:w-[58%]">
-          <div>
+          {/* <div>
             <div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] xl:text-xl">
               <h1>Receba nossos conteúdos por email:</h1>
             </div>
             <NewsletterForm />
-          </div>
+          </div> */}
           <div className="px-4 relative h-[275px] w-full md:flex md:h-[371px] 2xl:h-[649px]">
             <Image
               src="/imgs/footer_img-fullhd.png"
