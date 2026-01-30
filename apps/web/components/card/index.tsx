@@ -74,17 +74,15 @@ const ArticleCard = ({
         <TypographyMuted className="flex flex-col">
           <span
             className={cn(
-              "font-semibold text-xs sm:text-sm lg:text-xl",
-              "xl:text-2xl",
+              "bold text-xs sm:text-sm",
               bgColor && "lg:text-white",
             )}
           >
-            {author}
+            {`Por: ${author}`}
           </span>
           <span
             className={cn(
               "text-[10px] sm:text-[11px] lg:text-sm",
-              "xl:text-base",
               bgColor && "lg:text-white/80",
             )}
           >

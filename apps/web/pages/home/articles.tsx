@@ -44,7 +44,6 @@ export default async function Articles() {
       <div className="grid grid-cols-1 gap-4 mb-2 md:grid-cols-1 md:gap-6 lg:grid-cols-2 lg:gap-8 xl:grid-cols-2 xl:gap-8 2xl:grid-cols-4 2xl:gap-8">
         {articlesToDisplay.map(
           ({ id, Titulo, Publicacao, Capa, documentId, createdBy }, index) => {
-            console.log(articlesToDisplay);
             const bgColor = bgColors[index % bgColors.length];
             return (
               <ArticleCard
