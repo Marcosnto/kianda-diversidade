@@ -6,8 +6,8 @@ export async function getArticleById(documentId: string) {
         Authorization: `Bearer ${process.env.API_TOKEN}`,
         "Content-Type": "application/json",
       },
-      next: { revalidate: 300 },
-    }
+      next: { revalidate: 30 },
+    },
   );
 
   if (!response.ok) {
