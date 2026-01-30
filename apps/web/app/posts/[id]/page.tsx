@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
   const { id } = await params;
   const article = await getArticleById(id);
-
+  console.log(article);
   if (!article) {
     notFound();
   }
@@ -103,7 +103,7 @@ export default async function PostPage({ params }: Props) {
                 "[&_a]:underline [&_a]:hover:no-underline [&_a]:transition-all",
                 "[&_blockquote]:border-l-4 [&_blockquote]:border-white/30 [&_blockquote]:pl-4 [&_blockquote]:my-4 [&_blockquote]:italic",
               )}
-              dangerouslySetInnerHTML={{ __html: article.Conteudo || "" }}
+              dangerouslySetInnerHTML={{ __html: article.Conteudo1 || "" }}
             />
           </div>
         </div>
