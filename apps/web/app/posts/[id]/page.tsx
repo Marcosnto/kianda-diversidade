@@ -32,6 +32,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+function processRichTextContent(html: string): string {
+  // Converte oembed do YouTube em iframe
+  return html.replace(
+    /<figure class="media"><oembed url="https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([^"]+)"><\/oembed><\/figure>/g,
+    '<figure class="media"><div class="aspect-video w-full"><iframe src="https://www.youtube.com/embed/$1" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full rounded-lg"></iframe></div></figure>',
+  );
+}
+
 export default async function PostPage({ params }: Props) {
   const { id } = await params;
   const article = await getArticleById(id);
@@ -103,7 +111,9 @@ export default async function PostPage({ params }: Props) {
                 "[&_a]:underline [&_a]:hover:no-underline [&_a]:transition-all",
                 "[&_blockquote]:border-l-4 [&_blockquote]:border-white/30 [&_blockquote]:pl-4 [&_blockquote]:my-4 [&_blockquote]:italic",
               )}
-              dangerouslySetInnerHTML={{ __html: article.Conteudo1 || "" }}
+              dangerouslySetInnerHTML={{
+                __html: processRichTextContent(article.Conteudo1) || "",
+              }}
             />
           </div>
         </div>
