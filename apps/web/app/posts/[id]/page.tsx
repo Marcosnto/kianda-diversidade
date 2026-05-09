@@ -1,5 +1,4 @@
-import { getArticleById } from "@/services/get-article-by-id";
-import { getArticles } from "@/services/get-articles";
+import { getArticleById, getArticles } from "@workspace/api";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";

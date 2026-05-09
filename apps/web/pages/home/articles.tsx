@@ -1,7 +1,7 @@
 import ArticleCard from "@/components/card";
 import HomeTitle from "@/components/home-title";
 import Section from "@/components/section";
-import { getArticles } from "@/services/get-articles";
+import { getArticles } from "@workspace/api";
 import { getAuthorFullName } from "@/utils/get-author-full-name";
 import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";

@@ -1,5 +1,5 @@
 import ArticleCard from "@/components/card";
-import { getArticles } from "@/services/get-articles";
+import { getArticles } from "@workspace/api";
 import { getAuthorFullName } from "@/utils/get-author-full-name";
 import { cn } from "@workspace/ui/lib/utils";
 
