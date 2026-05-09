@@ -58,7 +58,7 @@ const data = {
       items: [
         {
           title: "Escrever Artigo",
-          url: "/blog/create-article",
+          url: "/blog/create",
         },
         {
           title: "Lista de Artigos",
