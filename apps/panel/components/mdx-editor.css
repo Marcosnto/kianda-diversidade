@@ -1,0 +1,158 @@
+/* Custom toolbar buttons */
+
+.mdxeditor-align-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: calc(var(--radius) - 2px);
+  background: transparent;
+  color: var(--foreground);
+  border: none;
+  cursor: pointer;
+  transition: background-color 120ms;
+}
+
+.mdxeditor-align-button:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* shadcn-style overrides for MDXEditor popups (image/link dialogs) */
+
+.mdxeditor-popup-container [role='dialog'] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 28rem;
+  width: calc(100vw - 2rem);
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.mdxeditor-popup-container [role='dialog'] form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mdxeditor-popup-container [role='dialog'] form > * {
+  grid-column: unset !important;
+  grid-row: unset !important;
+}
+
+.mdxeditor-popup-container [role='dialog'] p,
+.mdxeditor-popup-container [role='dialog'] label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+  margin: 0;
+  padding: 0;
+}
+
+.mdxeditor-popup-container [role='dialog'] input[type='text'],
+.mdxeditor-popup-container [role='dialog'] input[type='url'],
+.mdxeditor-popup-container [role='dialog'] input:not([type]) {
+  width: 100%;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  background: transparent;
+  border: 1px solid var(--input);
+  border-radius: calc(var(--radius) - 2px);
+  outline: none;
+  transition:
+    border-color 120ms,
+    box-shadow 120ms;
+}
+
+.mdxeditor-popup-container [role='dialog'] input[type='text']:focus-visible,
+.mdxeditor-popup-container [role='dialog'] input[type='url']:focus-visible,
+.mdxeditor-popup-container [role='dialog'] input:not([type]):focus-visible {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 20%, transparent);
+}
+
+.mdxeditor-popup-container [role='dialog'] input[type='file'] {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  width: 100%;
+}
+
+.mdxeditor-popup-container [role='dialog'] input[type='file']::file-selector-button {
+  margin-right: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  cursor: pointer;
+  transition: background-color 120ms;
+}
+
+.mdxeditor-popup-container [role='dialog'] input[type='file']::file-selector-button:hover {
+  background: color-mix(in oklab, var(--secondary) 85%, var(--foreground) 15%);
+}
+
+.mdxeditor-popup-container [role='dialog'] button {
+  height: 2.25rem;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 2px);
+  cursor: pointer;
+  transition:
+    background-color 120ms,
+    color 120ms,
+    border-color 120ms;
+}
+
+.mdxeditor-popup-container [role='dialog'] button[type='submit'] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.mdxeditor-popup-container [role='dialog'] button[type='submit']:hover {
+  background: color-mix(in oklab, var(--primary) 90%, transparent);
+}
+
+.mdxeditor-popup-container [role='dialog'] button[type='reset'],
+.mdxeditor-popup-container [role='dialog'] button[type='button']:not([aria-haspopup]) {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.mdxeditor-popup-container [role='dialog'] button[type='reset']:hover,
+.mdxeditor-popup-container [role='dialog'] button[type='button']:not([aria-haspopup]):hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.mdxeditor-popup-container [role='dialog'] [class*='_actionButtons_'],
+.mdxeditor-popup-container [role='dialog'] [class*='_buttonGroup_'] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Hide the redundant "Upload an image" repeated title that MDXEditor places */
+.mdxeditor-popup-container [role='dialog'] > [class*='_dialogTitle_'] {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
