@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@workspace/api": "workspace:*",
     "@workspace/ui": "workspace:*",
     "embla-carousel-autoplay": "^8.6.0",
     "lucide-react": "^0.475.0",
