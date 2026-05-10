@@ -4,111 +4,106 @@
 @source "../../../components/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
 
-
 @import "tw-animate-css";
+@import "./theme.css";
 
 @custom-variant dark (&:is(.dark *));
 
+/* shadcn tokens mapped to the lime (Radix 12-step) brand scale.
+   theme.css already swaps lime-1..12 between light and dark, so the
+   semantic shadcn tokens below stay valid in both modes. */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --background: var(--lime-1);
+  --foreground: var(--lime-12);
+
+  --card: var(--lime-1);
+  --card-foreground: var(--lime-12);
+
+  --popover: var(--lime-1);
+  --popover-foreground: var(--lime-12);
+
+  --primary: var(--lime-9);
+  --primary-foreground: var(--lime-contrast);
+
+  --secondary: var(--lime-3);
+  --secondary-foreground: var(--lime-11);
+
+  --muted: var(--lime-3);
+  --muted-foreground: var(--lime-11);
+
+  --accent: var(--lime-4);
+  --accent-foreground: var(--lime-12);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --border: var(--lime-6);
+  --input: var(--lime-7);
+  --ring: var(--lime-8);
+
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
+
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-  --color-brown-kianda: #402D12;
-  --color-beige-kianda: #E6D7C0;
+
+  --sidebar: var(--lime-2);
+  --sidebar-foreground: var(--lime-12);
+  --sidebar-primary: var(--lime-9);
+  --sidebar-primary-foreground: var(--lime-contrast);
+  --sidebar-accent: var(--lime-4);
+  --sidebar-accent-foreground: var(--lime-12);
+  --sidebar-border: var(--lime-6);
+  --sidebar-ring: var(--lime-8);
+
+  /* Cores Kianda (brand) */
+  --color-brown-kianda: #402d12;
+  --color-beige-kianda: #e6d7c0;
   --color-green-olive-dark-kianda: #273618;
-  --color-green-olive-light-kianda: #606C38;
-  --color-green-olive-medium-kianda: #4B5331;
+  --color-green-olive-light-kianda: #606c38;
+  --color-green-olive-medium-kianda: #4b5331;
   --color-olive-deep-kianda: #203012;
   --color-olive-deep-light-kianda: #273618;
   --color-olive-deep-dark-kianda: #1a250e;
-  --color-amber-kianda: #DCA05E;
-  --color-bronze-kianda: #C98B31;
-  --color-cinnamon-kianda: #BB6C25;
-  --color-orange-kianda: #FFB703;
-  --color-vivid-orange-kianda: #F9A528;
-  --color-off-white-kianda: #F3F1E4;
-  --color-yellow-light: #FEFAE0;
+  --color-amber-kianda: #dca05e;
+  --color-bronze-kianda: #c98b31;
+  --color-cinnamon-kianda: #bb6c25;
+  --color-orange-kianda: #ffb703;
+  --color-vivid-orange-kianda: #f9a528;
+  --color-off-white-kianda: #f3f1e4;
+  --color-yellow-light: #fefae0;
 }
 
-/* .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+.dark {
+  /* Lime já inverte via theme.css — aqui só cores não-lime */
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.556 0 0);
+
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
-  --color-brown-kianda: #E6D7C0;
-  --color-beige-kianda: #402D12;
-  --color-green-olive-dark-kianda: #A7B797;
-  --color-green-olive-light-kianda: #B7C2A4;
-  --color-green-olive-medium-kianda: #7F8960;
+
+  /* Kianda invertida */
+  --color-brown-kianda: #e6d7c0;
+  --color-beige-kianda: #402d12;
+  --color-green-olive-dark-kianda: #a7b797;
+  --color-green-olive-light-kianda: #b7c2a4;
+  --color-green-olive-medium-kianda: #7f8960;
   --color-olive-deep-kianda: #203012;
   --color-olive-deep-light-kianda: #273618;
   --color-olive-deep-dark-kianda: #1a250e;
   --color-amber-kianda: #715328;
   --color-bronze-kianda: #513f21;
-  --color-cinnamon-kianda: #A86F37;
-  --color-orange-kianda: #FFC35A;
-  --color-vivid-orange-kianda: #FFCB7B;
-  --color-off-white-kianda: #1C1507;
-  --color-yellow-light: #27270D;
-} */
+  --color-cinnamon-kianda: #a86f37;
+  --color-orange-kianda: #ffc35a;
+  --color-vivid-orange-kianda: #ffcb7b;
+  --color-off-white-kianda: #1c1507;
+  --color-yellow-light: #27270d;
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -148,6 +143,20 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  /* Lime brand scale como utilities Tailwind (bg-lime-9, text-lime-11, ...) */
+  --color-lime-1: var(--lime-1);
+  --color-lime-2: var(--lime-2);
+  --color-lime-3: var(--lime-3);
+  --color-lime-4: var(--lime-4);
+  --color-lime-5: var(--lime-5);
+  --color-lime-6: var(--lime-6);
+  --color-lime-7: var(--lime-7);
+  --color-lime-8: var(--lime-8);
+  --color-lime-9: var(--lime-9);
+  --color-lime-10: var(--lime-10);
+  --color-lime-11: var(--lime-11);
+  --color-lime-12: var(--lime-12);
+
   /* Cores Kianda */
   --color-k-brown: var(--color-brown-kianda);
   --color-k-beige: var(--color-beige-kianda);
@@ -176,15 +185,4 @@
   body {
     @apply bg-background text-foreground;
   }
-}
-
-.dark {
-  --sidebar: hsl(240 5.9% 10%);
-  --sidebar-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-primary: hsl(224.3 76.3% 48%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(240 3.7% 15.9%);
-  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-border: hsl(240 3.7% 15.9%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }

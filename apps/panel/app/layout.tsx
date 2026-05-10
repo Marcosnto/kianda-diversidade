@@ -3,6 +3,7 @@ import "@workspace/ui/globals.css";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@workspace/ui/components/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Providers } from "@/components/providers";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Separator } from "@workspace/ui/components/separator";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@workspace/ui/components/breadcrumb";
 
@@ -17,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col">
         <Providers>
           <SidebarProvider>
@@ -41,6 +42,9 @@ export default function RootLayout({
                       </BreadcrumbItem>
                     </BreadcrumbList>
                   </Breadcrumb>
+                </div>
+                <div className="ml-auto flex items-center gap-2">
+                  <ThemeToggle />
                 </div>
               </header>
               {children}
