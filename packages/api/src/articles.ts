@@ -116,3 +116,49 @@ export async function deleteArticle(documentId: string): Promise<boolean> {
   })
   return response.ok
 }
+
+export type StrapiMedia = {
+  id: number
+  url: string
+  name: string
+  alternativeText?: string
+}
+
+export async function uploadFile(file: File): Promise<StrapiMedia | null> {
+  const formData = new FormData()
+  formData.append('files', file)
+
+  const token = process.env.API_TOKEN
+  if (!token) throw new Error('API_TOKEN is not set')
+
+  const response = await fetch(`${baseUrl()}/api/upload`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
+  })
+  if (!response.ok) return null
+  const result = (await response.json()) as StrapiMedia[]
+  return result[0] ?? null
+}
+
+export type CreateArticleInput = {
+  Titulo: string
+  Resumo: string
+  Conteudo: string
+  Publicacao: string
+  Destaque: boolean
+  Capa: number
+}
+
+export async function createArticle(
+  input: CreateArticleInput,
+): Promise<Article | null> {
+  const response = await fetch(`${baseUrl()}/api/articles`, {
+    method: 'POST',
+    headers: authHeaders(),
+    body: JSON.stringify({ data: input }),
+  })
+  if (!response.ok) return null
+  const { data } = (await response.json()) as { data: Article }
+  return data
+}

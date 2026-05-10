@@ -8,6 +8,16 @@ import {
   type ArticleStatus,
   getArticleStatus,
 } from "@workspace/api";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@workspace/ui/components/alert-dialog";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
@@ -34,6 +44,8 @@ const STATUS_VARIANT: Record<ArticleStatus, "success" | "warning"> = {
 export function ArticlesTable({ articles }: { articles: Article[] }) {
   const [search, setSearch] = useState("");
   const [pendingId, setPendingId] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState<Article | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
   const filtered = useMemo(() => {
@@ -41,7 +53,6 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
     if (!q) return articles;
     return articles.filter((article) => {
       const status = STATUS_LABEL[getArticleStatus(article)].toLowerCase();
-      console.log(getArticleStatus(article));
       return (
         article.Titulo.toLowerCase().includes(q) ||
         String(article.id).includes(q) ||
@@ -50,16 +61,19 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
     });
   }, [articles, search]);
 
-  const handleDelete = (article: Article) => {
-    const confirmed = window.confirm(
-      `Remover o artigo "${article.Titulo}"? Essa ação não pode ser desfeita.`,
-    );
-    if (!confirmed) return;
+  const confirmDelete = () => {
+    if (!confirming) return;
+    const article = confirming;
     setPendingId(article.documentId);
+    setDeleteError(null);
     startTransition(async () => {
       const { ok } = await deleteArticleAction(article.documentId);
       setPendingId(null);
-      if (!ok) window.alert("Falha ao remover o artigo.");
+      if (!ok) {
+        setDeleteError("Falha ao remover o artigo.");
+        return;
+      }
+      setConfirming(null);
     });
   };
 
@@ -133,7 +147,10 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
                           variant="ghost"
                           size="icon-sm"
                           aria-label="Remover artigo"
-                          onClick={() => handleDelete(article)}
+                          onClick={() => {
+                            setDeleteError(null);
+                            setConfirming(article);
+                          }}
                           disabled={isPending}
                         >
                           <Trash2 className="text-destructive" />
@@ -147,6 +164,49 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
           </TableBody>
         </Table>
       </div>
+
+      <AlertDialog
+        open={confirming !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setConfirming(null);
+            setDeleteError(null);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remover artigo</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja remover{" "}
+              <span className="text-foreground font-medium">
+                {confirming?.Titulo}
+              </span>
+              ? Essa ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {deleteError && (
+            <p className="text-destructive text-sm">{deleteError}</p>
+          )}
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              disabled={pendingId === confirming?.documentId}
+            >
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault();
+                confirmDelete();
+              }}
+              disabled={pendingId === confirming?.documentId}
+              className="bg-destructive hover:bg-destructive/90 text-white"
+            >
+              {pendingId === confirming?.documentId ? "Removendo..." : "Remover"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
