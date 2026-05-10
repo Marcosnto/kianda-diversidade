@@ -1,3 +1,8 @@
+/* Editor content area: comfortable writing height */
+.mdxeditor-root-contenteditable {
+  min-height: 480px;
+}
+
 /* Custom toolbar buttons */
 
 .mdxeditor-align-button {

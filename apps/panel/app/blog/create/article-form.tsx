@@ -143,7 +143,7 @@ export function ArticleForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-6"
+        className="flex flex-col gap-4 sm:gap-6"
       >
         <FormField
           control={form.control}
@@ -259,7 +259,7 @@ export function ArticleForm() {
           control={form.control}
           name="Destaque"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-md border p-4">
+            <FormItem className="flex flex-col gap-3 rounded-md border p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div className="space-y-0.5">
                 <FormLabel>Destaque</FormLabel>
                 <FormDescription>
@@ -282,7 +282,7 @@ export function ArticleForm() {
           render={() => (
             <FormItem>
               <FormLabel>Tags</FormLabel>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   ref={tagInputRef}
                   placeholder="Digite e pressione Enter"
@@ -293,7 +293,12 @@ export function ArticleForm() {
                     }
                   }}
                 />
-                <Button type="button" variant="outline" onClick={addTag}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={addTag}
+                  className="shrink-0 sm:w-auto"
+                >
                   Adicionar
                 </Button>
               </div>
@@ -332,8 +337,9 @@ export function ArticleForm() {
               <FormControl>
                 <div
                   className={cn(
-                    "border-input rounded-md border",
+                    "border-input flex min-h-[560px] flex-col overflow-hidden rounded-md border",
                     "focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]",
+                    "[&>div]:flex [&>div]:flex-1 [&>div]:flex-col",
                   )}
                 >
                   <MDXEditor
@@ -351,7 +357,7 @@ export function ArticleForm() {
           <p className="text-destructive text-sm">{submitError}</p>
         )}
 
-        <div className="flex justify-end gap-2">
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button
             type="button"
             variant="outline"

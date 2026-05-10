@@ -4,15 +4,17 @@ import { ArticleForm } from "./article-form";
 
 export default function CreateArticlePage() {
   return (
-    <div className="flex flex-1 flex-col gap-6 p-4">
+    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Novo artigo</h1>
+          <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
+            Novo artigo
+          </h1>
           <p className="text-muted-foreground text-sm">
             Preencha os campos para publicar um novo conteúdo.
           </p>
         </div>
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" className="w-full sm:w-auto">
           <Link href="/blog/articles">Voltar para a lista</Link>
         </Button>
       </header>
