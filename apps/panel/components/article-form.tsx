@@ -31,8 +31,6 @@ import { Switch } from "@workspace/ui/components/switch";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { cn } from "@workspace/ui/lib/utils";
 
-import { createArticleAction } from "./actions";
-
 const MDXEditor = dynamic(
   () => import("@/components/mdx-editor").then((m) => m.default),
   { ssr: false },
@@ -72,31 +70,63 @@ const articleSchema = z.object({
     .refine(
       (f) => ACCEPTED_IMAGE_TYPES.includes(f.type),
       "Formato não suportado (use JPG, PNG, WEBP ou GIF)",
-    ),
+    )
+    .optional(),
   Tags: z.array(z.string().min(1)),
   Categoria: z.string().min(1, "Selecione uma categoria"),
   Conteudo: z.string().min(20, "Conteúdo muito curto"),
 });
 
-type ArticleFormValues = z.infer<typeof articleSchema>;
+export type ArticleFormValues = z.infer<typeof articleSchema>;
 
-export function ArticleForm() {
+export type ArticleFormDefaults = Partial<
+  Omit<ArticleFormValues, "Capa">
+>;
+
+export type ArticleFormSubmitResult = {
+  ok: boolean;
+  error?: string;
+};
+
+export type ArticleFormProps = {
+  defaults?: ArticleFormDefaults;
+  initialCoverUrl?: string;
+  submitLabel: string;
+  pendingLabel?: string;
+  redirectTo?: string;
+  /** Treats Capa as optional (the user keeps the existing cover unless replacing). */
+  coverOptional?: boolean;
+  onSubmit: (data: FormData) => Promise<ArticleFormSubmitResult>;
+};
+
+export function ArticleForm({
+  defaults,
+  initialCoverUrl,
+  submitLabel,
+  pendingLabel,
+  redirectTo = "/blog/articles",
+  coverOptional = false,
+  onSubmit,
+}: ArticleFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(
+    initialCoverUrl ?? null,
+  );
   const tagInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
     defaultValues: {
-      Titulo: "",
-      Resumo: "",
-      Publicacao: new Date().toISOString().slice(0, 10),
-      Destaque: false,
-      Tags: [],
-      Categoria: "",
-      Conteudo: "",
+      Titulo: defaults?.Titulo ?? "",
+      Resumo: defaults?.Resumo ?? "",
+      Publicacao:
+        defaults?.Publicacao ?? new Date().toISOString().slice(0, 10),
+      Destaque: defaults?.Destaque ?? false,
+      Tags: defaults?.Tags ?? [],
+      Categoria: defaults?.Categoria ?? "",
+      Conteudo: defaults?.Conteudo ?? "",
     },
   });
 
@@ -118,7 +148,12 @@ export function ArticleForm() {
     );
   };
 
-  const onSubmit = (values: ArticleFormValues) => {
+  const handleSubmit = (values: ArticleFormValues) => {
+    if (!coverOptional && !values.Capa) {
+      form.setError("Capa", { message: "Selecione uma imagem" });
+      return;
+    }
+
     setSubmitError(null);
     const fd = new FormData();
     fd.set("Titulo", values.Titulo);
@@ -126,15 +161,15 @@ export function ArticleForm() {
     fd.set("Publicacao", values.Publicacao);
     fd.set("Destaque", String(values.Destaque));
     fd.set("Conteudo", values.Conteudo);
-    fd.set("Capa", values.Capa);
+    if (values.Capa) fd.set("Capa", values.Capa);
 
     startTransition(async () => {
-      const result = await createArticleAction(fd);
+      const result = await onSubmit(fd);
       if (!result.ok) {
-        setSubmitError(result.error ?? "Falha ao criar o artigo.");
+        setSubmitError(result.error ?? "Falha ao salvar o artigo.");
         return;
       }
-      router.push("/blog/articles");
+      router.push(redirectTo);
       router.refresh();
     });
   };
@@ -142,7 +177,7 @@ export function ArticleForm() {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-4 sm:gap-6"
       >
         <FormField
@@ -180,7 +215,7 @@ export function ArticleForm() {
           )}
         />
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
           <FormField
             control={form.control}
             name="Publicacao"
@@ -201,7 +236,10 @@ export function ArticleForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Categoria</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || undefined}
+                >
                   <FormControl>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Selecione uma categoria" />
@@ -226,7 +264,14 @@ export function ArticleForm() {
           name="Capa"
           render={({ field: { onChange, value: _value, ...rest } }) => (
             <FormItem>
-              <FormLabel>Foto de capa</FormLabel>
+              <FormLabel>
+                Foto de capa
+                {coverOptional && (
+                  <span className="text-muted-foreground ml-1 text-xs font-normal">
+                    (opcional — mantém a atual se não trocar)
+                  </span>
+                )}
+              </FormLabel>
               <FormControl>
                 <Input
                   type="file"
@@ -367,7 +412,7 @@ export function ArticleForm() {
             Cancelar
           </Button>
           <Button type="submit" disabled={isPending}>
-            {isPending ? "Salvando..." : "Criar artigo"}
+            {isPending ? (pendingLabel ?? "Salvando...") : submitLabel}
           </Button>
         </div>
       </form>

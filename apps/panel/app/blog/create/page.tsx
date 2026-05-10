@@ -1,6 +1,7 @@
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
-import { ArticleForm } from "./article-form";
+import { ArticleForm } from "@/components/article-form";
+import { createArticleAction } from "./actions";
 
 export default function CreateArticlePage() {
   return (
@@ -19,7 +20,11 @@ export default function CreateArticlePage() {
         </Button>
       </header>
 
-      <ArticleForm />
+      <ArticleForm
+        onSubmit={createArticleAction}
+        submitLabel="Criar artigo"
+        pendingLabel="Criando..."
+      />
     </div>
   );
 }

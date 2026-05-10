@@ -162,3 +162,19 @@ export async function createArticle(
   const { data } = (await response.json()) as { data: Article }
   return data
 }
+
+export type UpdateArticleInput = Partial<CreateArticleInput>
+
+export async function updateArticle(
+  documentId: string,
+  input: UpdateArticleInput,
+): Promise<Article | null> {
+  const response = await fetch(`${baseUrl()}/api/articles/${documentId}`, {
+    method: 'PUT',
+    headers: authHeaders(),
+    body: JSON.stringify({ data: input }),
+  })
+  if (!response.ok) return null
+  const { data } = (await response.json()) as { data: Article }
+  return data
+}
