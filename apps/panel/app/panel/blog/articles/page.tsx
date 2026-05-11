@@ -25,7 +25,6 @@ export default async function ArticlesPage() {
       {articles === null ? (
         <div className="text-destructive rounded-md border p-4 text-sm">
           Falha ao carregar artigos. Verifique <code>API_BASE_URL</code> e{" "}
-          <code>API_TOKEN</code>.
         </div>
       ) : (
         <ArticlesTable articles={articles} />
