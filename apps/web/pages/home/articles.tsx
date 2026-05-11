@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default async function Articles() {
   const articlesData = await getArticles();
-
+ 
   const bgColors = [
     "lg:bg-k-cinnamon",
     "lg:bg-k-olive-dark",
