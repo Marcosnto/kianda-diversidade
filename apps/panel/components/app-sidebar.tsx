@@ -1,5 +1,4 @@
 "use client"
-
 import * as React from "react"
 import {
   AudioWaveform,
@@ -52,36 +51,36 @@ const data = {
   navMain: [
     {
       title: "Artigos",
-      url: "/blog",
+      url: "/panel/blog",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
           title: "Escrever Artigo",
-          url: "/blog/create",
+          url: "/panel/blog/create",
         },
         {
           title: "Lista de Artigos",
-          url: "/blog/articles",
+          url: "/panel/blog/articles",
         },
       ],
     },
     {
       title: "Informações Gerais",
-      url: "/blog/general-information/",
+      url: "/panel/blog/general-information/",
       icon: Bot,
       items: [
         {
           title: "Como Kianda Atua",
-          url: "/blog/general-information/how-kianda-works",
+          url: "/panel/blog/general-information/how-kianda-works",
         },
         {
           title: "Sobre o Kianda",
-          url: "/blog/general-information/about-kianda",
+          url: "/panel/blog/general-information/about-kianda",
         },
         {
           title: "Canais para contato",
-          url: "/blog/general-information/contact-channels",
+          url: "/panel/blog/general-information/contact-channels",
         },
       ],
     },
@@ -100,7 +99,7 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ user, ...props }: { user: { name: string; email: string; avatar: string } } & React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -111,7 +110,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

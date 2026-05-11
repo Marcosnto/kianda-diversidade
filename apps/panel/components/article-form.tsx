@@ -104,7 +104,7 @@ export function ArticleForm({
   initialCoverUrl,
   submitLabel,
   pendingLabel,
-  redirectTo = "/blog/articles",
+  redirectTo = "/panel/blog/articles",
   coverOptional = false,
   onSubmit,
 }: ArticleFormProps) {

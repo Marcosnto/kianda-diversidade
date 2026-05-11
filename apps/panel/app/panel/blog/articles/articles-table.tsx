@@ -137,7 +137,7 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
                       <div className="flex justify-end gap-1">
                         <Button asChild variant="ghost" size="icon-sm">
                           <Link
-                            href={`/blog/articles/${article.documentId}/edit`}
+                            href={`/panel/blog/articles/${article.documentId}/edit`}
                             aria-label="Editar artigo"
                           >
                             <Pencil />

@@ -7,6 +7,6 @@ export async function deleteArticleAction(documentId: string): Promise<{
   ok: boolean;
 }> {
   const ok = await deleteArticle(documentId);
-  if (ok) revalidatePath("/blog/articles");
+  if (ok) revalidatePath("/panel/blog/articles");
   return { ok };
 }

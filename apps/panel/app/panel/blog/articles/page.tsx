@@ -18,7 +18,7 @@ export default async function ArticlesPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/blog/create">Novo artigo</Link>
+          <Link href="/panel/blog/create">Novo artigo</Link>
         </Button>
       </header>
 

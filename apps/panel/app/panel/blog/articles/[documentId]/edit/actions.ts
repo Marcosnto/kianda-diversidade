@@ -31,7 +31,7 @@ export async function updateArticleAction(
   if (!updated) return { ok: false, error: "Falha ao atualizar o artigo." };
 
   // TODO: persistir tags e categorias quando o schema do CMS suportar
-  revalidatePath("/blog/articles");
-  revalidatePath(`/blog/articles/${documentId}/edit`);
+  revalidatePath("/panel/blog/articles");
+  revalidatePath(`/panel/blog/articles/${documentId}/edit`);
   return { ok: true };
 }

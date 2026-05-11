@@ -31,6 +31,6 @@ export async function createArticleAction(
   if (!created) return { ok: false, error: "Falha ao criar o artigo." };
 
   // TODO: persistir tags e categorias quando o schema do CMS suportar
-  revalidatePath("/blog/articles");
+  revalidatePath("/panel/blog/articles");
   return { ok: true };
 }

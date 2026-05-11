@@ -42,7 +42,7 @@ export default async function EditArticlePage({
           </p>
         </div>
         <Button asChild variant="outline" className="w-full sm:w-auto">
-          <Link href="/blog/articles">Voltar para a lista</Link>
+          <Link href="/panel/blog/articles">Voltar para a lista</Link>
         </Button>
       </header>
 
