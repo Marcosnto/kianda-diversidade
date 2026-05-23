@@ -44,6 +44,9 @@ importers:
       '@workspace/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       lexical:
         specifier: 0.35.0
         version: 0.35.0

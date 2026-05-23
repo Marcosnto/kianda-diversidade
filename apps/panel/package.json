@@ -2,6 +2,7 @@
   "name": "panel",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,6 +17,7 @@
     "@tanstack/react-query": "^5.100.9",
     "@workspace/api": "workspace:*",
     "@workspace/ui": "workspace:*",
+    "dotenv": "^17.4.2",
     "lexical": "0.35.0",
     "lucide-react": "^0.475.0",
     "next": "16.2.6",
