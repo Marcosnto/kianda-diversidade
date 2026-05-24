@@ -6,3 +6,60 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+model Article {
+  id           String    @id @default(uuid())
+  title        String
+  summary      String
+  content      String
+  published_in DateTime?
+  is_highlight Boolean   @default(false)
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  cover_image_id String?
+  cover_image    Media?  @relation(fields: [cover_image_id], references: [id], onDelete: SetNull)
+
+  tags       Tag[]
+  categories Category[]
+
+  @@map("articles")
+}
+
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  articles Article[]
+
+  @@map("tags")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  articles Article[]
+
+  @@map("categories")
+}
+
+model Media {
+  id               String   @id @default(uuid())
+  provider         String   @default("imagekit")
+  provider_file_id String   @unique
+  name             String
+  alternative_text String?
+  width            Int?
+  height           Int?
+  ext              String?
+  mime             String?
+  size             Int?
+  url              String
+  thumbnail_url    String?
+  created_at       DateTime @default(now())
+
+  articles_as_cover Article[]
+
+  @@map("medias")
+}
