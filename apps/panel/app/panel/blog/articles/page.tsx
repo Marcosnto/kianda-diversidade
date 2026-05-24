@@ -1,12 +1,12 @@
-import { getArticles } from "@workspace/api";
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
+import { getArticles } from "@/lib/articles";
 import { ArticlesTable } from "./articles-table";
 
 export const dynamic = "force-dynamic";
 
 export default async function ArticlesPage() {
-  const articles = await getArticles({ includeDrafts: true });
+  const articles = await getArticles();
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-4">
@@ -22,13 +22,7 @@ export default async function ArticlesPage() {
         </Button>
       </header>
 
-      {articles === null ? (
-        <div className="text-destructive rounded-md border p-4 text-sm">
-          Falha ao carregar artigos. Verifique <code>API_BASE_URL</code> e{" "}
-        </div>
-      ) : (
-        <ArticlesTable articles={articles} />
-      )}
+      <ArticlesTable articles={articles} />
     </div>
   );
 }

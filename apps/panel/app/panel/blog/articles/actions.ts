@@ -1,12 +1,12 @@
 "use server";
 
-import { deleteArticle } from "@workspace/api";
 import { revalidatePath } from "next/cache";
+import { deleteArticle } from "@/lib/articles";
 
-export async function deleteArticleAction(documentId: string): Promise<{
+export async function deleteArticleAction(id: string): Promise<{
   ok: boolean;
 }> {
-  const ok = await deleteArticle(documentId);
-  if (ok) revalidatePath("/panel/blog/articles");
-  return { ok };
+  await deleteArticle(id);
+  revalidatePath("/panel/blog/articles");
+  return { ok: true };
 }

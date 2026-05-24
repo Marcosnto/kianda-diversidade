@@ -1,33 +1,28 @@
-import { getArticleById } from "@workspace/api";
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { ArticleForm } from "@/components/article-form";
-import { updateArticleAction } from "./actions";
 import { NotFound } from "@/components/not-found";
+import { getArticleById } from "@/lib/articles";
+import { updateArticleAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditArticlePage({
   params,
 }: {
-  params: Promise<{ documentId: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { documentId } = await params;
-  const article = await getArticleById(documentId);
+  const { id } = await params;
+  const article = await getArticleById(id);
 
   if (!article) return <NotFound />;
 
-  const action = updateArticleAction.bind(null, documentId);
+  const action = updateArticleAction.bind(null, id);
 
-  const coverUrl = article.Capa?.url
-    ? article.Capa.url.startsWith("http")
-      ? article.Capa.url
-      : `${process.env.API_BASE_URL}${article.Capa.url}`
-    : undefined;
+  const coverUrl = article.cover_image?.url;
 
-  const publicacao = article.Publicacao
-    ? article.Publicacao.slice(0, 10)
+  const publicacao = article.published_in
+    ? article.published_in.toISOString().slice(0, 10)
     : new Date().toISOString().slice(0, 10);
 
   return (
@@ -48,13 +43,13 @@ export default async function EditArticlePage({
 
       <ArticleForm
         defaults={{
-          Titulo: article.Titulo,
-          Resumo: article.Resumo,
-          Publicacao: publicacao,
-          Destaque: article.Destaque,
-          Conteudo: article.Conteudo,
-          Tags: [],
-          Categoria: "",
+          title: article.title,
+          summary: article.summary,
+          publishedIn: publicacao,
+          isHighlight: article.is_highlight,
+          content: article.content,
+          tags: article.tags.map((tag) => tag.name),
+          categories: article.categories.map((category) => category.name),
         }}
         initialCoverUrl={coverUrl}
         coverOptional

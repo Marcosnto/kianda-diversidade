@@ -1,13 +1,5 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
-import Link from "next/link";
-import { Pencil, Trash2 } from "lucide-react";
-import {
-  type Article,
-  type ArticleStatus,
-  getArticleStatus,
-} from "@workspace/api";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,6 +21,11 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/components/table";
+import { Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { useMemo, useState, useTransition } from "react";
+import { type ArticleStatus, getArticleStatus } from "@/lib/article-status";
+import type { PanelArticleListItem } from "@/lib/articles";
 import { deleteArticleAction } from "./actions";
 
 const STATUS_LABEL: Record<ArticleStatus, string> = {
@@ -41,10 +38,16 @@ const STATUS_VARIANT: Record<ArticleStatus, "success" | "warning"> = {
   draft: "warning",
 };
 
-export function ArticlesTable({ articles }: { articles: Article[] }) {
+export function ArticlesTable({
+  articles,
+}: {
+  articles: PanelArticleListItem[];
+}) {
   const [search, setSearch] = useState("");
   const [pendingId, setPendingId] = useState<string | null>(null);
-  const [confirming, setConfirming] = useState<Article | null>(null);
+  const [confirming, setConfirming] = useState<PanelArticleListItem | null>(
+    null,
+  );
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
@@ -54,8 +57,8 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
     return articles.filter((article) => {
       const status = STATUS_LABEL[getArticleStatus(article)].toLowerCase();
       return (
-        article.Titulo.toLowerCase().includes(q) ||
-        String(article.id).includes(q) ||
+        article.title.toLowerCase().includes(q) ||
+        article.id.toLowerCase().includes(q) ||
         status.includes(q)
       );
     });
@@ -64,10 +67,10 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
   const confirmDelete = () => {
     if (!confirming) return;
     const article = confirming;
-    setPendingId(article.documentId);
+    setPendingId(article.id);
     setDeleteError(null);
     startTransition(async () => {
-      const { ok } = await deleteArticleAction(article.documentId);
+      const { ok } = await deleteArticleAction(article.id);
       setPendingId(null);
       if (!ok) {
         setDeleteError("Falha ao remover o artigo.");
@@ -114,18 +117,18 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
             ) : (
               filtered.map((article) => {
                 const status = getArticleStatus(article);
-                const isPending = pendingId === article.documentId;
+                const isPending = pendingId === article.id;
                 return (
-                  <TableRow key={article.documentId}>
+                  <TableRow key={article.id}>
                     <TableCell className="text-muted-foreground hidden font-mono sm:table-cell">
-                      {article.id}
+                      {article.id.slice(0, 8)}
                     </TableCell>
                     <TableCell className="font-medium">
                       <span className="block max-w-[18ch] truncate sm:max-w-none sm:whitespace-normal">
-                        {article.Titulo}
+                        {article.title}
                       </span>
                       <span className="text-muted-foreground mt-0.5 block font-mono text-xs sm:hidden">
-                        #{article.id}
+                        #{article.id.slice(0, 8)}
                       </span>
                     </TableCell>
                     <TableCell>
@@ -137,7 +140,7 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
                       <div className="flex justify-end gap-1">
                         <Button asChild variant="ghost" size="icon-sm">
                           <Link
-                            href={`/panel/blog/articles/${article.documentId}/edit`}
+                            href={`/panel/blog/articles/${article.id}/edit`}
                             aria-label="Editar artigo"
                           >
                             <Pencil />
@@ -180,7 +183,7 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
             <AlertDialogDescription>
               Tem certeza que deseja remover{" "}
               <span className="text-foreground font-medium">
-                {confirming?.Titulo}
+                {confirming?.title}
               </span>
               ? Essa ação não pode ser desfeita.
             </AlertDialogDescription>
@@ -189,9 +192,7 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
             <p className="text-destructive text-sm">{deleteError}</p>
           )}
           <AlertDialogFooter>
-            <AlertDialogCancel
-              disabled={pendingId === confirming?.documentId}
-            >
+            <AlertDialogCancel disabled={pendingId === confirming?.id}>
               Cancelar
             </AlertDialogCancel>
             <AlertDialogAction
@@ -199,10 +200,10 @@ export function ArticlesTable({ articles }: { articles: Article[] }) {
                 e.preventDefault();
                 confirmDelete();
               }}
-              disabled={pendingId === confirming?.documentId}
+              disabled={pendingId === confirming?.id}
               className="bg-destructive hover:bg-destructive/90 text-white"
             >
-              {pendingId === confirming?.documentId ? "Removendo..." : "Remover"}
+              {pendingId === confirming?.id ? "Removendo..." : "Remover"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

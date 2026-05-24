@@ -1,13 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import dynamic from "next/dynamic";
-import { X } from "lucide-react";
-
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -30,6 +23,12 @@ import {
 import { Switch } from "@workspace/ui/components/switch";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { cn } from "@workspace/ui/lib/utils";
+import { X } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useRef, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const MDXEditor = dynamic(
   () => import("@/components/mdx-editor").then((m) => m.default),
@@ -54,17 +53,17 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const articleSchema = z.object({
-  Titulo: z
+  title: z
     .string()
     .min(3, "Mínimo de 3 caracteres")
     .max(200, "Máximo de 200 caracteres"),
-  Resumo: z
+  summary: z
     .string()
     .min(10, "Mínimo de 10 caracteres")
     .max(500, "Máximo de 500 caracteres"),
-  Publicacao: z.string().min(1, "Informe a data de publicação"),
-  Destaque: z.boolean(),
-  Capa: z
+  publishedIn: z.string().min(1, "Informe a data de publicação"),
+  isHighlight: z.boolean(),
+  coverImage: z
     .instanceof(File, { message: "Selecione uma imagem" })
     .refine((f) => f.size <= MAX_COVER_BYTES, "Imagem maior que 5MB")
     .refine(
@@ -72,15 +71,17 @@ const articleSchema = z.object({
       "Formato não suportado (use JPG, PNG, WEBP ou GIF)",
     )
     .optional(),
-  Tags: z.array(z.string().min(1)),
-  Categoria: z.string().min(1, "Selecione uma categoria"),
-  Conteudo: z.string().min(20, "Conteúdo muito curto"),
+  tags: z.array(z.string().min(1)),
+  categories: z
+    .array(z.string().min(1))
+    .min(1, "Selecione ao menos uma categoria"),
+  content: z.string().min(20, "Conteúdo muito curto"),
 });
 
 export type ArticleFormValues = z.infer<typeof articleSchema>;
 
 export type ArticleFormDefaults = Partial<
-  Omit<ArticleFormValues, "Capa">
+  Omit<ArticleFormValues, "coverImage">
 >;
 
 export type ArticleFormSubmitResult = {
@@ -94,7 +95,6 @@ export type ArticleFormProps = {
   submitLabel: string;
   pendingLabel?: string;
   redirectTo?: string;
-  /** Treats Capa as optional (the user keeps the existing cover unless replacing). */
   coverOptional?: boolean;
   onSubmit: (data: FormData) => Promise<ArticleFormSubmitResult>;
 };
@@ -114,54 +114,74 @@ export function ArticleForm({
   const [coverPreview, setCoverPreview] = useState<string | null>(
     initialCoverUrl ?? null,
   );
+  const [selectedCategory, setSelectedCategory] = useState("");
   const tagInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
     defaultValues: {
-      Titulo: defaults?.Titulo ?? "",
-      Resumo: defaults?.Resumo ?? "",
-      Publicacao:
-        defaults?.Publicacao ?? new Date().toISOString().slice(0, 10),
-      Destaque: defaults?.Destaque ?? false,
-      Tags: defaults?.Tags ?? [],
-      Categoria: defaults?.Categoria ?? "",
-      Conteudo: defaults?.Conteudo ?? "",
+      title: defaults?.title ?? "",
+      summary: defaults?.summary ?? "",
+      publishedIn:
+        defaults?.publishedIn ?? new Date().toISOString().slice(0, 10),
+      isHighlight: defaults?.isHighlight ?? false,
+      tags: defaults?.tags ?? [],
+      categories: defaults?.categories ?? [],
+      content: defaults?.content ?? "",
     },
   });
 
-  const tags = form.watch("Tags");
+  const tags = form.watch("tags");
+  const categories = form.watch("categories");
+
+  const addCategory = (category: string) => {
+    if (!category || categories.includes(category)) return;
+    form.setValue("categories", [...categories, category], {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
+  const removeCategory = (category: string) => {
+    form.setValue(
+      "categories",
+      categories.filter((c) => c !== category),
+      { shouldDirty: true, shouldValidate: true },
+    );
+  };
 
   const addTag = () => {
     const value = tagInputRef.current?.value.trim();
     if (!value) return;
     if (tags.includes(value)) return;
-    form.setValue("Tags", [...tags, value], { shouldDirty: true });
+    form.setValue("tags", [...tags, value], { shouldDirty: true });
     if (tagInputRef.current) tagInputRef.current.value = "";
   };
 
   const removeTag = (tag: string) => {
     form.setValue(
-      "Tags",
+      "tags",
       tags.filter((t) => t !== tag),
       { shouldDirty: true },
     );
   };
 
   const handleSubmit = (values: ArticleFormValues) => {
-    if (!coverOptional && !values.Capa) {
-      form.setError("Capa", { message: "Selecione uma imagem" });
+    if (!coverOptional && !values.coverImage) {
+      form.setError("coverImage", { message: "Selecione uma imagem" });
       return;
     }
 
     setSubmitError(null);
     const fd = new FormData();
-    fd.set("Titulo", values.Titulo);
-    fd.set("Resumo", values.Resumo);
-    fd.set("Publicacao", values.Publicacao);
-    fd.set("Destaque", String(values.Destaque));
-    fd.set("Conteudo", values.Conteudo);
-    if (values.Capa) fd.set("Capa", values.Capa);
+    fd.set("title", values.title);
+    fd.set("summary", values.summary);
+    fd.set("published_in", values.publishedIn);
+    fd.set("is_highlight", String(values.isHighlight));
+    fd.set("content", values.content);
+    fd.set("tags", JSON.stringify(values.tags));
+    fd.set("categories", JSON.stringify(values.categories));
+    if (values.coverImage) fd.set("cover_image", values.coverImage);
 
     startTransition(async () => {
       const result = await onSubmit(fd);
@@ -182,7 +202,7 @@ export function ArticleForm({
       >
         <FormField
           control={form.control}
-          name="Titulo"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Título</FormLabel>
@@ -196,7 +216,7 @@ export function ArticleForm({
 
         <FormField
           control={form.control}
-          name="Resumo"
+          name="summary"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Resumo</FormLabel>
@@ -218,7 +238,7 @@ export function ArticleForm({
         <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
           <FormField
             control={form.control}
-            name="Publicacao"
+            name="publishedIn"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Data de publicação</FormLabel>
@@ -232,13 +252,16 @@ export function ArticleForm({
 
           <FormField
             control={form.control}
-            name="Categoria"
-            render={({ field }) => (
+            name="categories"
+            render={() => (
               <FormItem>
-                <FormLabel>Categoria</FormLabel>
+                <FormLabel>Categorias</FormLabel>
                 <Select
-                  onValueChange={field.onChange}
-                  value={field.value || undefined}
+                  value={selectedCategory || undefined}
+                  onValueChange={(value) => {
+                    addCategory(value);
+                    setSelectedCategory("");
+                  }}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
@@ -247,12 +270,43 @@ export function ArticleForm({
                   </FormControl>
                   <SelectContent>
                     {CATEGORIAS.map((c) => (
-                      <SelectItem key={c.value} value={c.value}>
+                      <SelectItem
+                        key={c.value}
+                        value={c.value}
+                        disabled={categories.includes(c.value)}
+                      >
                         {c.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+                {categories.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {categories.map((category) => {
+                      const label =
+                        CATEGORIAS.find((c) => c.value === category)?.label ??
+                        category;
+
+                      return (
+                        <Badge
+                          key={category}
+                          variant="secondary"
+                          className="gap-1 pr-1"
+                        >
+                          {label}
+                          <button
+                            type="button"
+                            onClick={() => removeCategory(category)}
+                            aria-label={`Remover ${label}`}
+                            className="hover:bg-foreground/10 ml-0.5 rounded-sm p-0.5"
+                          >
+                            <X className="size-3" />
+                          </button>
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                )}
                 <FormMessage />
               </FormItem>
             )}
@@ -261,7 +315,7 @@ export function ArticleForm({
 
         <FormField
           control={form.control}
-          name="Capa"
+          name="coverImage"
           render={({ field: { onChange, value: _value, ...rest } }) => (
             <FormItem>
               <FormLabel>
@@ -302,7 +356,7 @@ export function ArticleForm({
 
         <FormField
           control={form.control}
-          name="Destaque"
+          name="isHighlight"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-3 rounded-md border p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div className="space-y-0.5">
@@ -323,10 +377,10 @@ export function ArticleForm({
 
         <FormField
           control={form.control}
-          name="Tags"
+          name="tags"
           render={() => (
             <FormItem>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel>tags</FormLabel>
               <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   ref={tagInputRef}
@@ -350,11 +404,7 @@ export function ArticleForm({
               {tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {tags.map((tag) => (
-                    <Badge
-                      key={tag}
-                      variant="secondary"
-                      className="gap-1 pr-1"
-                    >
+                    <Badge key={tag} variant="secondary" className="gap-1 pr-1">
                       {tag}
                       <button
                         type="button"
@@ -375,7 +425,7 @@ export function ArticleForm({
 
         <FormField
           control={form.control}
-          name="Conteudo"
+          name="content"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Conteúdo</FormLabel>
