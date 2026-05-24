@@ -245,7 +245,9 @@ export function ArticleForm({
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
-                <FormMessage />
+                <div className="min-h-5">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -280,37 +282,39 @@ export function ArticleForm({
                     ))}
                   </SelectContent>
                 </Select>
-                {categories.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {categories.map((category) => {
-                      const label =
-                        CATEGORIAS.find((c) => c.value === category)?.label ??
-                        category;
-
-                      return (
-                        <Badge
-                          key={category}
-                          variant="secondary"
-                          className="gap-1 pr-1"
-                        >
-                          {label}
-                          <button
-                            type="button"
-                            onClick={() => removeCategory(category)}
-                            aria-label={`Remover ${label}`}
-                            className="hover:bg-foreground/10 ml-0.5 rounded-sm p-0.5"
-                          >
-                            <X className="size-3" />
-                          </button>
-                        </Badge>
-                      );
-                    })}
-                  </div>
-                )}
-                <FormMessage />
+                <div className="min-h-5">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
+          {categories.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 md:col-span-2">
+              {categories.map((category) => {
+                const label =
+                  CATEGORIAS.find((c) => c.value === category)?.label ??
+                  category;
+
+                return (
+                  <Badge
+                    key={category}
+                    variant="secondary"
+                    className="h-7 gap-1 pr-1"
+                  >
+                    {label}
+                    <button
+                      type="button"
+                      onClick={() => removeCategory(category)}
+                      aria-label={`Remover ${label}`}
+                      className="hover:bg-foreground/10 ml-0.5 rounded-sm p-0.5"
+                    >
+                      <X className="size-3" />
+                    </button>
+                  </Badge>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <FormField
