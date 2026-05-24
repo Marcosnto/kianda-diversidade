@@ -17,14 +17,14 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <Auth0Provider>
       <QueryClientProvider client={client}>
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        > */}
+        {children}
+        {/* </ThemeProvider> */}
       </QueryClientProvider>
     </Auth0Provider>
   );

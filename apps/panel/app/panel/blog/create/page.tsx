@@ -4,6 +4,8 @@ import { ArticleForm } from "@/components/article-form";
 import { createArticleAction } from "./actions";
 
 export default function CreateArticlePage() {
+  const today = new Date().toISOString().slice(0, 10);
+
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -21,6 +23,7 @@ export default function CreateArticlePage() {
       </header>
 
       <ArticleForm
+        defaults={{ publishedIn: today }}
         onSubmit={createArticleAction}
         submitLabel="Criar artigo"
         pendingLabel="Criando..."

@@ -4,7 +4,8 @@ import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "Kianda Diversidade",
-  description: "Painel administrativo para gestão de diversidade e inclusão na Kianda",
+  description:
+    "Painel administrativo para gestão de diversidade e inclusão na Kianda",
 };
 
 export default function RootLayout({
@@ -14,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="h-full antialiased" suppressHydrationWarning>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>
