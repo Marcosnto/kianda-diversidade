@@ -24,6 +24,7 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
+import { toast } from "sonner";
 import { type ArticleStatus, getArticleStatus } from "@/lib/article-status";
 import type { PanelArticleListItem } from "@/lib/articles";
 import { deleteArticleAction } from "./actions";
@@ -73,9 +74,12 @@ export function ArticlesTable({
       const { ok } = await deleteArticleAction(article.id);
       setPendingId(null);
       if (!ok) {
-        setDeleteError("Falha ao remover o artigo.");
+        const message = "Falha ao remover o artigo.";
+        setDeleteError(message);
+        toast.error(message);
         return;
       }
+      toast.success("Artigo removido.");
       setConfirming(null);
     });
   };

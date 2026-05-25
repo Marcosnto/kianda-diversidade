@@ -28,6 +28,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const MDXEditor = dynamic(
@@ -114,7 +115,11 @@ export function ArticleForm({
   const [coverPreview, setCoverPreview] = useState<string | null>(
     initialCoverUrl ?? null,
   );
+  const [isUploadingContentImage, setIsUploadingContentImage] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const contentImageUrlsRef = useRef(
+    extractContentImageUrls(defaults?.content ?? ""),
+  );
   const tagInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<ArticleFormValues>({
@@ -166,9 +171,34 @@ export function ArticleForm({
     );
   };
 
+  const handleContentChange = (value: string) => {
+    const nextValue = value ?? "";
+    const previousUrls = contentImageUrlsRef.current;
+    const nextUrls = extractContentImageUrls(nextValue);
+    const removedUrls = previousUrls.filter((url) => !nextUrls.includes(url));
+
+    contentImageUrlsRef.current = nextUrls;
+    form.setValue("content", nextValue, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+
+    for (const url of removedUrls) {
+      toast.promise(deleteContentImage(url), {
+        loading: "Removendo imagem...",
+        success: "Imagem removida do ImageKit.",
+        error: "Falha ao remover imagem do ImageKit.",
+      });
+    }
+  };
+
   const handleSubmit = (values: ArticleFormValues) => {
     if (!coverOptional && !values.coverImage) {
       form.setError("coverImage", { message: "Selecione uma imagem" });
+      return;
+    }
+    if (isUploadingContentImage) {
+      toast.warning("Aguarde o upload da imagem do conteúdo terminar.");
       return;
     }
 
@@ -186,9 +216,12 @@ export function ArticleForm({
     startTransition(async () => {
       const result = await onSubmit(fd);
       if (!result.ok) {
-        setSubmitError(result.error ?? "Falha ao salvar o artigo.");
+        const message = result.error ?? "Falha ao salvar o artigo.";
+        setSubmitError(message);
+        toast.error(message);
         return;
       }
+      toast.success(coverOptional ? "Artigo atualizado." : "Artigo criado.");
       router.push(redirectTo);
       router.refresh();
     });
@@ -443,10 +476,16 @@ export function ArticleForm({
                 >
                   <MDXEditor
                     markdown={field.value}
-                    onChange={(value) => field.onChange(value ?? "")}
+                    onChange={handleContentChange}
+                    onImageUploadChange={setIsUploadingContentImage}
                   />
                 </div>
               </FormControl>
+              {isUploadingContentImage && (
+                <p className="text-muted-foreground text-sm">
+                  Subindo imagem do conteúdo...
+                </p>
+              )}
               <FormMessage />
             </FormItem>
           )}
@@ -461,15 +500,43 @@ export function ArticleForm({
             type="button"
             variant="outline"
             onClick={() => router.back()}
-            disabled={isPending}
+            disabled={isPending || isUploadingContentImage}
           >
             Cancelar
           </Button>
-          <Button type="submit" disabled={isPending}>
-            {isPending ? (pendingLabel ?? "Salvando...") : submitLabel}
+          <Button type="submit" disabled={isPending || isUploadingContentImage}>
+            {isUploadingContentImage
+              ? "Subindo imagem..."
+              : isPending
+                ? (pendingLabel ?? "Salvando...")
+                : submitLabel}
           </Button>
         </div>
       </form>
     </Form>
   );
+}
+
+function extractContentImageUrls(content: string) {
+  const urls = new Set<string>();
+  const imageKitContentUrl =
+    /https:\/\/ik\.imagekit\.io\/kiandadiversidade\/articles\/content\/[^"'\s>)]+/g;
+
+  for (const match of content.matchAll(imageKitContentUrl)) {
+    urls.add(match[0]);
+  }
+
+  return Array.from(urls);
+}
+
+async function deleteContentImage(url: string) {
+  const response = await fetch("/api/upload/content-image", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Falha ao remover imagem do conteúdo");
+  }
 }

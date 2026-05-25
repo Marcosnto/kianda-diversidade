@@ -33,6 +33,7 @@ import {
 import { $getSelection, $isRangeSelection, type LexicalNode } from "lexical";
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
 import type { ForwardedRef, ReactNode } from "react";
+import { toast } from "sonner";
 import "@mdxeditor/editor/style.css";
 import "./mdx-editor.css";
 
@@ -43,7 +44,32 @@ type ContentImageUploadResponse = {
   error?: string;
 };
 
-async function uploadContentImageToImageKit(image: File) {
+type InitializedMDXEditorProps = {
+  editorRef?: ForwardedRef<MDXEditorMethods> | null;
+  onImageUploadChange?: (isUploading: boolean) => void;
+} & MDXEditorProps;
+
+async function uploadContentImageToImageKit(
+  image: File,
+  onImageUploadChange?: (isUploading: boolean) => void,
+) {
+  onImageUploadChange?.(true);
+
+  const upload = uploadContentImage(image).finally(() => {
+    onImageUploadChange?.(false);
+  });
+
+  toast.promise(upload, {
+    loading: "Subindo imagem...",
+    success: "Imagem adicionada ao conteúdo.",
+    error: (error) =>
+      error instanceof Error ? error.message : "Falha no upload da imagem.",
+  });
+
+  return upload;
+}
+
+async function uploadContentImage(image: File) {
   const formData = new FormData();
   formData.append("file", image);
 
@@ -201,8 +227,9 @@ function AlignmentButtons() {
 
 export default function InitializedMDXEditor({
   editorRef,
+  onImageUploadChange,
   ...props
-}: { editorRef?: ForwardedRef<MDXEditorMethods> | null } & MDXEditorProps) {
+}: InitializedMDXEditorProps) {
   return (
     <MDXEditor
       contentEditableClassName="prose max-w-none focus:outline-none"
@@ -214,7 +241,8 @@ export default function InitializedMDXEditor({
         linkPlugin(),
         linkDialogPlugin(),
         imagePlugin({
-          imageUploadHandler: uploadContentImageToImageKit,
+          imageUploadHandler: (image) =>
+            uploadContentImageToImageKit(image, onImageUploadChange),
         }),
         tablePlugin(),
         directivesPlugin({ directiveDescriptors: [AlignDirectiveDescriptor] }),

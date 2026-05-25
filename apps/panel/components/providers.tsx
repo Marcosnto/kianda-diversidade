@@ -1,9 +1,9 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "next-themes";
 import { Auth0Provider } from "@auth0/nextjs-auth0/client";
-import { useState, type ReactNode } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { type ReactNode, useState } from "react";
+import { Toaster } from "sonner";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [client] = useState(
@@ -17,14 +17,8 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <Auth0Provider>
       <QueryClientProvider client={client}>
-        {/* <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        > */}
         {children}
-        {/* </ThemeProvider> */}
+        <Toaster richColors position="top-center" />
       </QueryClientProvider>
     </Auth0Provider>
   );
