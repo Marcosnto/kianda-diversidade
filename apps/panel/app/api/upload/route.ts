@@ -1,4 +1,5 @@
 import { uploadImageToImageKit } from "@/lib/media";
+import { prisma } from "@/lib/prisma";
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TYPES = new Set([
@@ -28,7 +29,12 @@ export async function POST(request: Request) {
 
   try {
     const uploaded = await uploadImageToImageKit(file, "/articles/content");
-    return Response.json({ url: uploaded.url });
+    const media = await prisma.media.create({ data: uploaded });
+    return Response.json({
+      id: media.id,
+      fileId: media.provider_file_id,
+      url: media.url,
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Falha no upload";
 

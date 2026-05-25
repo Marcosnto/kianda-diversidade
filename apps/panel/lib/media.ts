@@ -76,6 +76,24 @@ export async function uploadImageToImageKit(
   };
 }
 
+export async function deleteImageFromImageKit(fileId: string) {
+  const response = await fetch(
+    `https://api.imagekit.io/v1/files/${encodeURIComponent(fileId)}`,
+    {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Basic ${Buffer.from(`${imageKitPrivateKey()}:`).toString("base64")}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const message = await imageKitErrorMessage(response);
+    throw new Error(message || "Falha ao remover imagem do ImageKit");
+  }
+}
+
 async function imageKitErrorMessage(response: Response) {
   const text = await response.text();
 
