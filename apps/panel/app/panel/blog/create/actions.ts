@@ -32,7 +32,8 @@ export async function createArticleAction(
       categories: parseStringArray(formData.get("categories")),
       cover_image_id: media.id,
     });
-  } catch {
+  } catch (e) {
+    console.error("Erro ao criar o artigo", e);
     return { ok: false, error: "Falha ao criar o artigo." };
   }
 

@@ -26,13 +26,12 @@ export async function POST(request: Request) {
     return Response.json({ error: "Arquivo maior que 5MB" }, { status: 413 });
   }
 
-  const uploaded = await uploadImageToImageKit(file, "/articles/content").catch(
-    () => null,
-  );
+  try {
+    const uploaded = await uploadImageToImageKit(file, "/articles/content");
+    return Response.json({ url: uploaded.url });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Falha no upload";
 
-  if (!uploaded) {
-    return Response.json({ error: "Falha no upload" }, { status: 500 });
+    return Response.json({ error: message }, { status: 500 });
   }
-
-  return Response.json({ url: uploaded.url });
 }

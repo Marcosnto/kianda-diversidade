@@ -436,7 +436,7 @@ export function ArticleForm({
               <FormControl>
                 <div
                   className={cn(
-                    "border-input flex min-h-[560px] flex-col overflow-hidden rounded-md border",
+                    "border-input flex min-h-140 flex-col overflow-hidden rounded-md border",
                     "focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]",
                     "[&>div]:flex [&>div]:flex-1 [&>div]:flex-col",
                   )}

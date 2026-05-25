@@ -24,7 +24,7 @@ export type UploadedMedia = {
 };
 
 function imageKitPrivateKey() {
-  const key = process.env.IMAGEKIT_PRIVATE_KEY;
+  const key = process.env.IMAGEKIT_PRIVATE_KEY?.trim();
   if (!key) throw new Error("IMAGEKIT_PRIVATE_KEY is not set");
   return key;
 }
@@ -56,7 +56,7 @@ export async function uploadImageToImageKit(
   );
 
   if (!response.ok) {
-    const message = await response.text();
+    const message = await imageKitErrorMessage(response);
     throw new Error(message || "Falha ao subir imagem no ImageKit");
   }
 
@@ -74,4 +74,15 @@ export async function uploadImageToImageKit(
     url: uploaded.url,
     thumbnail_url: uploaded.thumbnailUrl,
   };
+}
+
+async function imageKitErrorMessage(response: Response) {
+  const text = await response.text();
+
+  try {
+    const body = JSON.parse(text) as { message?: string; help?: string };
+    return [body.message, body.help].filter(Boolean).join(" ");
+  } catch {
+    return text;
+  }
 }
