@@ -1,0 +1,17 @@
+services:
+  kianda-diversidade-mysql:
+    image: mysql:8.4
+    container_name: kianda-mysql
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kianda_panel_dev
+      MYSQL_USER: kianda
+      MYSQL_PASSWORD: kianda
+    volumes:
+      - kianda_mysql_data:/var/lib/mysql
+
+volumes:
+  kianda_mysql_data:
