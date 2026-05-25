@@ -22,17 +22,23 @@ export type ArticleInput = {
   cover_image_id?: string;
 };
 
-function relationByNames(names: string[]) {
+function createRelationByNames(names: string[]) {
   const uniqueNames = Array.from(
     new Set(names.map((name) => name.trim()).filter(Boolean)),
   );
 
   return {
-    set: [],
     connectOrCreate: uniqueNames.map((name) => ({
       where: { name },
       create: { name },
     })),
+  };
+}
+
+function updateRelationByNames(names: string[]) {
+  return {
+    set: [],
+    ...createRelationByNames(names),
   };
 }
 
@@ -61,8 +67,8 @@ export async function createArticle(input: ArticleInput) {
       published_in: input.published_in,
       is_highlight: input.is_highlight,
       cover_image_id: input.cover_image_id,
-      tags: relationByNames(input.tags),
-      categories: relationByNames(input.categories),
+      tags: createRelationByNames(input.tags),
+      categories: createRelationByNames(input.categories),
     },
     include: articleInclude,
   });
@@ -78,8 +84,8 @@ export async function updateArticle(id: string, input: ArticleInput) {
       published_in: input.published_in,
       is_highlight: input.is_highlight,
       ...(input.cover_image_id ? { cover_image_id: input.cover_image_id } : {}),
-      tags: relationByNames(input.tags),
-      categories: relationByNames(input.categories),
+      tags: updateRelationByNames(input.tags),
+      categories: updateRelationByNames(input.categories),
     },
     include: articleInclude,
   });

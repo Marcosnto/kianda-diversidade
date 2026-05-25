@@ -11,7 +11,7 @@ model Article {
   id           String    @id @default(uuid())
   title        String
   summary      String
-  content      String
+  content      String    @db.LongText
   published_in DateTime?
   is_highlight Boolean   @default(false)
   created_at   DateTime  @default(now())
