@@ -5,6 +5,10 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "db:generate": "pnpm --filter @workspace/db prisma:generate",
+    "db:migrate:dev": "pnpm --filter @workspace/db prisma:migrate:dev",
+    "db:migrate:deploy": "pnpm --filter @workspace/db prisma:migrate:deploy",
+    "db:studio": "pnpm --filter @workspace/db prisma:studio",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -18,13 +22,5 @@
   "packageManager": "pnpm@11.2.2+sha256.99c4be831ed231829895142d96793dbe75afc53795933aed8366e68dcce1e1b8",
   "engines": {
     "node": ">=20"
-  },
-  "pnpm": {
-    "overrides": {
-      "react": "19.2.4",
-      "react-dom": "19.2.4",
-      "@types/react": "^19.2.0",
-      "@types/react-dom": "^19.2.0"
-    }
   }
 }

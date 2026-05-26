@@ -5,22 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write",
-    "prisma:generate": "npx prisma generate",
-    "prisma:migrate:dev": "npx prisma migrate dev",
-    "prisma:migrate:deploy": "npx prisma migrate deploy",
-    "prisma:studio": "npx prisma studio"
+    "format": "biome format --write"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.20.0",
     "@hookform/resolvers": "^5.2.2",
     "@mdxeditor/editor": "^4.0.0",
-    "@prisma/adapter-mariadb": "7.8.0",
-    "@prisma/client": "7.8.0",
     "@tanstack/react-query": "^5.100.9",
+    "@workspace/db": "workspace:*",
     "@workspace/ui": "workspace:*",
     "dotenv": "^17.4.2",
     "lexical": "0.35.0",
@@ -40,7 +35,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
-    "prisma": "^7.8.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

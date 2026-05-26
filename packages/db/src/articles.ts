@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "./prisma";
 
 const articleInclude = {
   cover_image: true,
@@ -42,7 +42,7 @@ function updateRelationByNames(names: string[]) {
   };
 }
 
-export type { ArticleStatus } from "@/lib/article-status";
+export type { ArticleStatus } from "./article-status";
 
 export async function getArticles() {
   return prisma.article.findMany({
@@ -51,9 +51,33 @@ export async function getArticles() {
   });
 }
 
+export async function getPublishedArticles() {
+  return prisma.article.findMany({
+    where: {
+      published_in: {
+        lte: new Date(),
+      },
+    },
+    include: articleInclude,
+    orderBy: [{ published_in: "desc" }, { created_at: "desc" }],
+  });
+}
+
 export async function getArticleById(id: string) {
   return prisma.article.findUnique({
     where: { id },
+    include: articleInclude,
+  });
+}
+
+export async function getPublishedArticleById(id: string) {
+  return prisma.article.findFirst({
+    where: {
+      id,
+      published_in: {
+        lte: new Date(),
+      },
+    },
     include: articleInclude,
   });
 }
