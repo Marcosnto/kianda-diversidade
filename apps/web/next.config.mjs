@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@workspace/ui"],
+  transpilePackages: ["@workspace/db", "@workspace/ui"],
   images: {
-    remotePatterns: [new URL("http://cms.kiandadiversidade.com/**")],
+    remotePatterns: [new URL("https://ik.imagekit.io/kiandadiversidade/**")],
   },
 };
 

@@ -1,10 +1,12 @@
-import { getArticleById, getArticles } from "@workspace/api";
+import {
+  getPublishedArticleById,
+  getPublishedArticles,
+} from "@workspace/db/articles";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@workspace/ui/lib/utils";
 import formatDatePtBR from "@/utils/format-date";
-import { getAuthorFullName } from "@/utils/get-author-full-name";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -13,9 +15,7 @@ type Props = {
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const data = await getArticles();
-
-  if (!data) return [];
+  const data = await getPublishedArticles();
 
   return data.map((article) => ({
     id: String(article.id),
@@ -24,11 +24,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const article = await getArticleById(id);
+  const article = await getPublishedArticleById(id);
 
   return {
-    title: article?.Titulo ?? "Artigo não encontrado",
-    description: article?.Resumo,
+    title: article?.title ?? "Artigo não encontrado",
+    description: article?.summary,
   };
 }
 
@@ -42,13 +42,13 @@ function processRichTextContent(html: string): string {
 
 export default async function PostPage({ params }: Props) {
   const { id } = await params;
-  const article = await getArticleById(id);
+  const article = await getPublishedArticleById(id);
 
   if (!article) {
     notFound();
   }
 
-  const { Titulo, Publicacao, Capa, Conteudo, createdBy } = article;
+  const { title, published_in, cover_image, content } = article;
 
   return (
     <article className="w-full min-w-0 px-4 sm:px-6 lg:px-8 xl:px-12 max-w-7xl mx-auto pt-[88px] pb-6 sm:pt-28 sm:pb-8 lg:pt-32 lg:pb-12">
@@ -60,11 +60,11 @@ export default async function PostPage({ params }: Props) {
         )}
       >
         <div className="flex flex-col min-w-0 lg:w-[30%] lg:flex-shrink-0">
-          {Capa?.url && (
+          {cover_image?.url && (
             <div className="relative w-full min-w-0 mb-3 aspect-[16/10] sm:aspect-[4/3] lg:aspect-square lg:mb-6 overflow-hidden">
               <Image
-                src={`${process.env.API_BASE_URL}${Capa.url}`}
-                alt={Titulo || "Imagem do artigo"}
+                src={cover_image.url}
+                alt={title || "Imagem do artigo"}
                 fill
                 className="rounded-lg object-cover sm:rounded-xl"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 30vw"
@@ -73,15 +73,15 @@ export default async function PostPage({ params }: Props) {
           )}
 
           <h1 className="text-base font-bold mb-2 text-black leading-tight break-words sm:text-lg sm:mb-3 lg:text-2xl xl:text-3xl">
-            {Titulo}
+            {title}
           </h1>
 
           <div className="flex flex-col gap-1 mb-4 sm:mb-0 min-w-0">
             <p className="text-xs font-semibold text-black break-words sm:text-sm lg:text-lg">
-              Por: {getAuthorFullName(createdBy)}
+              Por: Kianda Diversidade
             </p>
             <p className="text-[11px] text-black break-words sm:text-xs lg:text-base">
-              {formatDatePtBR(Publicacao)}
+              {formatDatePtBR(published_in)}
             </p>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default async function PostPage({ params }: Props) {
                 "[&_blockquote]:border-l-4 [&_blockquote]:border-white/30 [&_blockquote]:pl-4 [&_blockquote]:my-4 [&_blockquote]:italic",
               )}
               dangerouslySetInnerHTML={{
-                __html: processRichTextContent(Conteudo) || "",
+                __html: processRichTextContent(content) || "",
               }}
             />
           </div>

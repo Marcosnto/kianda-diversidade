@@ -12,6 +12,7 @@ kianda-diversidade/
 │   ├── web/     # Site público (Next.js 15)
 │   └── panel/   # Painel administrativo (Next.js 16)
 └── packages/
+    ├── db/                # Prisma, schema, migrations e helpers de dados (@workspace/db)
     ├── ui/                # Biblioteca de componentes compartilhada (@workspace/ui)
     ├── eslint-config/     # Configuração ESLint compartilhada
     └── typescript-config/ # Configuração TypeScript compartilhada
@@ -29,7 +30,8 @@ kianda-diversidade/
 - **Formulários**: React Hook Form + Zod
 - **Tema**: next-themes (suporte a dark mode)
 - **Lint/Format**: Biome (panel), ESLint (web), Prettier
-- **CMS**: [Strapi](https://strapi.io/) self-hosted em `cms.kiandadiversidade.com`
+- **Banco de dados**: Prisma + MySQL em `packages/db`
+- **Imagens**: ImageKit
 
 ## Pré-requisitos
 
@@ -42,16 +44,25 @@ kianda-diversidade/
 pnpm install
 ```
 
-### Variáveis de ambiente
+### Banco de dados
 
-O app `web` precisa das variáveis abaixo em `apps/web/.env.local`:
+Os apps `web` e `panel` consomem os artigos pelo package `@workspace/db`.
+As variáveis podem ficar no `.env.local` do app ou do package que executa os comandos:
 
 ```env
-API_BASE_URL=http://cms.kiandadiversidade.com
-API_TOKEN=<token-do-strapi>
+DATABASE_URL="mysql://..."
+SHADOW_DATABASE_URL="mysql://..."
+IMAGEKIT_PRIVATE_KEY="..."
 ```
 
-`API_TOKEN` é um Bearer token gerado no painel do Strapi e usado pelos serviços em [apps/web/services/](apps/web/services/) para consumir a API de artigos.
+Comandos úteis:
+
+```bash
+pnpm db:generate
+pnpm db:migrate:dev
+pnpm db:migrate:deploy
+pnpm db:studio
+```
 
 ## Scripts
 

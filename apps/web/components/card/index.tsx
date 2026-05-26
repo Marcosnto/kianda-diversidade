@@ -10,9 +10,9 @@ import formatDatePtBR from "@/utils/format-date";
 type ArticleCardProps = {
   id: string;
   title: string;
-  date: string;
+  date: Date | string | null;
   author: string;
-  coverImage: string;
+  coverImage?: string | null;
   bgColor?: string;
   linkClassName?: string;
   imageSizeClassName?: string;
@@ -39,23 +39,25 @@ const ArticleCard = ({
       )}
       href={`/posts/${id}`}
     >
-      <div
-        className={cn(
-          "relative flex-shrink-0",
-          "w-[120px] h-[100px]",
-          "sm:w-[140px] sm:h-[120px]",
-          "md:w-[151px] md:h-[140px]",
-          "lg:w-full lg:h-auto lg:aspect-video",
-          imageSizeClassName,
-        )}
-      >
-        <Image
-          className="rounded-3xl lg:rounded-b-2xl object-cover w-full h-full"
-          src={`${process.env.API_BASE_URL}${coverImage}`}
-          alt="alt imagem"
-          fill
-        />
-      </div>
+      {coverImage && (
+        <div
+          className={cn(
+            "relative flex-shrink-0",
+            "w-[120px] h-[100px]",
+            "sm:w-[140px] sm:h-[120px]",
+            "md:w-[151px] md:h-[140px]",
+            "lg:w-full lg:h-auto lg:aspect-video",
+            imageSizeClassName,
+          )}
+        >
+          <Image
+            className="rounded-3xl lg:rounded-b-2xl object-cover w-full h-full"
+            src={coverImage}
+            alt={title}
+            fill
+          />
+        </div>
+      )}
       <div
         className={cn(
           "flex flex-col flex-1 min-w-0",
