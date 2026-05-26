@@ -4,14 +4,14 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
 }
 
 model Article {
   id           String    @id @default(uuid())
   title        String
   summary      String
-  content      String    @db.LongText
+  content      String
   published_in DateTime?
   is_highlight Boolean   @default(false)
   created_at   DateTime  @default(now())

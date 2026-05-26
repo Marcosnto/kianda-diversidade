@@ -30,7 +30,7 @@ kianda-diversidade/
 - **Formulários**: React Hook Form + Zod
 - **Tema**: next-themes (suporte a dark mode)
 - **Lint/Format**: Biome (panel), ESLint (web), Prettier
-- **Banco de dados**: Prisma + MySQL em `packages/db`
+- **Banco de dados**: Prisma + PostgreSQL no Neon em `packages/db`
 - **Imagens**: ImageKit
 
 ## Pré-requisitos
@@ -50,8 +50,7 @@ Os apps `web` e `panel` consomem os artigos pelo package `@workspace/db`.
 As variáveis podem ficar no `.env.local` do app ou do package que executa os comandos:
 
 ```env
-DATABASE_URL="mysql://..."
-SHADOW_DATABASE_URL="mysql://..."
+DATABASE_URL="postgresql://..."
 IMAGEKIT_PRIVATE_KEY="..."
 ```
 
