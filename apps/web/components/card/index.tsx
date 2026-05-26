@@ -39,25 +39,29 @@ const ArticleCard = ({
       )}
       href={`/posts/${id}`}
     >
-      {coverImage && (
-        <div
-          className={cn(
-            "relative flex-shrink-0",
-            "w-[120px] h-[100px]",
-            "sm:w-[140px] sm:h-[120px]",
-            "md:w-[151px] md:h-[140px]",
-            "lg:w-full lg:h-auto lg:aspect-video",
-            imageSizeClassName,
-          )}
-        >
+      <div
+        className={cn(
+          "relative flex-shrink-0 overflow-hidden rounded-3xl bg-k-olive-light/20 lg:rounded-b-2xl",
+          "w-[120px] h-[100px]",
+          "sm:w-[140px] sm:h-[120px]",
+          "md:w-[151px] md:h-[140px]",
+          "lg:w-full lg:h-auto lg:aspect-video",
+          imageSizeClassName,
+        )}
+      >
+        {coverImage ? (
           <Image
-            className="rounded-3xl lg:rounded-b-2xl object-cover w-full h-full"
+            className="object-cover"
             src={coverImage}
             alt={title}
             fill
           />
-        </div>
-      )}
+        ) : (
+          <div className="flex h-full w-full items-center justify-center px-4 text-center text-xs font-semibold text-k-olive-dark/70 sm:text-sm">
+            Kianda Diversidade
+          </div>
+        )}
+      </div>
       <div
         className={cn(
           "flex flex-col flex-1 min-w-0",

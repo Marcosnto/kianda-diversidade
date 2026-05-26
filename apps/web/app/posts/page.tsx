@@ -1,12 +1,20 @@
+import { ArticlesEmptyState } from "@/components/articles-empty-state";
 import ArticleCard from "@/components/card";
 import { getPublishedArticles } from "@workspace/db/articles";
 import { cn } from "@workspace/ui/lib/utils";
+
+export const revalidate = 15;
 
 const Posts = async () => {
   const data = await getPublishedArticles();
 
   if (!data.length) {
-    return <p>Não há artigos para serem mostrados</p>;
+    return (
+      <ArticlesEmptyState
+        description="Assim que novos conteúdos forem publicados, eles aparecerão por aqui."
+        title="Nenhum artigo publicado ainda."
+      />
+    );
   }
 
   return (

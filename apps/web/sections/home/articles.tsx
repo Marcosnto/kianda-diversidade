@@ -16,8 +16,16 @@ export default async function Articles() {
     "lg:bg-k-cinnamon",
   ];
 
-  if (!articlesData) {
-    return <p>Não há artigos</p>;
+  if (!articlesData.length) {
+    return (
+      <Section className="mb-3">
+        <HomeTitle>Artigos e Publicações</HomeTitle>
+        <p className="mx-auto max-w-2xl py-8 text-center text-base leading-7 text-k-olive-dark md:text-lg">
+          Ainda não há artigos publicados. Volte em breve para acompanhar novos
+          conteúdos.
+        </p>
+      </Section>
+    );
   }
 
   const featuredArticles = articlesData.filter((item) => item.is_highlight);

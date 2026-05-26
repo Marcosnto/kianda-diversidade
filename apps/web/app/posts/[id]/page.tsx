@@ -12,6 +12,7 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+export const revalidate = 15;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -49,6 +50,7 @@ export default async function PostPage({ params }: Props) {
   }
 
   const { title, published_in, cover_image, content } = article;
+  const processedContent = processRichTextContent(content).trim();
 
   return (
     <article className="w-full min-w-0 px-4 sm:px-6 lg:px-8 xl:px-12 max-w-7xl mx-auto pt-[88px] pb-6 sm:pt-28 sm:pb-8 lg:pt-32 lg:pb-12">
@@ -114,7 +116,9 @@ export default async function PostPage({ params }: Props) {
                 "[&_blockquote]:border-l-4 [&_blockquote]:border-white/30 [&_blockquote]:pl-4 [&_blockquote]:my-4 [&_blockquote]:italic",
               )}
               dangerouslySetInnerHTML={{
-                __html: processRichTextContent(content) || "",
+                __html:
+                  processedContent ||
+                  "<p>Este artigo ainda não possui conteúdo publicado.</p>",
               }}
             />
           </div>
