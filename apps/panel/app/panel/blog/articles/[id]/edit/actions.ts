@@ -1,9 +1,9 @@
 "use server";
 
+import { updateArticle } from "@workspace/db/articles";
+import { uploadImageToImageKit } from "@workspace/db/media";
+import { prisma } from "@workspace/db/prisma";
 import { revalidatePath } from "next/cache";
-import { updateArticle } from "@/lib/articles";
-import { uploadImageToImageKit } from "@/lib/media";
-import { prisma } from "@/lib/prisma";
 
 export type UpdateArticleResult = {
   ok: boolean;

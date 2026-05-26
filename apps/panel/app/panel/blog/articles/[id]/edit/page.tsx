@@ -1,8 +1,8 @@
+import { getArticleById } from "@workspace/db/articles";
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
 import { ArticleForm } from "@/components/article-form";
 import { NotFound } from "@/components/not-found";
-import { getArticleById } from "@/lib/articles";
 import { updateArticleAction } from "./actions";
 
 export const dynamic = "force-dynamic";

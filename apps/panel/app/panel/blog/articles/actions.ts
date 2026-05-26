@@ -1,7 +1,7 @@
 "use server";
 
+import { deleteArticle } from "@workspace/db/articles";
 import { revalidatePath } from "next/cache";
-import { deleteArticle } from "@/lib/articles";
 
 export async function deleteArticleAction(id: string): Promise<{
   ok: boolean;

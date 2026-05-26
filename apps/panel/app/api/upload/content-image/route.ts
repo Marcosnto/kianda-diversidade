@@ -1,7 +1,7 @@
+import { deleteImageFromImageKit } from "@workspace/db/media";
+import { prisma } from "@workspace/db/prisma";
 import { NextResponse } from "next/server";
 import { auth0 } from "@/lib/auth0";
-import { deleteImageFromImageKit } from "@/lib/media";
-import { prisma } from "@/lib/prisma";
 
 type DeleteContentImageBody = {
   url?: string;

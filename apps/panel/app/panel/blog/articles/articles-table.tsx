@@ -1,6 +1,11 @@
 "use client";
 
 import {
+  type ArticleStatus,
+  getArticleStatus,
+} from "@workspace/db/article-status";
+import type { PanelArticleListItem } from "@workspace/db/articles";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -25,8 +30,6 @@ import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { type ArticleStatus, getArticleStatus } from "@/lib/article-status";
-import type { PanelArticleListItem } from "@/lib/articles";
 import { deleteArticleAction } from "./actions";
 
 const STATUS_LABEL: Record<ArticleStatus, string> = {

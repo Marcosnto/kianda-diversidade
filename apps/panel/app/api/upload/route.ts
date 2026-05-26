@@ -1,5 +1,5 @@
-import { uploadImageToImageKit } from "@/lib/media";
-import { prisma } from "@/lib/prisma";
+import { uploadImageToImageKit } from "@workspace/db/media";
+import { prisma } from "@workspace/db/prisma";
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TYPES = new Set([

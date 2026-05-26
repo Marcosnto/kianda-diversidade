@@ -1,6 +1,6 @@
+import { getArticles } from "@workspace/db/articles";
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
-import { getArticles } from "@/lib/articles";
 import { ArticlesTable } from "./articles-table";
 
 export const dynamic = "force-dynamic";
