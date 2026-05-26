@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next";
 
 import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
@@ -7,31 +8,38 @@ import Footer from "@/components/footer";
 import HeaderMenu from "@/components/header-menu";
 
 const fontSans = Geist({
-  subsets: ["latin"],
-  variable: "--font-sans",
+	subsets: ["latin"],
+	variable: "--font-sans",
 });
 
 const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+	subsets: ["latin"],
+	variable: "--font-mono",
 });
 
+export const metadata: Metadata = {
+	title: {
+		default: "Kianda Diversidade",
+		template: "%s | Kianda Diversidade",
+	},
+};
+
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="pt-BR" suppressHydrationWarning>
-      <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased bg-k-yellow-light`}
-      >
-        <Providers>
-          <HeaderMenu />
-          {children}
-          <Footer />
-        </Providers>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="pt-BR" suppressHydrationWarning>
+			<body
+				className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased bg-k-yellow-light`}
+			>
+				<Providers>
+					<HeaderMenu />
+					{children}
+					<Footer />
+				</Providers>
+			</body>
+		</html>
+	);
 }
