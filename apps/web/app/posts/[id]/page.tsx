@@ -52,6 +52,42 @@ function convertMarkdownImages(content: string) {
   );
 }
 
+function decodeBasicHtmlEntities(value: string) {
+  return value
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#34;", '"')
+    .replaceAll("&#x27;", "'")
+    .replaceAll("&#39;", "'")
+    .replaceAll("&amp;", "&");
+}
+
+function getHtmlAttribute(tag: string, attribute: string) {
+  const match = tag.match(
+    new RegExp(`${attribute}\\s*=\\s*["']([^"']+)["']`, "i"),
+  );
+
+  return match?.[1];
+}
+
+function normalizeImageTags(content: string) {
+  const decodedContent = decodeBasicHtmlEntities(content);
+
+  return decodedContent.replace(/<img\b[^>]*\/?>/gi, (tag) => {
+    const src = getHtmlAttribute(tag, "src");
+    if (!src || !/^https?:\/\//.test(src)) return "";
+
+    const alt = getHtmlAttribute(tag, "alt") ?? "";
+    const width = getHtmlAttribute(tag, "width");
+    const height = getHtmlAttribute(tag, "height");
+    const widthAttribute = width ? ` width="${escapeAttribute(width)}"` : "";
+    const heightAttribute = height ? ` height="${escapeAttribute(height)}"` : "";
+
+    return `<img src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${widthAttribute}${heightAttribute} loading="lazy" />`;
+  });
+}
+
 function processMarkdownBlock(block: string) {
   const trimmedBlock = block.trim();
   const heading = trimmedBlock.match(/^(#{1,6})\s+(.+)$/);
@@ -61,8 +97,13 @@ function processMarkdownBlock(block: string) {
     return `<h${level}>${escapeHtml(heading[2])}</h${level}>`;
   }
 
+  const normalizedImages = normalizeImageTags(trimmedBlock);
+  if (normalizedImages !== trimmedBlock && normalizedImages.includes("<img")) {
+    return normalizedImages;
+  }
+
   if (/^<[\s\S]+>$/.test(trimmedBlock)) {
-    return convertMarkdownImages(trimmedBlock);
+    return convertMarkdownImages(normalizedImages);
   }
 
   const withImages = convertMarkdownImages(escapeHtml(trimmedBlock));

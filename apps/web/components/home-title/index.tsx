@@ -18,14 +18,14 @@ const HomeTitle = ({
 	borderColor = "border-black",
 }: HomeTitleProps) => {
 	const hasDivider = showDivider
-		? "border-black border-t-[1px] md:border-t-[1.5px] lg:border-t-[3px]"
+		? "border-black border-t-[1px] md:border-t-[1.5px] lg:border-t-[2px]"
 		: "border-none";
 
 	return (
 		<div className={cn(`mb-4 mt-4 ${hasDivider} ${borderColor} w-full`).trim()}>
 			<span
 				className={cn(
-					`text-[18px] md:text-[24px] lg:text-[34px] flex  italic ${className}`,
+					`text-[18px] md:text-[24px] lg:text-[28px] flex  italic ${className}`,
 					children ? "justify-between" : "justify-end",
 				)}
 			>
