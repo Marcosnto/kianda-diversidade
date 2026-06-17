@@ -51,7 +51,7 @@ export default function Footer() {
 						<span>contato@kiandadiversidade.com</span>
 					</div>
 				</div>
-				<div className="px-4 md:px-0 md:flex md:flex-col-reverse w-full lg:w-[508px] xl:w-[58%]">
+				<div className="px-4 md:px-0 md:flex md:flex-col-reverse w-full lg:w-127 xl:w-[58%]">
 					{/* <div>
             <div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] xl:text-xl">
               <h1>Receba nossos conteúdos por email:</h1>
@@ -77,17 +77,11 @@ export default function Footer() {
 				>
 					2025
 				</HomeTitle>
+			</div>
 
-				<div className="flex gap-3 md:col-span-3">
-					<Link href="/privacy-police">Política de Privicidade</Link>
-					<Link href="/cookies-police">Política de Cookies</Link>
-				</div>
-				<p>
-					© Feito por{" "}
-					<Link href="https://www.linkedin.com/in/marcosnto/" target="_blank">
-						Marcos Neto
-					</Link>
-				</p>
+			<div className="flex gap-3 md:col-span-3 justify-center mb-5">
+				<Link href="/privacy-police">Política de Privicidade</Link>
+				<Link href="/cookies-police">Política de Cookies</Link>
 			</div>
 		</Section>
 	);
