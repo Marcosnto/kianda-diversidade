@@ -33,12 +33,57 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function processRichTextContent(html: string): string {
-  // Converte oembed do YouTube em iframe
-  return html.replace(
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function escapeAttribute(value: string) {
+  return escapeHtml(value).replaceAll('"', "&quot;");
+}
+
+function convertMarkdownImages(content: string) {
+  return content.replace(
+    /!\[([^\]]*)\]\((https?:\/\/[^\s)]+)(?:\s+"[^"]*")?\)/g,
+    (_, alt: string, src: string) =>
+      `<img src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}" loading="lazy" />`,
+  );
+}
+
+function processMarkdownBlock(block: string) {
+  const trimmedBlock = block.trim();
+  const heading = trimmedBlock.match(/^(#{1,6})\s+(.+)$/);
+
+  if (heading?.[1] && heading[2]) {
+    const level = heading[1].length;
+    return `<h${level}>${escapeHtml(heading[2])}</h${level}>`;
+  }
+
+  if (/^<[\s\S]+>$/.test(trimmedBlock)) {
+    return convertMarkdownImages(trimmedBlock);
+  }
+
+  const withImages = convertMarkdownImages(escapeHtml(trimmedBlock));
+
+  if (withImages.startsWith("<img")) {
+    return withImages;
+  }
+
+  return `<p>${withImages.replace(/\n/g, "<br />")}</p>`;
+}
+
+function processRichTextContent(content: string): string {
+  const withEmbeds = content.replace(
     /<figure class="media"><oembed url="https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([^"]+)"><\/oembed><\/figure>/g,
     '<figure class="media"><div class="aspect-video w-full"><iframe src="https://www.youtube.com/embed/$1" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full rounded-lg"></iframe></div></figure>',
   );
+
+  return withEmbeds
+    .split(/\n{2,}/)
+    .map(processMarkdownBlock)
+    .join("");
 }
 
 export default async function PostPage({ params }: Props) {
