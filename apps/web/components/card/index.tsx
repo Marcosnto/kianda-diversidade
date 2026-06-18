@@ -12,6 +12,7 @@ type ArticleCardProps = {
   title: string;
   date: Date | string | null;
   author: string;
+  tags?: Array<{ name: string }>;
   coverImage?: string | null;
   bgColor?: string;
   linkClassName?: string;
@@ -23,11 +24,14 @@ const ArticleCard = ({
   title,
   author,
   date,
+  tags = [],
   coverImage,
   bgColor,
   linkClassName,
   imageSizeClassName,
 }: ArticleCardProps) => {
+  const visibleTags = tags.slice(0, 3);
+
   return (
     <Link
       key={id}
@@ -94,6 +98,23 @@ const ArticleCard = ({
           >
             {formatDatePtBR(date)}
           </span>
+          {visibleTags.length > 0 && (
+            <span className="mt-2 flex flex-wrap gap-1.5">
+              {visibleTags.map((tag) => (
+                <span
+                  key={tag.name}
+                  className={cn(
+                    "max-w-full truncate rounded-full px-2 py-0.5 text-[10px] font-medium leading-4",
+                    "bg-k-olive-light/15 text-k-olive-dark",
+                    "sm:text-[11px]",
+                    bgColor && "lg:bg-white/15 lg:text-white",
+                  )}
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </span>
+          )}
         </TypographyMuted>
       </div>
     </Link>
