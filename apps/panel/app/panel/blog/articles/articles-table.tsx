@@ -62,6 +62,7 @@ export function ArticlesTable({
       const status = STATUS_LABEL[getArticleStatus(article)].toLowerCase();
       return (
         article.title.toLowerCase().includes(q) ||
+        article.author?.name.toLowerCase().includes(q) ||
         article.id.toLowerCase().includes(q) ||
         status.includes(q)
       );
@@ -91,7 +92,7 @@ export function ArticlesTable({
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
         <Input
-          placeholder="Buscar por título, ID ou status..."
+          placeholder="Buscar por título, autor, ID ou status..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full sm:max-w-sm"
@@ -107,6 +108,7 @@ export function ArticlesTable({
             <TableRow>
               <TableHead className="hidden w-20 sm:table-cell">ID</TableHead>
               <TableHead>Título</TableHead>
+              <TableHead className="hidden md:table-cell">Autor</TableHead>
               <TableHead className="w-28 sm:w-32">Status</TableHead>
               <TableHead className="w-24 text-right sm:w-32">Ações</TableHead>
             </TableRow>
@@ -115,7 +117,7 @@ export function ArticlesTable({
             {filtered.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={4}
+                  colSpan={5}
                   className="text-muted-foreground h-24 text-center"
                 >
                   Nenhum artigo encontrado.
@@ -137,6 +139,9 @@ export function ArticlesTable({
                       <span className="text-muted-foreground mt-0.5 block font-mono text-xs sm:hidden">
                         #{article.id.slice(0, 8)}
                       </span>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground hidden md:table-cell">
+                      {article.author?.name ?? "Sem autor"}
                     </TableCell>
                     <TableCell>
                       <Badge variant={STATUS_VARIANT[status]}>

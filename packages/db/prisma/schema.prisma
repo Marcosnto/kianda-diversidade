@@ -20,10 +20,28 @@ model Article {
   cover_image_id String?
   cover_image    Media?  @relation(fields: [cover_image_id], references: [id], onDelete: SetNull)
 
+  author_id String?
+  author    User?   @relation(fields: [author_id], references: [id], onDelete: SetNull)
+
   tags       Tag[]
   categories Category[]
 
+  @@index([author_id])
   @@map("articles")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  auth0_id   String   @unique
+  name       String
+  email      String?
+  picture    String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  articles Article[]
+
+  @@map("users")
 }
 
 model Tag {
@@ -62,4 +80,19 @@ model Media {
   articles_as_cover Article[]
 
   @@map("medias")
+}
+
+model ContactChannels {
+  id         String   @id @default("main")
+  youtube    String?
+  linkedin   String?
+  instagram  String?
+  threads    String?
+  facebook   String?
+  whatsapp   String?
+  tiktok     String?
+  x          String?
+  updated_at DateTime @updatedAt
+
+  @@map("contact_channels")
 }

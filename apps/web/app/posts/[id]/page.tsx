@@ -137,7 +137,7 @@ export default async function PostPage({ params }: Props) {
 		notFound();
 	}
 
-	const { title, published_in, cover_image, content, tags } = article;
+	const { title, published_in, cover_image, content, tags, author } = article;
 	const processedContent = processRichTextContent(content).trim();
 
 	return (
@@ -168,7 +168,7 @@ export default async function PostPage({ params }: Props) {
 
 					<div className="flex flex-col gap-1 mb-4 sm:mb-0 min-w-0">
 						<p className="text-xs text-black break-words sm:text-sm lg:text-lg">
-							Por: Kianda Diversidade
+							Por: {author?.name ?? "Kianda Diversidade"}
 						</p>
 						<p className="text-[11px] text-black break-words sm:text-xs lg:text-base">
 							{formatDatePtBR(published_in)}

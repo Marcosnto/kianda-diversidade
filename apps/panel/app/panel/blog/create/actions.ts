@@ -4,6 +4,7 @@ import { createArticle } from "@workspace/db/articles";
 import { uploadImageToImageKit } from "@workspace/db/media";
 import { prisma } from "@workspace/db/prisma";
 import { revalidatePath } from "next/cache";
+import { getCurrentDatabaseUser } from "@/lib/current-user";
 
 export type CreateArticleResult = {
   ok: boolean;
@@ -19,6 +20,7 @@ export async function createArticleAction(
   }
 
   try {
+    const author = await getCurrentDatabaseUser();
     const uploaded = await uploadImageToImageKit(file, "/articles/covers");
     const media = await prisma.media.create({ data: uploaded });
 
@@ -31,6 +33,7 @@ export async function createArticleAction(
       tags: parseStringArray(formData.get("tags")),
       categories: parseStringArray(formData.get("categories")),
       cover_image_id: media.id,
+      author_id: author.id,
     });
   } catch (e) {
     console.error("Erro ao criar o artigo", e);
