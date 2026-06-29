@@ -2,6 +2,7 @@ import { prisma } from "./prisma";
 
 const articleInclude = {
   cover_image: true,
+  author: true,
   tags: true,
   categories: true,
 } as const;
@@ -20,6 +21,10 @@ export type ArticleInput = {
   tags: string[];
   categories: string[];
   cover_image_id?: string;
+};
+
+export type CreateArticleInput = ArticleInput & {
+  author_id: string;
 };
 
 function createRelationByNames(names: string[]) {
@@ -82,7 +87,7 @@ export async function getPublishedArticleById(id: string) {
   });
 }
 
-export async function createArticle(input: ArticleInput) {
+export async function createArticle(input: CreateArticleInput) {
   return prisma.article.create({
     data: {
       title: input.title,
@@ -90,7 +95,18 @@ export async function createArticle(input: ArticleInput) {
       content: input.content,
       published_in: input.published_in,
       is_highlight: input.is_highlight,
-      cover_image_id: input.cover_image_id,
+      cover_image: input.cover_image_id
+        ? {
+            connect: {
+              id: input.cover_image_id,
+            },
+          }
+        : undefined,
+      author: {
+        connect: {
+          id: input.author_id,
+        },
+      },
       tags: createRelationByNames(input.tags),
       categories: createRelationByNames(input.categories),
     },

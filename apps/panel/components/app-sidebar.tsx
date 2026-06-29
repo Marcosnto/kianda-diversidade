@@ -65,25 +65,17 @@ const data = {
 				},
 			],
 		},
-		// {
-		//   title: "Informações Gerais",
-		//   url: "/panel/blog/general-information/",
-		//   icon: Bot,
-		//   items: [
-		//     {
-		//       title: "Como Kianda Atua",
-		//       url: "/panel/blog/general-information/how-kianda-works",
-		//     },
-		//     {
-		//       title: "Sobre o Kianda",
-		//       url: "/panel/blog/general-information/about-kianda",
-		//     },
-		//     {
-		//       title: "Canais para contato",
-		//       url: "/panel/blog/general-information/contact-channels",
-		//     },
-		//   ],
-		// },
+		{
+			title: "Informações Gerais",
+			url: "/panel/blog/general-information/",
+			icon: Bot,
+			items: [
+				{
+					title: "Canais para contato",
+					url: "/panel/blog/general-information/contact-channels",
+				},
+			],
+		},
 	],
 	projects: [
 		{

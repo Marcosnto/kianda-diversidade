@@ -1,13 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { NewsletterForm } from "./newsletter-form/newsletter-form";
 import SocialMediaIcon from "./social-media-icons";
 import { JSXElementConstructor, ReactElement } from "react";
-import { socialMediaInfos } from "./social-media-icons/infos";
+import { getSocialMediaInfos } from "./social-media-icons/infos";
 import Section from "@/components/section";
 import HomeTitle from "@/components/home-title";
+import { getContactChannels } from "@workspace/db/contact-channels";
 
-export default function Footer() {
+export default async function Footer() {
+	const socialMediaInfos = getSocialMediaInfos(await getContactChannels());
+
 	return (
 		<Section mobilePadding="px-0" className="md:px-4" id="contact">
 			<HomeTitle showDivider></HomeTitle>
@@ -28,6 +30,7 @@ export default function Footer() {
 								<SocialMediaIcon
 									key={icon.key}
 									link={icon.link}
+									label={icon.label}
 									icon={
 										icon.icon as ReactElement<
 											{ className?: string | undefined },
