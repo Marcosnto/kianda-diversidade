@@ -1,8 +1,12 @@
 import { getArticleById } from "@workspace/db/articles";
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ArticleForm } from "@/components/article-form";
 import { NotFound } from "@/components/not-found";
+import { canManageOwnedResource, PERMISSIONS } from "@/lib/authorization";
+import { getCurrentDatabaseUser } from "@/lib/current-user";
+import { requirePagePermission } from "@/lib/page-authorization";
 import { updateArticleAction } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -12,10 +16,28 @@ export default async function EditArticlePage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const authorization = await requirePagePermission(
+    PERMISSIONS.updateOwnArticles,
+    PERMISSIONS.updateAnyArticles,
+  );
   const { id } = await params;
-  const article = await getArticleById(id);
+  const [article, user] = await Promise.all([
+    getArticleById(id),
+    getCurrentDatabaseUser(),
+  ]);
 
   if (!article) return <NotFound />;
+  if (
+    !canManageOwnedResource({
+      authorization,
+      ownerId: article.author_id,
+      currentUserId: user.id,
+      ownPermission: PERMISSIONS.updateOwnArticles,
+      anyPermission: PERMISSIONS.updateAnyArticles,
+    })
+  ) {
+    redirect("/panel/blog/articles");
+  }
 
   const action = updateArticleAction.bind(null, id);
 

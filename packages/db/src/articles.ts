@@ -56,6 +56,14 @@ export async function getArticles() {
   });
 }
 
+export async function getArticlesByAuthorId(authorId: string) {
+  return prisma.article.findMany({
+    where: { author_id: authorId },
+    include: articleInclude,
+    orderBy: [{ published_in: "desc" }, { created_at: "desc" }],
+  });
+}
+
 export async function getPublishedArticles() {
   return prisma.article.findMany({
     where: {

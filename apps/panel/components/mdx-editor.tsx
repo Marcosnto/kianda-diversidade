@@ -26,6 +26,7 @@ import {
   tablePlugin,
   thematicBreakPlugin,
   toolbarPlugin,
+  type Translation,
   UndoRedo,
   useCellValue,
   usePublisher,
@@ -48,6 +49,23 @@ type InitializedMDXEditorProps = {
   editorRef?: ForwardedRef<MDXEditorMethods> | null;
   onImageUploadChange?: (isUploading: boolean) => void;
 } & MDXEditorProps;
+
+const editorTranslations: Record<string, string> = {
+  "uploadImage.dialogTitle": "Enviar imagem",
+  "uploadImage.uploadInstructions": "Envie uma imagem do seu dispositivo:",
+  "uploadImage.addViaUrlInstructions": "Ou adicione uma imagem por URL:",
+  "uploadImage.addViaUrlInstructionsNoUpload": "Adicione uma imagem por URL:",
+  "uploadImage.autoCompletePlaceholder": "Selecione ou cole a URL da imagem",
+  "uploadImage.alt": "Texto alternativo:",
+  "uploadImage.title": "Título:",
+  "uploadImage.width": "Largura:",
+  "uploadImage.height": "Altura:",
+  "dialogControls.save": "Salvar",
+  "dialogControls.cancel": "Cancelar",
+};
+
+const translateEditor: Translation = (key, defaultValue) =>
+  editorTranslations[key] ?? defaultValue;
 
 async function uploadContentImageToImageKit(
   image: File,
@@ -233,6 +251,7 @@ export default function InitializedMDXEditor({
   return (
     <MDXEditor
       contentEditableClassName="prose max-w-none focus:outline-none"
+      translation={translateEditor}
       plugins={[
         headingsPlugin(),
         listsPlugin(),

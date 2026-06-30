@@ -1,9 +1,3 @@
-import { getCurrentDatabaseUser } from "@/lib/current-user";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@workspace/ui/components/avatar";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Separator } from "@workspace/ui/components/separator";
@@ -17,17 +11,11 @@ import {
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
+import { getAuthorizationContext, getPrimaryRole } from "@/lib/authorization";
+import { getCurrentDatabaseUser } from "@/lib/current-user";
+import { AccountPictureForm } from "./account-picture-form";
 
 export const dynamic = "force-dynamic";
-
-function getInitials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
 
 function getAuthProvider(auth0Id: string) {
   const provider = auth0Id.split("|")[0];
@@ -49,7 +37,16 @@ function formatDate(date: Date) {
 }
 
 export default async function AccountPage() {
-  const user = await getCurrentDatabaseUser();
+  const [user, authorization] = await Promise.all([
+    getCurrentDatabaseUser(),
+    getAuthorizationContext(),
+  ]);
+  const role = authorization ? getPrimaryRole(authorization) : "patient";
+  const roleLabel = {
+    administrator: "Administrador",
+    author: "Autor",
+    patient: "Paciente",
+  }[role];
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 p-4 sm:p-6">
@@ -61,16 +58,7 @@ export default async function AccountPage() {
       </header>
 
       <section className="flex flex-col gap-5 rounded-lg border bg-background p-5 sm:flex-row sm:items-center sm:p-6">
-        <Avatar className="size-20 rounded-lg sm:size-24">
-          <AvatarImage
-            className="object-cover"
-            src={user.picture ?? undefined}
-            alt={user.name}
-          />
-          <AvatarFallback className="rounded-lg text-xl font-semibold">
-            {getInitials(user.name) || "KD"}
-          </AvatarFallback>
-        </Avatar>
+        <AccountPictureForm name={user.name} picture={user.picture} />
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -79,15 +67,15 @@ export default async function AccountPage() {
             </h2>
             <Badge variant="success">
               <ShieldCheck />
-              Autenticado
+              {roleLabel}
             </Badge>
           </div>
           <p className="text-muted-foreground mt-1 truncate text-sm">
             {user.email ?? "E-mail não informado"}
           </p>
           <p className="text-muted-foreground mt-3 text-xs">
-            Os dados de identidade são sincronizados automaticamente com o
-            Auth0.
+            Nome e e-mail são sincronizados com o Auth0. A imagem pode ser
+            personalizada no painel.
           </p>
         </div>
       </section>

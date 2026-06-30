@@ -1,5 +1,11 @@
 import { uploadImageToImageKit } from "@workspace/db/media";
 import { prisma } from "@workspace/db/prisma";
+import {
+  AuthenticationError,
+  AuthorizationError,
+  PERMISSIONS,
+  requireAnyPermission,
+} from "@/lib/authorization";
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TYPES = new Set([
@@ -11,6 +17,21 @@ const ALLOWED_TYPES = new Set([
 ]);
 
 export async function POST(request: Request) {
+  try {
+    await requireAnyPermission([
+      PERMISSIONS.createArticles,
+      PERMISSIONS.updateOwnArticles,
+      PERMISSIONS.updateAnyArticles,
+    ]);
+  } catch (error) {
+    const status = error instanceof AuthenticationError ? 401 : 403;
+    const message =
+      error instanceof AuthorizationError
+        ? "Você não tem permissão para enviar imagens."
+        : "Não autorizado.";
+    return Response.json({ error: message }, { status });
+  }
+
   const formData = await request.formData();
   const file = formData.get("file");
 

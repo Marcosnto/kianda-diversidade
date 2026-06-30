@@ -1,19 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 import { auth0 } from "./lib/auth0";
 
-const protectedRoutes = ['/panel/*'];
+const protectedRoutes = ["/panel"];
 
 export async function proxy(request: NextRequest) {
   const session = await auth0.getSession();
+  const isProtectedRoute = protectedRoutes.some(
+    (route) =>
+      request.nextUrl.pathname === route ||
+      request.nextUrl.pathname.startsWith(`${route}/`),
+  );
 
-  if (protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
+  if (isProtectedRoute) {
     if (!session) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
+      return NextResponse.redirect(new URL("/auth/login", request.url));
     }
   }
 
-  if (request.nextUrl.pathname === '/' && session) {
-    return NextResponse.redirect(new URL('/panel', request.url));
+  if (request.nextUrl.pathname === "/" && session) {
+    return NextResponse.redirect(new URL("/panel", request.url));
   }
 
   return await auth0.middleware(request);

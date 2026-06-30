@@ -1,17 +1,30 @@
 import { deleteImageFromImageKit } from "@workspace/db/media";
 import { prisma } from "@workspace/db/prisma";
 import { NextResponse } from "next/server";
-import { auth0 } from "@/lib/auth0";
+import {
+  AuthenticationError,
+  AuthorizationError,
+  PERMISSIONS,
+  requireAnyPermission,
+} from "@/lib/authorization";
 
 type DeleteContentImageBody = {
   url?: string;
 };
 
 export async function DELETE(request: Request) {
-  const session = await auth0.getSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
+  try {
+    await requireAnyPermission([
+      PERMISSIONS.updateOwnArticles,
+      PERMISSIONS.updateAnyArticles,
+    ]);
+  } catch (error) {
+    const status = error instanceof AuthenticationError ? 401 : 403;
+    const message =
+      error instanceof AuthorizationError
+        ? "Você não tem permissão para remover imagens."
+        : "Não autorizado.";
+    return NextResponse.json({ error: message }, { status });
   }
 
   const body = (await request

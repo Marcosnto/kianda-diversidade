@@ -1,9 +1,12 @@
-import { ContactChannelsForm } from "./contact-channels-form";
 import { getContactChannels } from "@workspace/db/contact-channels";
+import { PERMISSIONS } from "@/lib/authorization";
+import { requirePagePermission } from "@/lib/page-authorization";
+import { ContactChannelsForm } from "./contact-channels-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function ContactChannelsPage() {
+  await requirePagePermission(PERMISSIONS.manageSite);
   const channels = await getContactChannels();
 
   return (

@@ -1,8 +1,8 @@
 "use server";
 
-import { getCurrentDatabaseUser } from "@/lib/current-user";
 import { updateContactChannels } from "@workspace/db/contact-channels";
 import { revalidatePath } from "next/cache";
+import { PERMISSIONS, requirePermission } from "@/lib/authorization";
 
 export type UpdateContactChannelsResult = {
   ok: boolean;
@@ -36,7 +36,7 @@ export async function updateContactChannelsAction(
   formData: FormData,
 ): Promise<UpdateContactChannelsResult> {
   try {
-    await getCurrentDatabaseUser();
+    await requirePermission(PERMISSIONS.manageSite);
 
     const values = Object.fromEntries(
       SOCIAL_FIELDS.map((field) => [field, parseUrl(formData.get(field))]),

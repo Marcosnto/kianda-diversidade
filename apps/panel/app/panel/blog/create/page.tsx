@@ -1,9 +1,12 @@
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
 import { ArticleForm } from "@/components/article-form";
+import { PERMISSIONS } from "@/lib/authorization";
+import { requirePagePermission } from "@/lib/page-authorization";
 import { createArticleAction } from "./actions";
 
-export default function CreateArticlePage() {
+export default async function CreateArticlePage() {
+  await requirePagePermission(PERMISSIONS.createArticles);
   const today = new Date().toISOString().slice(0, 10);
 
   return (

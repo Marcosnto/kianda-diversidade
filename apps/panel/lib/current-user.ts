@@ -5,24 +5,40 @@ function optionalString(value: unknown) {
   return typeof value === "string" && value.trim() ? value : null;
 }
 
+function isEmailLike(value: string | null, email: string | null) {
+  return !!value && !!email && value.toLowerCase() === email.toLowerCase();
+}
+
+function getCurrentUserName(user: Record<string, unknown>) {
+  const email = optionalString(user.email);
+  const givenName = optionalString(user.given_name);
+  const familyName = optionalString(user.family_name);
+  const fullName = [givenName, familyName].filter(Boolean).join(" ").trim();
+  const name = optionalString(user.name);
+  const nickname = optionalString(user.nickname);
+  const username = optionalString(user.username);
+
+  if (fullName) return fullName;
+  if (name && !isEmailLike(name, email)) return name;
+  if (nickname && !isEmailLike(nickname, email)) return nickname;
+  if (username && !isEmailLike(username, email)) return username;
+
+  return email?.split("@")[0] || "Usuário";
+}
+
 export async function getCurrentDatabaseUser() {
   const session = await auth0.getSession();
-  const auth0Id = optionalString(session?.user.sub);
+  const sessionUser = (session?.user ?? {}) as Record<string, unknown>;
+  const auth0Id = optionalString(sessionUser.sub);
 
   if (!auth0Id) {
     throw new Error("Usuário não autenticado.");
   }
 
-  const name =
-    optionalString(session?.user.name) ??
-    optionalString(session?.user.nickname) ??
-    optionalString(session?.user.email) ??
-    "Usuário";
-
   return upsertAuthUser({
     auth0_id: auth0Id,
-    name,
-    email: optionalString(session?.user.email),
-    picture: optionalString(session?.user.picture),
+    name: getCurrentUserName(sessionUser),
+    email: optionalString(sessionUser.email),
+    picture: optionalString(sessionUser.picture),
   });
 }

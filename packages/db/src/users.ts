@@ -21,8 +21,36 @@ export async function upsertAuthUser(input: UpsertAuthUserInput) {
     update: {
       name: input.name,
       email: input.email,
-      picture: input.picture,
     },
+    include: {
+      _count: {
+        select: {
+          articles: true,
+        },
+      },
+    },
+  });
+}
+
+export type PanelUserListItem = Awaited<ReturnType<typeof getUsers>>[number];
+
+export async function getUsers() {
+  return prisma.user.findMany({
+    orderBy: [{ created_at: "desc" }, { name: "asc" }],
+    include: {
+      _count: {
+        select: {
+          articles: true,
+        },
+      },
+    },
+  });
+}
+
+export async function updateUserPicture(id: string, picture: string | null) {
+  return prisma.user.update({
+    where: { id },
+    data: { picture },
     include: {
       _count: {
         select: {

@@ -54,6 +54,19 @@ DATABASE_URL="postgresql://..."
 IMAGEKIT_PRIVATE_KEY="..."
 ```
 
+### Autorização do painel
+
+O painel usa as roles e permissions configuradas no Auth0. Além das credenciais
+da aplicação, configure estas variáveis em desenvolvimento e na Vercel:
+
+```env
+AUTH0_AUDIENCE="https://api.kiandadiversidade.com"
+AUTH0_ROLES_CLAIM="https://kiandadiversidade.com/roles"
+```
+
+Depois de alterar roles, permissions, audience ou a Action de login, encerre a
+sessão e entre novamente para que o Auth0 emita tokens com os claims atualizados.
+
 Comandos úteis:
 
 ```bash

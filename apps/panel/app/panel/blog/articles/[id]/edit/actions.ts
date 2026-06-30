@@ -1,9 +1,15 @@
 "use server";
 
-import { updateArticle } from "@workspace/db/articles";
+import { getArticleById, updateArticle } from "@workspace/db/articles";
 import { uploadImageToImageKit } from "@workspace/db/media";
 import { prisma } from "@workspace/db/prisma";
 import { revalidatePath } from "next/cache";
+import {
+  canManageOwnedResource,
+  PERMISSIONS,
+  requireAnyPermission,
+} from "@/lib/authorization";
+import { getCurrentDatabaseUser } from "@/lib/current-user";
 
 export type UpdateArticleResult = {
   ok: boolean;
@@ -15,6 +21,28 @@ export async function updateArticleAction(
   formData: FormData,
 ): Promise<UpdateArticleResult> {
   try {
+    const authorization = await requireAnyPermission([
+      PERMISSIONS.updateOwnArticles,
+      PERMISSIONS.updateAnyArticles,
+    ]);
+    const [article, user] = await Promise.all([
+      getArticleById(id),
+      getCurrentDatabaseUser(),
+    ]);
+
+    if (
+      !article ||
+      !canManageOwnedResource({
+        authorization,
+        ownerId: article.author_id,
+        currentUserId: user.id,
+        ownPermission: PERMISSIONS.updateOwnArticles,
+        anyPermission: PERMISSIONS.updateAnyArticles,
+      })
+    ) {
+      return { ok: false, error: "Você não pode editar este artigo." };
+    }
+
     let coverImageId: string | undefined;
 
     const file = formData.get("cover_image");

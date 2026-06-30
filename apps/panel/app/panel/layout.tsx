@@ -1,12 +1,3 @@
-import type { Metadata } from "next";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@workspace/ui/components/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Separator } from "@workspace/ui/components/separator";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,7 +6,24 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@workspace/ui/components/breadcrumb";
-import { auth0 } from "@/lib/auth0";
+import { Separator } from "@workspace/ui/components/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@workspace/ui/components/sidebar";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { AppSidebar } from "@/components/app-sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  getAuthorizationContext,
+  getPrimaryRole,
+  hasAnyPermission,
+  hasPermission,
+  PERMISSIONS,
+} from "@/lib/authorization";
+import { getCurrentDatabaseUser } from "@/lib/current-user";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,16 +35,40 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await auth0.getSession();
+  const authorization = await getAuthorizationContext();
+  if (!authorization) redirect("/auth/login");
+
+  const user = await getCurrentDatabaseUser();
+  const role = getPrimaryRole(authorization);
+  const roleLabel = {
+    administrator: "Administrador",
+    author: "Autor",
+    patient: "Paciente",
+  }[role];
   const userData = {
-    name: user?.user.name || "Usuário",
-    email: user?.user.email || "example@email.com",
-    avatar: user?.user.picture || "/avatars/shadcn.jpg",
-  }
+    name: user.name,
+    email: user.email || "E-mail não informado",
+    avatar: user.picture || "/avatars/shadcn.jpg",
+  };
 
   return (
     <SidebarProvider>
-      <AppSidebar user={userData} />
+      <AppSidebar
+        user={userData}
+        access={{
+          roleLabel,
+          canReadArticles: hasAnyPermission(authorization, [
+            PERMISSIONS.readOwnArticles,
+            PERMISSIONS.readAnyArticles,
+          ]),
+          canCreateArticles: hasPermission(
+            authorization,
+            PERMISSIONS.createArticles,
+          ),
+          canManageSite: hasPermission(authorization, PERMISSIONS.manageSite),
+          canReadUsers: hasPermission(authorization, PERMISSIONS.readUsers),
+        }}
+      />
       <SidebarInset className="px-4">
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2">
@@ -47,7 +79,7 @@ export default async function RootLayout({
             />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">    
+                <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink href="#">Kianda</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />

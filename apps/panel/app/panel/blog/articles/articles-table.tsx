@@ -44,8 +44,12 @@ const STATUS_VARIANT: Record<ArticleStatus, "success" | "warning"> = {
 
 export function ArticlesTable({
   articles,
+  canUpdate,
+  canDelete,
 }: {
   articles: PanelArticleListItem[];
+  canUpdate: boolean;
+  canDelete: boolean;
 }) {
   const [search, setSearch] = useState("");
   const [pendingId, setPendingId] = useState<string | null>(null);
@@ -75,10 +79,10 @@ export function ArticlesTable({
     setPendingId(article.id);
     setDeleteError(null);
     startTransition(async () => {
-      const { ok } = await deleteArticleAction(article.id);
+      const { ok, error } = await deleteArticleAction(article.id);
       setPendingId(null);
       if (!ok) {
-        const message = "Falha ao remover o artigo.";
+        const message = error ?? "Falha ao remover o artigo.";
         setDeleteError(message);
         toast.error(message);
         return;
@@ -150,26 +154,30 @@ export function ArticlesTable({
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">
-                        <Button asChild variant="ghost" size="icon-sm">
-                          <Link
-                            href={`/panel/blog/articles/${article.id}/edit`}
-                            aria-label="Editar artigo"
+                        {canUpdate && (
+                          <Button asChild variant="ghost" size="icon-sm">
+                            <Link
+                              href={`/panel/blog/articles/${article.id}/edit`}
+                              aria-label="Editar artigo"
+                            >
+                              <Pencil />
+                            </Link>
+                          </Button>
+                        )}
+                        {canDelete && (
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label="Remover artigo"
+                            onClick={() => {
+                              setDeleteError(null);
+                              setConfirming(article);
+                            }}
+                            disabled={isPending}
                           >
-                            <Pencil />
-                          </Link>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          aria-label="Remover artigo"
-                          onClick={() => {
-                            setDeleteError(null);
-                            setConfirming(article);
-                          }}
-                          disabled={isPending}
-                        >
-                          <Trash2 className="text-destructive" />
-                        </Button>
+                            <Trash2 className="text-destructive" />
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
