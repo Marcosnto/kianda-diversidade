@@ -12,6 +12,7 @@ type ArticleCardProps = {
   title: string;
   date: Date | string | null;
   author: string;
+  authorId?: string | null;
   tags?: Array<{ name: string }>;
   coverImage?: string | null;
   bgColor?: string;
@@ -23,6 +24,7 @@ const ArticleCard = ({
   id,
   title,
   author,
+  authorId,
   date,
   tags = [],
   coverImage,
@@ -33,39 +35,38 @@ const ArticleCard = ({
   const visibleTags = tags.slice(0, 3);
 
   return (
-    <Link
-      key={id}
+    <article
       className={cn(
         "flex gap-3 w-full min-w-0",
         "sm:gap-3",
         "lg:flex-col lg:gap-x-0",
         linkClassName,
       )}
-      href={`/posts/${id}`}
     >
-      <div
-        className={cn(
-          "relative flex-shrink-0 overflow-hidden rounded-3xl bg-k-olive-light/20 lg:rounded-b-2xl",
-          "w-[120px] h-[100px]",
-          "sm:w-[140px] sm:h-[120px]",
-          "md:w-[151px] md:h-[140px]",
-          "lg:w-full lg:h-auto lg:aspect-video",
-          imageSizeClassName,
-        )}
+      <Link
+        className="block shrink-0 lg:w-full"
+        href={`/posts/${id}`}
+        aria-label={`Abrir artigo ${title}`}
       >
-        {coverImage ? (
-          <Image
-            className="object-cover"
-            src={coverImage}
-            alt={title}
-            fill
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center px-4 text-center text-xs font-semibold text-k-olive-dark/70 sm:text-sm">
-            Kianda Diversidade
-          </div>
-        )}
-      </div>
+        <div
+          className={cn(
+            "relative flex-shrink-0 overflow-hidden rounded-3xl bg-k-olive-light/20 lg:rounded-b-2xl",
+            "w-[120px] h-[100px]",
+            "sm:w-[140px] sm:h-[120px]",
+            "md:w-[151px] md:h-[140px]",
+            "lg:w-full lg:h-auto lg:aspect-video",
+            imageSizeClassName,
+          )}
+        >
+          {coverImage ? (
+            <Image className="object-cover" src={coverImage} alt={title} fill />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center px-4 text-center text-xs font-semibold text-k-olive-dark/70 sm:text-sm">
+              Kianda Diversidade
+            </div>
+          )}
+        </div>
+      </Link>
       <div
         className={cn(
           "flex flex-col flex-1 min-w-0",
@@ -76,11 +77,13 @@ const ArticleCard = ({
           bgColor && `${bgColor}`,
         )}
       >
-        <TypographyLarge
-          className={cn("mb-0.5 xl:mb-1", bgColor && "lg:text-white")}
-        >
-          <span className="bold line-clamp-2">{title}</span>
-        </TypographyLarge>
+        <Link href={`/posts/${id}`}>
+          <TypographyLarge
+            className={cn("mb-0.5 xl:mb-1", bgColor && "lg:text-white")}
+          >
+            <span className="bold line-clamp-2">{title}</span>
+          </TypographyLarge>
+        </Link>
         <TypographyMuted className="flex flex-col">
           <span
             className={cn(
@@ -88,7 +91,14 @@ const ArticleCard = ({
               bgColor && "lg:text-white",
             )}
           >
-            {`Por: ${author}`}
+            Por:{" "}
+            {authorId ? (
+              <Link className="hover:underline" href={`/authors/${authorId}`}>
+                {author}
+              </Link>
+            ) : (
+              author
+            )}
           </span>
           <span
             className={cn(
@@ -117,7 +127,7 @@ const ArticleCard = ({
           )}
         </TypographyMuted>
       </div>
-    </Link>
+    </article>
   );
 };
 

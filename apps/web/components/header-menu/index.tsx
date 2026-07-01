@@ -31,6 +31,7 @@ const menuOptions: OptionsTypes[] = [
 	// { label: "Cursos e aulas", path: "courses", isPage: false },
 	{ label: "Sobre", path: "about", isPage: false },
 	{ label: "Artigos e Publicações", path: "/posts", isPage: true },
+	{ label: "Autores", path: "/authors", isPage: true },
 	{ label: "Contato", path: "contact", isPage: false },
 ];
 
@@ -179,7 +180,7 @@ export default function HeaderMenu() {
 							: "fixed top-0 left-0 bg-k-olive-dark",
 					)}
 				>
-					<ul className="flex gap-5 md:gap-12 w-full justify-center text-2xl font-medium text-white">
+					<ul className="flex gap-5 xl:gap-8 2xl:gap-12 w-full justify-center text-xl 2xl:text-2xl font-medium text-white">
 						{filteredMenuOptions.map((option, index) => (
 							<li key={`${option.label}-overlay-${index}`}>
 								{option.isPage ? (

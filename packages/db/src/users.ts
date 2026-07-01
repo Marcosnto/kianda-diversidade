@@ -7,6 +7,16 @@ export type UpsertAuthUserInput = {
   picture?: string | null;
 };
 
+export type AuthorProfileInput = {
+  bio: string | null;
+  website: string | null;
+  instagram: string | null;
+  linkedin: string | null;
+  youtube: string | null;
+  tiktok: string | null;
+  x: string | null;
+};
+
 export async function upsertAuthUser(input: UpsertAuthUserInput) {
   return prisma.user.upsert({
     where: {
@@ -51,6 +61,23 @@ export async function updateUserPicture(id: string, picture: string | null) {
   return prisma.user.update({
     where: { id },
     data: { picture },
+    include: {
+      _count: {
+        select: {
+          articles: true,
+        },
+      },
+    },
+  });
+}
+
+export async function updateAuthorProfile(
+  id: string,
+  profile: AuthorProfileInput,
+) {
+  return prisma.user.update({
+    where: { id },
+    data: profile,
     include: {
       _count: {
         select: {

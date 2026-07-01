@@ -52,6 +52,7 @@ export default async function Articles() {
                 id={id}
                 title={title}
                 author={author?.name ?? "Kianda Diversidade"}
+                authorId={author?.id}
                 date={published_in}
                 tags={tags}
                 coverImage={cover_image?.url}

@@ -20,6 +20,7 @@ type FilterArticle = {
     name: string;
   }>;
   author: {
+    id: string;
     name: string;
   } | null;
 };
@@ -171,6 +172,7 @@ export function ArticlesFilter({
                   id={id}
                   title={title}
                   author={author?.name ?? LEGACY_ARTICLE_AUTHOR}
+                  authorId={author?.id}
                   date={published_in}
                   tags={tags}
                   coverImage={cover_image?.url}

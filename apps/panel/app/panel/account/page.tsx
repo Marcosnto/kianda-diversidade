@@ -13,6 +13,7 @@ import {
 import { getAuthorizationContext, getPrimaryRole } from "@/lib/authorization";
 import { getCurrentDatabaseUser } from "@/lib/current-user";
 import { AccountPictureForm } from "./account-picture-form";
+import { AuthorProfileForm } from "./author-profile-form";
 
 export const dynamic = "force-dynamic";
 
@@ -107,6 +108,27 @@ export default async function AccountPage() {
         </dl>
       </section>
 
+      <section className="rounded-lg border bg-background p-5 sm:p-6">
+        <div className="mb-5">
+          <h2 className="font-semibold">Perfil público do autor</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            O perfil ficará disponível no site quando você possuir um artigo
+            publicado.
+          </p>
+        </div>
+        <AuthorProfileForm
+          defaults={{
+            bio: user.bio ?? "",
+            website: formatSocialUrlForInput(user.website),
+            instagram: formatSocialUrlForInput(user.instagram),
+            linkedin: formatSocialUrlForInput(user.linkedin),
+            youtube: formatSocialUrlForInput(user.youtube),
+            tiktok: formatSocialUrlForInput(user.tiktok),
+            x: formatSocialUrlForInput(user.x),
+          }}
+        />
+      </section>
+
       <section className="grid gap-4 sm:grid-cols-2">
         <div className="flex items-center gap-4 rounded-lg border bg-background p-5">
           <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
@@ -139,6 +161,10 @@ export default async function AccountPage() {
       </section>
     </div>
   );
+}
+
+function formatSocialUrlForInput(value: string | null) {
+  return value?.replace(/^https?:\/\//i, "") ?? "";
 }
 
 function ProfileItem({

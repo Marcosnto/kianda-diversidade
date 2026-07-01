@@ -3,6 +3,7 @@ import {
 	getPublishedArticles,
 } from "@workspace/db/articles";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@workspace/ui/lib/utils";
@@ -168,7 +169,17 @@ export default async function PostPage({ params }: Props) {
 
 					<div className="flex flex-col gap-1 mb-4 sm:mb-0 min-w-0">
 						<p className="text-xs text-black break-words sm:text-sm lg:text-lg">
-							Por: {author?.name ?? "Kianda Diversidade"}
+							Por:{" "}
+							{author ? (
+								<Link
+									className="font-semibold underline-offset-4 hover:underline"
+									href={`/authors/${author.id}`}
+								>
+									{author.name}
+								</Link>
+							) : (
+								"Kianda Diversidade"
+							)}
 						</p>
 						<p className="text-[11px] text-black break-words sm:text-xs lg:text-base">
 							{formatDatePtBR(published_in)}

@@ -5,13 +5,18 @@ import {
   uploadImageToImageKit,
 } from "@workspace/db/media";
 import { prisma } from "@workspace/db/prisma";
-import { updateUserPicture } from "@workspace/db/users";
+import { updateAuthorProfile, updateUserPicture } from "@workspace/db/users";
 import { revalidatePath } from "next/cache";
 import { getCurrentDatabaseUser } from "@/lib/current-user";
 
 export type UpdateAccountPictureResult = {
   ok: boolean;
   picture?: string | null;
+  error?: string;
+};
+
+export type UpdateAuthorProfileResult = {
+  ok: boolean;
   error?: string;
 };
 
@@ -61,6 +66,41 @@ export async function updateAccountPictureAction(
   }
 }
 
+export async function updateAuthorProfileAction(
+  formData: FormData,
+): Promise<UpdateAuthorProfileResult> {
+  try {
+    const user = await getCurrentDatabaseUser();
+    const bio = String(formData.get("bio") ?? "").trim();
+
+    if (bio.length > 1500) {
+      return { ok: false, error: "A Bio deve ter no máximo 1500 caracteres." };
+    }
+
+    await updateAuthorProfile(user.id, {
+      bio: bio || null,
+      website: parseOptionalUrl(formData.get("website")),
+      instagram: parseOptionalUrl(formData.get("instagram")),
+      linkedin: parseOptionalUrl(formData.get("linkedin")),
+      youtube: parseOptionalUrl(formData.get("youtube")),
+      tiktok: parseOptionalUrl(formData.get("tiktok")),
+      x: parseOptionalUrl(formData.get("x")),
+    });
+
+    revalidatePath("/panel/account");
+    return { ok: true };
+  } catch (error) {
+    console.error("Erro ao atualizar perfil público", error);
+    return {
+      ok: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Falha ao atualizar o perfil público.",
+    };
+  }
+}
+
 async function deletePreviousProfileMedia(picture: string | null) {
   if (!picture) return;
 
@@ -73,4 +113,15 @@ async function deletePreviousProfileMedia(picture: string | null) {
   } catch (error) {
     console.error("Erro ao remover imagem anterior do perfil", error);
   }
+}
+
+function parseOptionalUrl(value: FormDataEntryValue | null) {
+  const text = String(value ?? "").trim();
+  if (!text) return null;
+
+  if (!/^www\./i.test(text)) {
+    throw new Error("Os links devem começar com www.");
+  }
+
+  return `https://${text}`;
 }

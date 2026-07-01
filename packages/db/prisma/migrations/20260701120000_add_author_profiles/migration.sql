@@ -1,0 +1,8 @@
+ALTER TABLE "users"
+ADD COLUMN "bio" TEXT,
+ADD COLUMN "website" TEXT,
+ADD COLUMN "instagram" TEXT,
+ADD COLUMN "linkedin" TEXT,
+ADD COLUMN "youtube" TEXT,
+ADD COLUMN "tiktok" TEXT,
+ADD COLUMN "x" TEXT;

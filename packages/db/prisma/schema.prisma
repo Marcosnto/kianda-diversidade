@@ -36,6 +36,13 @@ model User {
   name       String
   email      String?
   picture    String?
+  bio        String?
+  website    String?
+  instagram  String?
+  linkedin   String?
+  youtube    String?
+  tiktok     String?
+  x          String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

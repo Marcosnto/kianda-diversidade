@@ -27,6 +27,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./articles": "./src/articles.ts",
+    "./authors": "./src/authors.ts",
     "./article-status": "./src/article-status.ts",
     "./categories": "./src/categories.ts",
     "./contact-channels": "./src/contact-channels.ts",
