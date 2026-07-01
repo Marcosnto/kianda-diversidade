@@ -28,6 +28,7 @@
     ".": "./src/index.ts",
     "./articles": "./src/articles.ts",
     "./article-status": "./src/article-status.ts",
+    "./categories": "./src/categories.ts",
     "./contact-channels": "./src/contact-channels.ts",
     "./media": "./src/media.ts",
     "./prisma": "./src/prisma.ts",

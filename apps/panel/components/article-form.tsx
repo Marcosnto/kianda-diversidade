@@ -36,15 +36,6 @@ const MDXEditor = dynamic(
   { ssr: false },
 );
 
-const CATEGORIAS = [
-  { value: "ansiedade", label: "Ansiedade" },
-  { value: "depressao", label: "Depressão" },
-  { value: "relacionamentos", label: "Relacionamentos" },
-  { value: "bem-estar", label: "Bem-estar" },
-  { value: "autoconhecimento", label: "Autoconhecimento" },
-  { value: "infancia", label: "Infância" },
-] as const;
-
 const MAX_COVER_BYTES = 5 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -92,6 +83,7 @@ export type ArticleFormSubmitResult = {
 
 export type ArticleFormProps = {
   defaults?: ArticleFormDefaults;
+  categoryOptions: { value: string; label: string }[];
   initialCoverUrl?: string;
   submitLabel: string;
   pendingLabel?: string;
@@ -102,6 +94,7 @@ export type ArticleFormProps = {
 
 export function ArticleForm({
   defaults,
+  categoryOptions,
   initialCoverUrl,
   submitLabel,
   pendingLabel,
@@ -304,13 +297,13 @@ export function ArticleForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {CATEGORIAS.map((c) => (
+                    {categoryOptions.map((category) => (
                       <SelectItem
-                        key={c.value}
-                        value={c.value}
-                        disabled={categories.includes(c.value)}
+                        key={category.value}
+                        value={category.value}
+                        disabled={categories.includes(category.value)}
                       >
-                        {c.label}
+                        {category.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -325,8 +318,8 @@ export function ArticleForm({
             <div className="flex flex-wrap gap-1.5 md:col-span-2">
               {categories.map((category) => {
                 const label =
-                  CATEGORIAS.find((c) => c.value === category)?.label ??
-                  category;
+                  categoryOptions.find((option) => option.value === category)
+                    ?.label ?? category;
 
                 return (
                   <Badge

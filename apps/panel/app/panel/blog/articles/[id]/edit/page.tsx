@@ -1,4 +1,5 @@
 import { getArticleById } from "@workspace/db/articles";
+import { getCategories } from "@workspace/db/categories";
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -21,9 +22,10 @@ export default async function EditArticlePage({
     PERMISSIONS.updateAnyArticles,
   );
   const { id } = await params;
-  const [article, user] = await Promise.all([
+  const [article, user, categories] = await Promise.all([
     getArticleById(id),
     getCurrentDatabaseUser(),
+    getCategories(),
   ]);
 
   if (!article) return <NotFound />;
@@ -64,6 +66,10 @@ export default async function EditArticlePage({
       </header>
 
       <ArticleForm
+        categoryOptions={categories.map((category) => ({
+          value: category.name,
+          label: category.name,
+        }))}
         defaults={{
           title: article.title,
           summary: article.summary,

@@ -64,6 +64,14 @@ export function AppSidebar({
           title: "Lista de artigos",
           url: "/panel/blog/articles",
         },
+        ...(access.canManageSite
+          ? [
+              {
+                title: "Gerenciar categorias",
+                url: "/panel/blog/categories",
+              },
+            ]
+          : []),
       ],
     });
   }

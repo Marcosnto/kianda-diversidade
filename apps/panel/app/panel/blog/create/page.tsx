@@ -1,3 +1,4 @@
+import { getCategories } from "@workspace/db/categories";
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
 import { ArticleForm } from "@/components/article-form";
@@ -7,6 +8,7 @@ import { createArticleAction } from "./actions";
 
 export default async function CreateArticlePage() {
   await requirePagePermission(PERMISSIONS.createArticles);
+  const categories = await getCategories();
   const today = new Date().toISOString().slice(0, 10);
 
   return (
@@ -26,6 +28,10 @@ export default async function CreateArticlePage() {
       </header>
 
       <ArticleForm
+        categoryOptions={categories.map((category) => ({
+          value: category.name,
+          label: category.name,
+        }))}
         defaults={{ publishedIn: today }}
         onSubmit={createArticleAction}
         submitLabel="Criar artigo"

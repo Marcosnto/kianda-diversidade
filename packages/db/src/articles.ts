@@ -27,23 +27,36 @@ export type CreateArticleInput = ArticleInput & {
   author_id: string;
 };
 
-function createRelationByNames(names: string[]) {
-  const uniqueNames = Array.from(
-    new Set(names.map((name) => name.trim()).filter(Boolean)),
-  );
+function uniqueNames(names: string[]) {
+  return Array.from(new Set(names.map((name) => name.trim()).filter(Boolean)));
+}
 
+function createTagRelationByNames(names: string[]) {
   return {
-    connectOrCreate: uniqueNames.map((name) => ({
+    connectOrCreate: uniqueNames(names).map((name) => ({
       where: { name },
       create: { name },
     })),
   };
 }
 
-function updateRelationByNames(names: string[]) {
+function updateTagRelationByNames(names: string[]) {
   return {
     set: [],
-    ...createRelationByNames(names),
+    ...createTagRelationByNames(names),
+  };
+}
+
+function connectCategoriesByNames(names: string[]) {
+  return {
+    connect: uniqueNames(names).map((name) => ({ name })),
+  };
+}
+
+function updateCategoriesByNames(names: string[]) {
+  return {
+    set: [],
+    ...connectCategoriesByNames(names),
   };
 }
 
@@ -115,8 +128,8 @@ export async function createArticle(input: CreateArticleInput) {
           id: input.author_id,
         },
       },
-      tags: createRelationByNames(input.tags),
-      categories: createRelationByNames(input.categories),
+      tags: createTagRelationByNames(input.tags),
+      categories: connectCategoriesByNames(input.categories),
     },
     include: articleInclude,
   });
@@ -132,8 +145,8 @@ export async function updateArticle(id: string, input: ArticleInput) {
       published_in: input.published_in,
       is_highlight: input.is_highlight,
       ...(input.cover_image_id ? { cover_image_id: input.cover_image_id } : {}),
-      tags: updateRelationByNames(input.tags),
-      categories: updateRelationByNames(input.categories),
+      tags: updateTagRelationByNames(input.tags),
+      categories: updateCategoriesByNames(input.categories),
     },
     include: articleInclude,
   });
