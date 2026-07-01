@@ -1,12 +1,19 @@
-import { Auth0Client } from "@auth0/nextjs-auth0/server";
+import {
+  Auth0Client,
+  filterDefaultIdTokenClaims,
+} from "@auth0/nextjs-auth0/server";
 
-const audience = process.env.AUTH0_AUDIENCE;
+const rolesClaim =
+  process.env.AUTH0_ROLES_CLAIM ?? "https://kiandadiversidade.com/roles";
 
 export const auth0 = new Auth0Client({
-  authorizationParameters: audience
-    ? {
-        audience,
-        scope: "openid profile email",
-      }
-    : undefined,
+  beforeSessionSaved: async (session) => ({
+    ...session,
+    user: {
+      ...filterDefaultIdTokenClaims(session.user),
+      ...(session.user[rolesClaim] !== undefined
+        ? { [rolesClaim]: session.user[rolesClaim] }
+        : {}),
+    },
+  }),
 });

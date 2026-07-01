@@ -22,6 +22,17 @@ export const PERMISSIONS = {
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
 export type AppRole = "administrator" | "author" | "patient";
 
+const ROLE_PERMISSIONS: Record<AppRole, Permission[]> = {
+  administrator: Object.values(PERMISSIONS),
+  author: [
+    PERMISSIONS.createArticles,
+    PERMISSIONS.readOwnArticles,
+    PERMISSIONS.updateOwnArticles,
+    PERMISSIONS.deleteOwnArticles,
+  ],
+  patient: [],
+};
+
 export type AuthorizationContext = {
   session: SessionData;
   roles: AppRole[];
@@ -46,8 +57,17 @@ export async function getAuthorizationContext() {
   const session = await auth0.getSession();
   if (!session) return null;
 
-  const roles = parseRoles(session.user[ROLES_CLAIM]);
-  const permissions = parseAccessTokenPermissions(session.tokenSet.accessToken);
+  const accessTokenClaims = parseJwtClaims(session.tokenSet.accessToken);
+  const roles = parseRolesFromClaims(
+    session.user as Record<string, unknown>,
+    accessTokenClaims,
+  );
+  const permissions = Array.from(
+    new Set([
+      ...parsePermissions(accessTokenClaims.permissions),
+      ...roles.flatMap((role) => ROLE_PERMISSIONS[role]),
+    ]),
+  );
 
   return { session, roles, permissions } satisfies AuthorizationContext;
 }
@@ -119,11 +139,11 @@ export function canManageOwnedResource({
 }
 
 function parseRoles(value: unknown): AppRole[] {
-  if (!Array.isArray(value)) return [];
+  const values = Array.isArray(value) ? value : [value];
 
   return Array.from(
     new Set(
-      value
+      values
         .filter((role): role is string => typeof role === "string")
         .map(normalizeRole)
         .filter((role): role is AppRole => role !== null),
@@ -143,21 +163,47 @@ function normalizeRole(role: string): AppRole | null {
   return null;
 }
 
-function parseAccessTokenPermissions(accessToken: string) {
+function parseRolesFromClaims(...claimsList: Record<string, unknown>[]) {
+  const roleValues = claimsList.flatMap((claims) =>
+    Object.entries(claims)
+      .filter(([key]) => isRoleClaim(key))
+      .map(([, value]) => value),
+  );
+
+  return Array.from(new Set(roleValues.flatMap(parseRoles)));
+}
+
+function isRoleClaim(key: string) {
+  const normalized = key.toLowerCase();
+
+  return (
+    key === ROLES_CLAIM ||
+    normalized === "role" ||
+    normalized === "roles" ||
+    normalized.endsWith("/role") ||
+    normalized.endsWith("/roles") ||
+    normalized.endsWith(":role") ||
+    normalized.endsWith(":roles")
+  );
+}
+
+function parsePermissions(value: unknown) {
+  return Array.isArray(value)
+    ? value.filter(
+        (permission): permission is string => typeof permission === "string",
+      )
+    : [];
+}
+
+function parseJwtClaims(accessToken: string): Record<string, unknown> {
   const [, payload] = accessToken.split(".");
-  if (!payload) return [];
+  if (!payload) return {};
 
   try {
-    const claims = JSON.parse(
+    return JSON.parse(
       Buffer.from(payload, "base64url").toString("utf8"),
-    ) as { permissions?: unknown };
-
-    return Array.isArray(claims.permissions)
-      ? claims.permissions.filter(
-          (permission): permission is string => typeof permission === "string",
-        )
-      : [];
+    ) as Record<string, unknown>;
   } catch {
-    return [];
+    return {};
   }
 }

@@ -56,16 +56,32 @@ IMAGEKIT_PRIVATE_KEY="..."
 
 ### Autorização do painel
 
-O painel usa as roles e permissions configuradas no Auth0. Além das credenciais
-da aplicação, configure estas variáveis em desenvolvimento e na Vercel:
+O painel usa as roles configuradas no Auth0 para aplicar a matriz de permissions
+nas páginas e operações do servidor. Configure o namespace usado pela Action em
+desenvolvimento e na Vercel:
 
 ```env
-AUTH0_AUDIENCE="https://api.kiandadiversidade.com"
 AUTH0_ROLES_CLAIM="https://kiandadiversidade.com/roles"
 ```
 
-Depois de alterar roles, permissions, audience ou a Action de login, encerre a
-sessão e entre novamente para que o Auth0 emita tokens com os claims atualizados.
+Depois de alterar roles ou a Action de login, encerre a sessão e entre novamente
+para que o Auth0 emita tokens com os claims atualizados.
+
+Para permitir que administradores alterem as roles pela página de usuários,
+crie uma aplicação **Machine to Machine** autorizada para a **Auth0 Management
+API** com os escopos `read:roles`, `read:users`, `create:role_members` e
+`delete:role_members`. Configure no painel e na Vercel:
+
+```env
+AUTH0_MANAGEMENT_DOMAIN="seu-tenant.us.auth0.com"
+AUTH0_MANAGEMENT_CLIENT_ID="..."
+AUTH0_MANAGEMENT_CLIENT_SECRET="..."
+# Opcional; por padrão usa https://$AUTH0_MANAGEMENT_DOMAIN/api/v2/
+AUTH0_MANAGEMENT_AUDIENCE="https://seu-tenant.us.auth0.com/api/v2/"
+```
+
+Use o domínio canônico do tenant no `AUTH0_MANAGEMENT_DOMAIN`, não o domínio
+personalizado usado pela tela de login.
 
 Comandos úteis:
 

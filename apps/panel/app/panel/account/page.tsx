@@ -10,7 +10,6 @@ import {
   ShieldCheck,
   UserRound,
 } from "lucide-react";
-import Link from "next/link";
 import { getAuthorizationContext, getPrimaryRole } from "@/lib/authorization";
 import { getCurrentDatabaseUser } from "@/lib/current-user";
 import { AccountPictureForm } from "./account-picture-form";
@@ -131,10 +130,10 @@ export default async function AccountPage() {
             </p>
           </div>
           <Button asChild variant="outline" className="w-full sm:w-fit">
-            <Link href="/auth/logout">
+            <a href="/auth/logout">
               <LogOut />
               Sair da conta
-            </Link>
+            </a>
           </Button>
         </div>
       </section>
