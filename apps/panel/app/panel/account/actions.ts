@@ -119,8 +119,12 @@ function parseOptionalUrl(value: FormDataEntryValue | null) {
   const text = String(value ?? "").trim();
   if (!text) return null;
 
+  if (/^https:\/\//i.test(text)) {
+    return text;
+  }
+
   if (!/^www\./i.test(text)) {
-    throw new Error("Os links devem começar com www.");
+    throw new Error("Os links devem começar com https:// ou www.");
   }
 
   return `https://${text}`;

@@ -119,12 +119,12 @@ export default async function AccountPage() {
         <AuthorProfileForm
           defaults={{
             bio: user.bio ?? "",
-            website: formatSocialUrlForInput(user.website),
-            instagram: formatSocialUrlForInput(user.instagram),
-            linkedin: formatSocialUrlForInput(user.linkedin),
-            youtube: formatSocialUrlForInput(user.youtube),
-            tiktok: formatSocialUrlForInput(user.tiktok),
-            x: formatSocialUrlForInput(user.x),
+            website: user.website ?? "",
+            instagram: user.instagram ?? "",
+            linkedin: user.linkedin ?? "",
+            youtube: user.youtube ?? "",
+            tiktok: user.tiktok ?? "",
+            x: user.x ?? "",
           }}
         />
       </section>
@@ -161,10 +161,6 @@ export default async function AccountPage() {
       </section>
     </div>
   );
-}
-
-function formatSocialUrlForInput(value: string | null) {
-  return value?.replace(/^https?:\/\//i, "") ?? "";
 }
 
 function ProfileItem({
