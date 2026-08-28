@@ -1,4 +1,4 @@
-:root, .light, .light-theme {
+:root {
   --lime-1: #fcfdfa;
   --lime-2: #f7fbf4;
   --lime-3: #edf3e9;
@@ -33,7 +33,7 @@
 
 @supports (color: color(display-p3 1 1 1)) {
   @media (color-gamut: p3) {
-    :root, .light, .light-theme {
+		:root {
       --lime-1: oklch(99.3% 0.0048 130.5);
       --lime-2: oklch(98.3% 0.0106 130.5);
       --lime-3: oklch(95.6% 0.014 130.5);
@@ -68,7 +68,7 @@
   }
 }
 
-.dark, .dark-theme {
+/* .dark, .dark-theme {
   --lime-1: #0f130b;
   --lime-2: #141a0f;
   --lime-3: #1f2915;
@@ -137,3 +137,4 @@
     }
   }
 }
+*/
