@@ -28,7 +28,7 @@ kianda-diversidade/
 - **Linguagem**: TypeScript
 - **UI**: Tailwind CSS 4 + Radix UI + componentes próprios em `packages/ui`
 - **Formulários**: React Hook Form + Zod
-- **Tema**: next-themes (suporte a dark mode)
+- **Tema**: paleta clara fixa
 - **Lint/Format**: Biome (panel), ESLint (web), Prettier
 - **Banco de dados**: Prisma + PostgreSQL no Neon em `packages/db`
 - **Imagens**: ImageKit

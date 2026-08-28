@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
-// @ts-expect-error CSS side-effect imports are resolved by Next.js at build time.
 import "@workspace/ui/globals.css";
-// @ts-expect-error CSS side-effect imports are resolved by Next.js at build time.
 import "./fonts.css";
 
 import Footer from "@/components/footer";
