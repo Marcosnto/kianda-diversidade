@@ -118,16 +118,96 @@ function processMarkdownBlock(block: string) {
 	return `<p>${withImages.replace(/\n/g, "<br />")}</p>`;
 }
 
+function getVideoEmbed(urlValue: string) {
+	try {
+		const markdownUrl = urlValue.match(/^\[[^\]]*]\((https?:\/\/[^)\s]+)\)$/);
+		const url = new URL(markdownUrl?.[1] ?? urlValue);
+		const hostname = url.hostname.toLowerCase().replace(/^www\./, "");
+
+		if (
+			hostname === "youtube.com" ||
+			hostname === "m.youtube.com" ||
+			hostname === "youtu.be"
+		) {
+			const pathSegments = url.pathname.split("/").filter(Boolean);
+			const id =
+				hostname === "youtu.be"
+					? pathSegments[0]
+					: url.searchParams.get("v") ??
+						(pathSegments[0] === "embed" || pathSegments[0] === "shorts"
+							? pathSegments[1]
+							: undefined);
+
+			if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) {
+				return {
+					src: `https://www.youtube-nocookie.com/embed/${id}`,
+					title: "Vídeo do YouTube",
+				};
+			}
+		}
+
+		if (hostname === "vimeo.com" || hostname === "player.vimeo.com") {
+			const id = url.pathname.split("/").filter(Boolean).find((part) => /^\d+$/.test(part));
+
+			if (id) {
+				return {
+					src: `https://player.vimeo.com/video/${id}`,
+					title: "Vídeo do Vimeo",
+				};
+			}
+		}
+	} catch {
+		return null;
+	}
+
+	return null;
+}
+
+function renderVideoEmbed(url: string) {
+	const video = getVideoEmbed(decodeBasicHtmlEntities(url));
+	if (!video) return "";
+
+	return `<figure class="media my-6"><div class="aspect-video w-full"><iframe src="${video.src}" title="${video.title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen class="h-full w-full rounded-lg"></iframe></div></figure>`;
+}
+
 function processRichTextContent(content: string): string {
-	const withEmbeds = content.replace(
-		/<figure class="media"><oembed url="https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([^"]+)"><\/oembed><\/figure>/g,
-		'<figure class="media"><div class="aspect-video w-full"><iframe src="https://www.youtube.com/embed/$1" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full rounded-lg"></iframe></div></figure>',
-	);
+	const videoEmbeds: string[] = [];
+	const addVideoEmbed = (url: string) => {
+		const embed = renderVideoEmbed(url);
+		if (!embed) return "";
+
+		const marker = `__KIANDA_VIDEO_EMBED_${videoEmbeds.length}__`;
+		videoEmbeds.push(embed);
+		return `\n\n${marker}\n\n`;
+	};
+
+	const withEmbeds = content
+		.replace(
+			/::video\{url=(?:"([^"]+)"|'([^']+)')\}/g,
+			(_, doubleQuotedUrl: string | undefined, singleQuotedUrl: string | undefined) =>
+				addVideoEmbed(doubleQuotedUrl ?? singleQuotedUrl ?? ""),
+		)
+		.replace(
+			/<figure class=["']media["']>\s*<oembed url=["']([^"']+)["']><\/oembed>\s*<\/figure>/gi,
+			(_, url: string) => addVideoEmbed(url),
+		)
+		.replace(
+			/<figure\b[^>]*>\s*<div\b[^>]*>\s*<iframe\b[^>]*\bsrc=["']([^"']+)["'][\s\S]*?<\/iframe>\s*<\/div>\s*<\/figure>/gi,
+			(_, url: string) => addVideoEmbed(url),
+		);
 
 	return withEmbeds
 		.split(/\n{2,}/)
-		.map(processMarkdownBlock)
-		.join("");
+		.map((block) => {
+			const trimmedBlock = block.trim();
+			return /^__KIANDA_VIDEO_EMBED_\d+__$/.test(trimmedBlock)
+				? trimmedBlock
+				: processMarkdownBlock(block);
+		})
+		.join("")
+		.replace(/__KIANDA_VIDEO_EMBED_(\d+)__/g, (_, index: string) => {
+			return videoEmbeds[Number(index)] ?? "";
+		});
 }
 
 export default async function PostPage({ params }: Props) {

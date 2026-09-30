@@ -32,7 +32,7 @@ import {
   usePublisher,
 } from "@mdxeditor/editor";
 import { $getSelection, $isRangeSelection, type LexicalNode } from "lexical";
-import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
+import { AlignCenter, AlignLeft, AlignRight, Video } from "lucide-react";
 import type { ForwardedRef, ReactNode } from "react";
 import { toast } from "sonner";
 import "@mdxeditor/editor/style.css";
@@ -136,6 +136,65 @@ const AlignDirectiveDescriptor: DirectiveDescriptor = {
     );
   },
 };
+
+const VideoDirectiveDescriptor: DirectiveDescriptor = {
+  name: "video",
+  testNode: (node) => node.name === "video",
+  attributes: ["url"],
+  hasChildren: false,
+  type: "leafDirective",
+  Editor: ({ mdastNode }) => {
+    const url =
+      (mdastNode.attributes as { url?: string } | undefined)?.url ?? "";
+
+    return (
+      <div className="mdxeditor-video-embed" contentEditable={false}>
+        <Video aria-hidden="true" size={20} />
+        <div>
+          <p>Vídeo incorporado</p>
+          <span title={url}>{url}</span>
+        </div>
+      </div>
+    );
+  },
+};
+
+function getSupportedVideoUrl(value: string) {
+  try {
+    const url = new URL(value.trim());
+    const hostname = url.hostname.toLowerCase().replace(/^www\./, "");
+
+    if (
+      hostname === "youtu.be" ||
+      hostname === "youtube.com" ||
+      hostname === "m.youtube.com"
+    ) {
+      const pathSegments = url.pathname.split("/").filter(Boolean);
+      const id =
+        hostname === "youtu.be"
+          ? pathSegments[0]
+          : url.searchParams.get("v") ??
+            (pathSegments[0] === "embed" || pathSegments[0] === "shorts"
+              ? pathSegments[1]
+              : undefined);
+
+      return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? url.toString() : null;
+    }
+
+    if (hostname === "vimeo.com" || hostname === "player.vimeo.com") {
+      const id = url.pathname
+        .split("/")
+        .filter(Boolean)
+        .find((part) => /^\d+$/.test(part));
+
+      return id ? url.toString() : null;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 function AlignButton({
   direction,
@@ -243,6 +302,42 @@ function AlignmentButtons() {
   );
 }
 
+function InsertVideo() {
+  const insertDirective = usePublisher(insertDirective$);
+
+  const onClick = () => {
+    const value = window.prompt(
+      "Cole a URL do vídeo do YouTube ou Vimeo que deseja incorporar:",
+    );
+
+    if (value === null) return;
+
+    const url = getSupportedVideoUrl(value);
+    if (!url) {
+      toast.error("Use uma URL válida do YouTube ou Vimeo.");
+      return;
+    }
+
+    insertDirective({
+      type: "leafDirective",
+      name: "video",
+      attributes: { url },
+    } as never);
+  };
+
+  return (
+    <button
+      type="button"
+      title="Inserir vídeo"
+      aria-label="Inserir vídeo"
+      onClick={onClick}
+      className="mdxeditor-align-button"
+    >
+      <Video size={16} />
+    </button>
+  );
+}
+
 export default function InitializedMDXEditor({
   editorRef,
   onImageUploadChange,
@@ -264,7 +359,9 @@ export default function InitializedMDXEditor({
             uploadContentImageToImageKit(image, onImageUploadChange),
         }),
         tablePlugin(),
-        directivesPlugin({ directiveDescriptors: [AlignDirectiveDescriptor] }),
+        directivesPlugin({
+          directiveDescriptors: [AlignDirectiveDescriptor, VideoDirectiveDescriptor],
+        }),
         diffSourcePlugin({ viewMode: "rich-text" }),
         markdownShortcutPlugin(),
         toolbarPlugin({
@@ -282,6 +379,7 @@ export default function InitializedMDXEditor({
               <Separator />
               <CreateLink />
               <InsertImage />
+              <InsertVideo />
               <InsertTable />
               <InsertThematicBreak />
             </>
