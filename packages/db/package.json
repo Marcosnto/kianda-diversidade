@@ -9,6 +9,7 @@
     "prisma:migrate:dev": "pnpm exec prisma migrate dev",
     "prisma:migrate:deploy": "pnpm exec prisma migrate deploy",
     "prisma:studio": "pnpm exec prisma studio",
+    "prisma:migrate:status": "pnpm exec prisma migrate status",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -33,6 +34,7 @@
     "./contact-channels": "./src/contact-channels.ts",
     "./media": "./src/media.ts",
     "./prisma": "./src/prisma.ts",
-    "./users": "./src/users.ts"
+    "./users": "./src/users.ts",
+    "./therapeutic-contract": "./src/therapeutic-contract.ts"
   }
 }

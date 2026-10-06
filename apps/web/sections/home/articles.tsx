@@ -47,20 +47,20 @@ export default async function Articles() {
           ({ id, title, published_in, cover_image, tags, author }, index) => {
             const bgColor = bgColors[index % bgColors.length];
             return (
-              <ArticleCard
-                key={id}
-                id={id}
-                title={title}
-                author={author?.name ?? "Kianda Diversidade"}
-                authorId={author?.id}
-                date={published_in}
-                tags={tags}
-                coverImage={cover_image?.url}
-                bgColor={bgColor}
-                linkClassName="lg:flex-col lg:overflow-hidden w-full max-w-full"
-                imageSizeClassName="md:w-[350px] md:h-[250px] lg:w-full lg:h-[300px] xl:w-full xl:h-[350px] 2xl:w-full 2xl:h-[400px]"
-              />
-            );
+							<ArticleCard
+								key={id}
+								id={id}
+								title={title}
+								author={author?.name ?? "Kianda Diversidade"}
+								authorId={author?.id}
+								date={published_in}
+								tags={tags}
+								coverImage={cover_image?.url}
+								bgColor={bgColor}
+								linkClassName="lg:flex-col lg:overflow-hidden w-full max-w-full"
+								imageSizeClassName="md:w-[350px] md:h-[320px] lg:w-full lg:h-[362px] xl:w-full xl:h-[380px] 2xl:w-full 2xl:h-[300px]"
+							/>
+						);
           },
         )}
       </div>

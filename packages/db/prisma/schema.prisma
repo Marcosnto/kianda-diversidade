@@ -47,8 +47,48 @@ model User {
   updated_at DateTime @updatedAt
 
   articles Article[]
+  therapeutic_contract TherapeuticContract?
 
   @@map("users")
+}
+
+model TherapeuticContract {
+  id                     String   @id @default(uuid())
+  user_id                String   @unique
+  full_name              String
+  birth_date             DateTime @db.Date
+  rg                     String
+  cpf                    String
+  email                  String
+  contact                String
+  address                String
+  education_level        String
+  profession             String
+  ethnicity              String
+  sexual_orientation     String
+  pronouns               String
+  gender                 String
+  gender_other           String?
+  marital_status         String
+  has_children           Boolean
+  children_count         Int?
+  religion               String?
+  has_disability         Boolean
+  disability_details     String?
+  needs_adaptation       Boolean?
+  spouse                 String?
+  emergency_contact_1_name         String
+  emergency_contact_1_phone        String
+  emergency_contact_1_relationship String
+  emergency_contact_2_name         String
+  emergency_contact_2_phone        String
+  emergency_contact_2_relationship String
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("therapeutic_contracts")
 }
 
 model Tag {

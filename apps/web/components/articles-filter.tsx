@@ -100,105 +100,106 @@ export function ArticlesFilter({
   };
 
   return (
-    <>
-      <form
-        className="mx-auto flex w-full max-w-3xl flex-col gap-3 sm:flex-row"
-        onSubmit={submitSearch}
-      >
-        <div className="relative min-w-0 flex-1">
-          <Search
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-k-olive-dark/70"
-          />
-          <Input
-            aria-label="Pesquisar artigos"
-            className="h-12 rounded-lg border-k-olive-light bg-white pr-4 pl-11 text-base text-k-olive-deep shadow-none placeholder:text-k-olive-dark/60 focus-visible:border-k-olive-dark focus-visible:ring-k-olive-light/30"
-            name="busca"
-            onChange={(event) => setInputValue(event.target.value)}
-            placeholder="Pesquisar por título, tag ou autor"
-            type="search"
-            value={inputValue}
-          />
-        </div>
-        <div className="flex gap-2">
-          <Button
-            className="h-12 flex-1 rounded-lg bg-k-olive-dark px-6 text-k-yellow-light hover:bg-k-olive-deep sm:flex-none"
-            type="submit"
-          >
-            <Search />
-            Pesquisar
-          </Button>
-          {search && (
-            <Button
-              aria-label="Limpar pesquisa"
-              className="size-12 rounded-lg border-k-olive-light bg-transparent text-k-olive-dark hover:bg-k-olive-light/10"
-              onClick={clearSearch}
-              size="icon"
-              type="button"
-              variant="outline"
-            >
-              <X />
-            </Button>
-          )}
-        </div>
-      </form>
+		<>
+			<form
+				className="mx-auto flex w-full max-w-3xl flex-col gap-3 sm:flex-row"
+				onSubmit={submitSearch}
+			>
+				<div className="relative min-w-0 flex-1">
+					<Search
+						aria-hidden="true"
+						className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-k-olive-dark/70"
+					/>
+					<Input
+						aria-label="Pesquisar artigos"
+						className="h-12 rounded-lg border-k-olive-light bg-white pr-4 pl-11 text-base text-k-olive-deep shadow-none placeholder:text-k-olive-dark/60 focus-visible:border-k-olive-dark focus-visible:ring-k-olive-light/30"
+						name="busca"
+						onChange={(event) => setInputValue(event.target.value)}
+						placeholder="Pesquisar por título, tag ou autor"
+						type="search"
+						value={inputValue}
+					/>
+				</div>
+				<div className="flex gap-2">
+					<Button
+						className="h-12 flex-1 rounded-lg bg-k-olive-dark px-6 text-k-yellow-light hover:bg-k-olive-deep sm:flex-none"
+						type="submit"
+					>
+						<Search />
+						Pesquisar
+					</Button>
+					{search && (
+						<Button
+							aria-label="Limpar pesquisa"
+							className="size-12 rounded-lg border-k-olive-light bg-transparent text-k-olive-dark hover:bg-k-olive-light/10"
+							onClick={clearSearch}
+							size="icon"
+							type="button"
+							variant="outline"
+						>
+							<X />
+						</Button>
+					)}
+				</div>
+			</form>
 
-      {search && (
-        <p
-          aria-live="polite"
-          className="mt-5 text-sm text-k-olive-dark sm:text-base"
-        >
-          {filteredArticles.length === 1
-            ? "1 artigo encontrado"
-            : `${filteredArticles.length} artigos encontrados`}{" "}
-          para <strong className="font-semibold">“{search}”</strong>.
-        </p>
-      )}
+			{search && (
+				<p
+					aria-live="polite"
+					className="mt-5 text-sm text-k-olive-dark sm:text-base"
+				>
+					{filteredArticles.length === 1
+						? "1 artigo encontrado"
+						: `${filteredArticles.length} artigos encontrados`}{" "}
+					para <strong className="font-semibold">“{search}”</strong>.
+				</p>
+			)}
 
-      {filteredArticles.length > 0 ? (
-        <ul
-          className={cn(
-            "my-8 grid grid-cols-1 gap-6 sm:my-10 sm:gap-8",
-            "md:grid-cols-1",
-            "lg:grid-cols-3 lg:gap-10",
-            "xl:gap-12",
-            "2xl:gap-14",
-          )}
-        >
-          {filteredArticles.map(
-            ({ id, title, published_in, cover_image, tags, author }) => (
-              <li key={id} className="w-full">
-                <ArticleCard
-                  id={id}
-                  title={title}
-                  author={author?.name ?? LEGACY_ARTICLE_AUTHOR}
-                  authorId={author?.id}
-                  date={published_in}
-                  tags={tags}
-                  coverImage={cover_image?.url}
-                  linkClassName="w-full"
-                />
-              </li>
-            ),
-          )}
-        </ul>
-      ) : (
-        <div className="py-20 text-center">
-          <h1 className="text-2xl font-semibold text-k-olive-deep md:text-3xl">
-            Nenhum artigo encontrado
-          </h1>
-          <p className="mt-3 text-base leading-7 text-k-olive-dark md:text-lg">
-            Tente pesquisar por outro título, tag ou autor.
-          </p>
-          <Button
-            className="mt-6 rounded-lg bg-k-olive-dark px-6 text-k-yellow-light hover:bg-k-olive-deep"
-            onClick={clearSearch}
-            type="button"
-          >
-            Limpar pesquisa
-          </Button>
-        </div>
-      )}
-    </>
-  );
+			{filteredArticles.length > 0 ? (
+				<ul
+					className={cn(
+						"my-8 grid grid-cols-1 gap-6 sm:my-10 sm:gap-8",
+						"md:grid-cols-1",
+						"lg:grid-cols-3 lg:gap-10",
+						"xl:gap-12",
+						"2xl:gap-14",
+					)}
+				>
+					{filteredArticles.map(
+						({ id, title, published_in, cover_image, tags, author }) => (
+							<li key={id} className="w-full">
+								<ArticleCard
+									id={id}
+									title={title}
+									author={author?.name ?? LEGACY_ARTICLE_AUTHOR}
+									authorId={author?.id}
+									date={published_in}
+									tags={tags}
+									coverImage={cover_image?.url}
+									linkClassName="w-full"
+									imageSizeClassName="lg:h-[362px] xl:h-[380px] 2xl:h-[300px]"
+								/>
+							</li>
+						),
+					)}
+				</ul>
+			) : (
+				<div className="py-20 text-center">
+					<h1 className="text-2xl font-semibold text-k-olive-deep md:text-3xl">
+						Nenhum artigo encontrado
+					</h1>
+					<p className="mt-3 text-base leading-7 text-k-olive-dark md:text-lg">
+						Tente pesquisar por outro título, tag ou autor.
+					</p>
+					<Button
+						className="mt-6 rounded-lg bg-k-olive-dark px-6 text-k-yellow-light hover:bg-k-olive-deep"
+						onClick={clearSearch}
+						type="button"
+					>
+						Limpar pesquisa
+					</Button>
+				</div>
+			)}
+		</>
+	);
 }

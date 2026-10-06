@@ -9,6 +9,7 @@ import {
 } from "@workspace/ui/components/sidebar";
 import {
   Bot,
+  ClipboardPenLine,
   GalleryVerticalEnd,
   type LucideIcon,
   SquareTerminal,
@@ -25,6 +26,7 @@ type SidebarAccess = {
   canCreateArticles: boolean;
   canManageSite: boolean;
   canReadUsers: boolean;
+  isPatient: boolean;
 };
 
 type NavItem = {
@@ -99,6 +101,20 @@ export function AppSidebar({
         {
           title: "Usuários",
           url: "/panel/admin/users",
+        },
+      ],
+    });
+  }
+
+  if (access.isPatient) {
+    navMain.push({
+      title: "Acompanhamento",
+      url: "/panel/therapeutic-contract",
+      icon: ClipboardPenLine,
+      items: [
+        {
+          title: "Contrato terapêutico",
+          url: "/panel/therapeutic-contract",
         },
       ],
     });

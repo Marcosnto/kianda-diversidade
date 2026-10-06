@@ -21,6 +21,7 @@ import {
 	getPrimaryRole,
 	hasAnyPermission,
 	hasPermission,
+	hasRole,
 	PERMISSIONS,
 } from "@/lib/authorization";
 import { getCurrentDatabaseUser } from "@/lib/current-user";
@@ -66,7 +67,8 @@ export default async function RootLayout({
 						PERMISSIONS.createArticles,
 					),
 					canManageSite: hasPermission(authorization, PERMISSIONS.manageSite),
-					canReadUsers: hasPermission(authorization, PERMISSIONS.readUsers),
+				canReadUsers: hasPermission(authorization, PERMISSIONS.readUsers),
+				isPatient: hasRole(authorization, "patient"),
 				}}
 			/>
 			<SidebarInset className="px-4">

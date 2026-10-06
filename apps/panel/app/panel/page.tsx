@@ -1,4 +1,6 @@
 import { getAuthorizationContext, getPrimaryRole } from "@/lib/authorization";
+import { Button } from "@workspace/ui/components/button";
+import Link from "next/link";
 
 const ROLE_CONTENT = {
   administrator: {
@@ -11,8 +13,7 @@ const ROLE_CONTENT = {
   },
   patient: {
     title: "Olá!",
-    description:
-      "Seu perfil de paciente está ativo. Novos recursos estarão disponíveis futuramente.",
+    description: "Seu perfil de paciente está ativo.",
   },
 };
 
@@ -25,6 +26,13 @@ export default async function Panel() {
     <div className="flex flex-1 flex-col gap-2 p-4 sm:p-6">
       <h1 className="text-2xl font-bold tracking-tight">{content.title}</h1>
       <p className="text-muted-foreground">{content.description}</p>
+      {role === "patient" && (
+        <Button asChild className="mt-4 w-fit">
+          <Link href="/panel/therapeutic-contract">
+            Preencher contrato terapêutico
+          </Link>
+        </Button>
+      )}
     </div>
   );
 }
