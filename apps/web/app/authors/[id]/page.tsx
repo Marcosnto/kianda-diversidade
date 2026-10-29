@@ -65,16 +65,16 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 	].filter((link): link is typeof link & { url: string } => Boolean(link.url));
 
 	return (
-		<main className="mx-auto w-full max-w-7xl px-4 pt-28 pb-16 sm:px-6 sm:pt-32 lg:px-8 xl:px-12">
-			<section className="grid items-start gap-7 border-b border-k-olive-light pb-10 md:grid-cols-[240px_1fr] lg:grid-cols-[300px_1fr] lg:gap-12">
-				<div className="relative aspect-square w-full max-w-[300px] overflow-hidden rounded-lg bg-k-olive-dark text-white">
+		<main className="mx-auto w-full px-4 pt-28 pb-16 sm:px-6 sm:pt-32 lg:px-8 xl:px-12 2xl:px-32">
+			<section className="flex flex-col items-start gap-7 border-b border-k-olive-light pb-10 lg:flex-row lg:gap-8">
+				<div className="relative w-full overflow-hidden rounded-lg bg-k-olive-dark text-white h-[294px] sm:h-[362px] md:h-[320px] lg:w-[30%] lg:flex-shrink-0 lg:h-[362px] xl:h-[380px] 2xl:w-[25%] 2xl:h-[300px]">
 					{author.picture ? (
 						<Image
 							alt={author.name}
 							className="object-cover"
 							fill
 							priority
-							sizes="(max-width: 768px) 80vw, 300px"
+							sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 30vw"
 							src={author.picture}
 						/>
 					) : (
@@ -84,7 +84,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 					)}
 				</div>
 
-				<div className="min-w-0">
+				<div className="min-w-0 lg:flex-1">
 					<p className="text-sm font-semibold uppercase text-k-cinnamon">
 						Autor
 					</p>
@@ -96,7 +96,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 					</p>
 
 					{socialLinks.length > 0 && (
-						<ul className="mt-6 flex flex-wrap gap-2">
+						<ul className="mt-6 flex flex-wrap justify-center gap-2 lg:justify-start">
 							{socialLinks.map(({ label, url, icon: Icon }) => (
 								<li key={label}>
 									<a

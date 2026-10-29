@@ -82,10 +82,10 @@ export function AuthorsFilter({ authors }: AuthorsFilterProps) {
 					{filteredAuthors.map((author) => (
 						<li key={author.id}>
 							<Link
-								className="group mx-auto flex h-full w-full max-w-80.25 flex-col overflow-hidden rounded-lg bg-k-olive-light text-white transition-transform hover:-translate-y-1 md:max-w-99"
+								className="group mx-auto flex h-full w-full flex-col overflow-hidden rounded-lg bg-k-olive-light text-white transition-transform hover:-translate-y-1"
 								href={`/authors/${author.id}`}
 							>
-								<div className="relative aspect-square w-full overflow-hidden bg-k-olive-dark">
+								<div className="relative w-full overflow-hidden bg-k-olive-dark h-[294px] sm:h-[362px] md:h-[320px] lg:h-[362px] xl:h-[380px] 2xl:h-[300px]">
 									{author.picture ? (
 										<Image
 											alt={author.name}
