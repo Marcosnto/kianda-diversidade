@@ -85,11 +85,11 @@ export function AuthorsFilter({ authors }: AuthorsFilterProps) {
 								className="group mx-auto flex h-full w-full max-w-80.25 flex-col overflow-hidden rounded-lg bg-k-olive-light text-white transition-transform hover:-translate-y-1 md:max-w-99"
 								href={`/authors/${author.id}`}
 							>
-								<div className="relative h-73.5 w-full overflow-hidden bg-k-olive-dark sm:h-90.5 md:h-80 lg:h-90.5 xl:h-95 2xl:h-75">
+								<div className="relative aspect-square w-full overflow-hidden bg-k-olive-dark">
 									{author.picture ? (
 										<Image
 											alt={author.name}
-											className="object-contain"
+											className="object-cover"
 											fill
 											sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
 											src={author.picture}
