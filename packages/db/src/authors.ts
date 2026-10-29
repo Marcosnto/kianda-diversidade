@@ -20,6 +20,10 @@ function publicAuthorSelect() {
     youtube: true,
     tiktok: true,
     x: true,
+    facebook: true,
+    threads: true,
+    lattes: true,
+    academia: true,
     _count: {
       select: {
         articles: {

@@ -85,6 +85,10 @@ export async function updateAuthorProfileAction(
       youtube: parseOptionalUrl(formData.get("youtube")),
       tiktok: parseOptionalUrl(formData.get("tiktok")),
       x: parseOptionalUrl(formData.get("x")),
+      facebook: parseOptionalUrl(formData.get("facebook")),
+      threads: parseOptionalUrl(formData.get("threads")),
+      lattes: parseOptionalUrl(formData.get("lattes")),
+      academia: parseOptionalUrl(formData.get("academia")),
     });
 
     revalidatePath("/panel/account");

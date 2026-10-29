@@ -160,9 +160,9 @@ export function ArticlesFilter({
 					className={cn(
 						"my-8 grid grid-cols-1 gap-6 sm:my-10 sm:gap-8",
 						"md:grid-cols-1",
-						"lg:grid-cols-3 lg:gap-10",
-						"xl:gap-12",
-						"2xl:gap-14",
+						"lg:grid-cols-2 lg:gap-8",
+						"xl:grid-cols-2 xl:gap-8",
+						"2xl:grid-cols-4 2xl:gap-8",
 					)}
 				>
 					{filteredArticles.map(
@@ -177,7 +177,6 @@ export function ArticlesFilter({
 									tags={tags}
 									coverImage={cover_image?.url}
 									linkClassName="w-full"
-									imageSizeClassName="lg:h-[362px] xl:h-[380px] 2xl:h-[300px]"
 								/>
 							</li>
 						),

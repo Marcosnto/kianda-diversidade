@@ -23,10 +23,10 @@ import {
   quotePlugin,
   rootEditor$,
   Separator,
+  type Translation,
   tablePlugin,
   thematicBreakPlugin,
   toolbarPlugin,
-  type Translation,
   UndoRedo,
   useCellValue,
   usePublisher,
@@ -62,10 +62,20 @@ const editorTranslations: Record<string, string> = {
   "uploadImage.height": "Altura:",
   "dialogControls.save": "Salvar",
   "dialogControls.cancel": "Cancelar",
+  "toolbar.blockTypes.paragraph": "Parágrafo",
+  "toolbar.blockTypes.quote": "Citação",
+  "toolbar.blockTypes.heading": "Título {{level}}",
+  "toolbar.blockTypeSelect.selectBlockTypeTooltip": "Selecionar tipo de texto",
+  "toolbar.blockTypeSelect.placeholder": "Tipo de texto",
 };
 
-const translateEditor: Translation = (key, defaultValue) =>
-  editorTranslations[key] ?? defaultValue;
+const translateEditor: Translation = (key, defaultValue, interpolations) => {
+  const translation = editorTranslations[key] ?? defaultValue;
+
+  return translation.replace(/{{(\w+)}}/g, (_, name: string) => {
+    return String(interpolations?.[name] ?? `{{${name}}}`);
+  });
+};
 
 async function uploadContentImageToImageKit(
   image: File,
@@ -173,10 +183,10 @@ function getSupportedVideoUrl(value: string) {
       const id =
         hostname === "youtu.be"
           ? pathSegments[0]
-          : url.searchParams.get("v") ??
+          : (url.searchParams.get("v") ??
             (pathSegments[0] === "embed" || pathSegments[0] === "shorts"
               ? pathSegments[1]
-              : undefined);
+              : undefined));
 
       return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? url.toString() : null;
     }
@@ -360,7 +370,10 @@ export default function InitializedMDXEditor({
         }),
         tablePlugin(),
         directivesPlugin({
-          directiveDescriptors: [AlignDirectiveDescriptor, VideoDirectiveDescriptor],
+          directiveDescriptors: [
+            AlignDirectiveDescriptor,
+            VideoDirectiveDescriptor,
+          ],
         }),
         diffSourcePlugin({ viewMode: "rich-text" }),
         markdownShortcutPlugin(),

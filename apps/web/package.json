@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:rich-text": "tsc --project tsconfig.rich-text-test.json && node --test .test-build/lib/rich-text.test.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

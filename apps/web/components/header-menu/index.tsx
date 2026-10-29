@@ -115,9 +115,8 @@ export default function HeaderMenu() {
 			<div
 				className={cn(
 					"h-[71px] items-center justify-between flex pl-4 pr-4 xl:hidden",
-					isHomePage
-						? "bg-k-olive-deep"
-						: "bg-k-olive-deep fixed top-0 left-0 right-0 z-40",
+					isHomePage ? "bg-k-olive-deep" : "bg-k-olive-deep",
+					"fixed top-0 left-0 right-0 z-40",
 				)}
 			>
 				<Link href="/">
@@ -176,8 +175,9 @@ export default function HeaderMenu() {
 					className={cn(
 						"hidden xl:flex w-full justify-center items-center pointer-events-auto select-none shadow-none p-4 z-40",
 						isHomePage
-							? "absolute top-0 left-0 bg-k-olive-light/30"
-							: "fixed top-0 left-0 bg-k-olive-dark",
+							? "bg-k-olive-light/20 backdrop-blur-sm"
+							: "bg-k-olive-dark",
+						"fixed top-0 left-0",
 					)}
 				>
 					<ul className="flex gap-5 xl:gap-8 2xl:gap-12 w-full justify-center text-xl 2xl:text-2xl font-medium text-white">
@@ -186,7 +186,7 @@ export default function HeaderMenu() {
 								{option.isPage ? (
 									<Link
 										href={option.path}
-										className="hover:text-k-amber transition-colors cursor-pointer"
+										className="transition-colors cursor-pointer hover:text-k-yellow-light hover:font-bold"
 									>
 										{option.label}
 									</Link>
@@ -194,7 +194,7 @@ export default function HeaderMenu() {
 									<button
 										type="button"
 										onClick={(e) => handleSectionClick(e, option.path)}
-										className="hover:text-k-amber transition-colors cursor-pointer"
+										className="transition-colors cursor-pointer hover:text-k-yellow-light hover:font-bold"
 									>
 										{option.label}
 									</button>

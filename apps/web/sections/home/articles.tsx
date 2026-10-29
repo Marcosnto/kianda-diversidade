@@ -58,7 +58,6 @@ export default async function Articles() {
 								coverImage={cover_image?.url}
 								bgColor={bgColor}
 								linkClassName="lg:flex-col lg:overflow-hidden w-full max-w-full"
-								imageSizeClassName="md:w-[350px] md:h-[320px] lg:w-full lg:h-[362px] xl:w-full xl:h-[380px] 2xl:w-full 2xl:h-[300px]"
 							/>
 						);
           },

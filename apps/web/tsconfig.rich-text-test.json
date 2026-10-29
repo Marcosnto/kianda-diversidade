@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"strict": true,
+		"skipLibCheck": true,
+		"types": ["node"],
+		"outDir": ".test-build",
+		"rootDir": ".",
+		"noEmit": false
+	},
+	"include": ["lib/rich-text.ts", "lib/rich-text.test.ts"]
+}

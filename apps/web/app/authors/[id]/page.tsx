@@ -6,9 +6,13 @@ import {
 import {
 	AtSign,
 	ExternalLink,
+	Facebook,
+	FileText,
 	Globe2,
+	GraduationCap,
 	Instagram,
 	Linkedin,
+	MessageCircle,
 	Music2,
 	Youtube,
 } from "lucide-react";
@@ -54,6 +58,10 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 		{ label: "YouTube", url: author.youtube, icon: Youtube },
 		{ label: "TikTok", url: author.tiktok, icon: Music2 },
 		{ label: "X", url: author.x, icon: AtSign },
+		{ label: "Facebook", url: author.facebook, icon: Facebook },
+		{ label: "Threads", url: author.threads, icon: MessageCircle },
+		{ label: "Lattes", url: author.lattes, icon: FileText },
+		{ label: "Academia.edu", url: author.academia, icon: GraduationCap },
 	].filter((link): link is typeof link & { url: string } => Boolean(link.url));
 
 	return (

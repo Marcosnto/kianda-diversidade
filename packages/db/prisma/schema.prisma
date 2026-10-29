@@ -43,6 +43,10 @@ model User {
   youtube    String?
   tiktok     String?
   x          String?
+  facebook   String?
+  threads    String?
+  lattes     String?
+  academia   String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

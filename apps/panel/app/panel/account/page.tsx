@@ -49,118 +49,122 @@ export default async function AccountPage() {
   }[role];
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 p-4 sm:p-6">
-      <header>
-        <h1 className="text-2xl font-bold tracking-tight">Conta</h1>
-        <p className="text-muted-foreground mt-1 text-sm">
-          Consulte os dados do seu perfil e sua atividade no painel.
-        </p>
-      </header>
+		<div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 p-4 sm:p-6">
+			<header>
+				<h1 className="text-2xl font-bold tracking-tight">Conta</h1>
+				<p className="text-muted-foreground mt-1 text-sm">
+					Consulte os dados do seu perfil e sua atividade no painel.
+				</p>
+			</header>
 
-      <section className="flex flex-col gap-5 rounded-lg border bg-background p-5 sm:flex-row sm:items-center sm:p-6">
-        <AccountPictureForm name={user.name} picture={user.picture} />
+			<section className="flex flex-col gap-5 rounded-lg border bg-background p-5 sm:flex-row sm:items-center sm:p-6">
+				<AccountPictureForm name={user.name} picture={user.picture} />
 
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="truncate text-xl font-semibold sm:text-2xl">
-              {user.name}
-            </h2>
-            <Badge variant="success">
-              <ShieldCheck />
-              {roleLabel}
-            </Badge>
-          </div>
-          <p className="text-muted-foreground mt-1 truncate text-sm">
-            {user.email ?? "E-mail não informado"}
-          </p>
-          <p className="text-muted-foreground mt-3 text-xs">
-            Nome e e-mail são sincronizados com o Auth0. A imagem pode ser
-            personalizada no painel.
-          </p>
-        </div>
-      </section>
+				<div className="min-w-0 flex-1">
+					<div className="flex flex-wrap items-center gap-2">
+						<h2 className="truncate text-xl font-semibold sm:text-2xl">
+							{user.name}
+						</h2>
+						<Badge variant="success">
+							<ShieldCheck />
+							{roleLabel}
+						</Badge>
+					</div>
+					<p className="text-muted-foreground mt-1 truncate text-sm">
+						{user.email ?? "E-mail não informado"}
+					</p>
+					<p className="text-muted-foreground mt-3 text-xs">
+						Nome e e-mail são sincronizados com o Auth0. A imagem pode ser
+						personalizada no painel.
+					</p>
+				</div>
+			</section>
 
-      <section className="rounded-lg border bg-background">
-        <div className="p-5 sm:p-6">
-          <h2 className="font-semibold">Informações do perfil</h2>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Dados utilizados para identificar a autoria dos artigos.
-          </p>
-        </div>
-        <Separator />
-        <dl className="grid gap-0 sm:grid-cols-2">
-          <ProfileItem icon={UserRound} label="Nome" value={user.name} />
-          <ProfileItem
-            icon={Mail}
-            label="E-mail"
-            value={user.email ?? "Não informado"}
-          />
-          <ProfileItem
-            icon={Fingerprint}
-            label="Provedor de acesso"
-            value={getAuthProvider(user.auth0_id)}
-          />
-          <ProfileItem
-            icon={CalendarDays}
-            label="Conta criada em"
-            value={formatDate(user.created_at)}
-          />
-        </dl>
-      </section>
+			<section className="rounded-lg border bg-background">
+				<div className="p-5 sm:p-6">
+					<h2 className="font-semibold">Informações do perfil</h2>
+					<p className="text-muted-foreground mt-1 text-sm">
+						Dados utilizados para identificar a autoria dos artigos.
+					</p>
+				</div>
+				<Separator />
+				<dl className="grid gap-0 sm:grid-cols-2">
+					<ProfileItem icon={UserRound} label="Nome" value={user.name} />
+					<ProfileItem
+						icon={Mail}
+						label="E-mail"
+						value={user.email ?? "Não informado"}
+					/>
+					<ProfileItem
+						icon={Fingerprint}
+						label="Provedor de acesso"
+						value={getAuthProvider(user.auth0_id)}
+					/>
+					<ProfileItem
+						icon={CalendarDays}
+						label="Conta criada em"
+						value={formatDate(user.created_at)}
+					/>
+				</dl>
+			</section>
 
-      <section className="rounded-lg border bg-background p-5 sm:p-6">
-        <div className="mb-5">
-          <h2 className="font-semibold">Perfil público do autor</h2>
-          <p className="text-muted-foreground mt-1 text-sm">
-            O perfil ficará disponível no site quando você possuir um artigo
-            publicado.
-          </p>
-        </div>
-        <AuthorProfileForm
-          defaults={{
-            bio: user.bio ?? "",
-            website: user.website ?? "",
-            instagram: user.instagram ?? "",
-            linkedin: user.linkedin ?? "",
-            youtube: user.youtube ?? "",
-            tiktok: user.tiktok ?? "",
-            x: user.x ?? "",
-          }}
-        />
-      </section>
+			<section className="rounded-lg border bg-background p-5 sm:p-6">
+				<div className="mb-5">
+					<h2 className="font-semibold">Perfil público do autor</h2>
+					<p className="text-muted-foreground mt-1 text-sm">
+						O perfil ficará disponível no site quando você possuir um artigo
+						publicado.
+					</p>
+				</div>
+				<AuthorProfileForm
+					defaults={{
+						bio: user.bio ?? "",
+						website: user.website ?? "",
+						instagram: user.instagram ?? "",
+						linkedin: user.linkedin ?? "",
+						youtube: user.youtube ?? "",
+						tiktok: user.tiktok ?? "",
+						x: user.x ?? "",
+						facebook: user.facebook ?? "",
+						threads: user.threads ?? "",
+						lattes: user.lattes ?? "",
+						academia: user.academia ?? "",
+					}}
+				/>
+			</section>
 
-      <section className="grid gap-4 sm:grid-cols-2">
-        <div className="flex items-center gap-4 rounded-lg border bg-background p-5">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-            <FileText className="size-5" />
-          </span>
-          <div>
-            <p className="text-2xl font-semibold">{user._count.articles}</p>
-            <p className="text-muted-foreground text-sm">
-              {user._count.articles === 1
-                ? "Artigo publicado por você"
-                : "Artigos publicados por você"}
-            </p>
-          </div>
-        </div>
+			<section className="grid gap-4 sm:grid-cols-2">
+				<div className="flex items-center gap-4 rounded-lg border bg-background p-5">
+					<span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+						<FileText className="size-5" />
+					</span>
+					<div>
+						<p className="text-2xl font-semibold">{user._count.articles}</p>
+						<p className="text-muted-foreground text-sm">
+							{user._count.articles === 1
+								? "Artigo publicado por você"
+								: "Artigos publicados por você"}
+						</p>
+					</div>
+				</div>
 
-        <div className="flex flex-col justify-center gap-3 rounded-lg border bg-background p-5">
-          <div>
-            <h2 className="font-semibold">Sessão</h2>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Encerre seu acesso neste dispositivo.
-            </p>
-          </div>
-          <Button asChild variant="outline" className="w-full sm:w-fit">
-            <a href="/auth/logout">
-              <LogOut />
-              Sair da conta
-            </a>
-          </Button>
-        </div>
-      </section>
-    </div>
-  );
+				<div className="flex flex-col justify-center gap-3 rounded-lg border bg-background p-5">
+					<div>
+						<h2 className="font-semibold">Sessão</h2>
+						<p className="text-muted-foreground mt-1 text-sm">
+							Encerre seu acesso neste dispositivo.
+						</p>
+					</div>
+					<Button asChild variant="outline" className="w-full sm:w-fit">
+						<a href="/auth/logout">
+							<LogOut />
+							Sair da conta
+						</a>
+					</Button>
+				</div>
+			</section>
+		</div>
+	);
 }
 
 function ProfileItem({

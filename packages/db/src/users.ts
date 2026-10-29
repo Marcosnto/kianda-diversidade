@@ -15,6 +15,10 @@ export type AuthorProfileInput = {
   youtube: string | null;
   tiktok: string | null;
   x: string | null;
+  facebook: string | null;
+  threads: string | null;
+  lattes: string | null;
+  academia: string | null;
 };
 
 export async function upsertAuthUser(input: UpsertAuthUserInput) {
