@@ -46,16 +46,16 @@ const ArticleCard = ({
 			)}
 		>
 			<Link
-				className="block shrink-0 lg:w-full"
+				className="block shrink-0 w-[120px] sm:w-[140px] md:w-[151px] lg:w-full"
 				href={`/posts/${id}`}
 				aria-label={`Abrir artigo ${title}`}
 			>
 				<div
 					className={cn(
-						"relative flex-shrink-0 overflow-hidden rounded-3xl bg-k-olive-light/20 lg:rounded-b-2xl",
-						"w-full h-[294px]",
-						"sm:h-[362px]",
-						"md:h-[320px]",
+						"relative w-full overflow-hidden rounded-3xl bg-k-olive-light/20 lg:rounded-b-2xl",
+						"h-[100px]",
+						"sm:h-[120px]",
+						"md:h-[140px]",
 						"lg:h-[362px]",
 						"xl:h-[380px]",
 						"2xl:h-[300px]",
