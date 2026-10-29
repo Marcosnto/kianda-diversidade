@@ -43,7 +43,8 @@ export default async function PostPage({ params }: Props) {
 		notFound();
 	}
 
-	const { title, published_in, cover_image, content, tags, author } = article;
+	const { title, summary, published_in, cover_image, content, tags, author } =
+		article;
 	const processedContent = processRichTextContent(content).trim();
 
 	return (
@@ -70,6 +71,12 @@ export default async function PostPage({ params }: Props) {
 					<h1 className="text-base font-bold mb-2 text-black leading-tight break-words sm:text-lg sm:mb-3 lg:text-2xl xl:text-3xl">
 						{title}
 					</h1>
+
+					{summary && (
+						<p className="mb-3 text-xs leading-5 text-k-olive-dark break-words sm:text-sm sm:leading-6 lg:mb-4 lg:text-base lg:leading-7">
+							{summary}
+						</p>
+					)}
 
 					<div className="flex flex-col gap-1 mb-4 sm:mb-0 min-w-0">
 						<p className="text-xs text-black break-words sm:text-sm lg:text-lg">
@@ -103,7 +110,7 @@ export default async function PostPage({ params }: Props) {
 					</div>
 				</div>
 
-				<div className="flex-1 min-w-0 lg:w-[70%]">
+				<div className="min-w-0 lg:flex-1 lg:w-[70%] 2xl:w-[75%]">
 					<div className="bg-k-olive-light rounded-lg p-4 text-white sm:rounded-xl sm:p-6 lg:p-8 xl:p-10 min-w-0 overflow-hidden">
 						<div
 							className={cn(

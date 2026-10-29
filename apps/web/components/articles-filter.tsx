@@ -10,19 +10,20 @@ import { type FormEvent, useEffect, useMemo, useState } from "react";
 const LEGACY_ARTICLE_AUTHOR = "Kianda Diversidade";
 
 type FilterArticle = {
-  id: string;
-  title: string;
-  published_in: Date | string | null;
-  cover_image: {
-    url: string;
-  } | null;
-  tags: Array<{
-    name: string;
-  }>;
-  author: {
-    id: string;
-    name: string;
-  } | null;
+	id: string;
+	title: string;
+	summary: string;
+	published_in: Date | string | null;
+	cover_image: {
+		url: string;
+	} | null;
+	tags: Array<{
+		name: string;
+	}>;
+	author: {
+		id: string;
+		name: string;
+	} | null;
 };
 
 type ArticlesFilterProps = {
@@ -166,11 +167,20 @@ export function ArticlesFilter({
 					)}
 				>
 					{filteredArticles.map(
-						({ id, title, published_in, cover_image, tags, author }) => (
+						({
+							id,
+							title,
+							summary,
+							published_in,
+							cover_image,
+							tags,
+							author,
+						}) => (
 							<li key={id} className="w-full">
 								<ArticleCard
 									id={id}
 									title={title}
+									summary={summary}
 									author={author?.name ?? LEGACY_ARTICLE_AUTHOR}
 									authorId={author?.id}
 									date={published_in}

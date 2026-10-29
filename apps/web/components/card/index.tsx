@@ -8,33 +8,35 @@ import { cn } from "@workspace/ui/lib/utils";
 import formatDatePtBR from "@/utils/format-date";
 
 type ArticleCardProps = {
-  id: string;
-  title: string;
-  date: Date | string | null;
-  author: string;
-  authorId?: string | null;
-  tags?: Array<{ name: string }>;
-  coverImage?: string | null;
-  bgColor?: string;
-  linkClassName?: string;
-  imageSizeClassName?: string;
+	id: string;
+	title: string;
+	summary?: string | null;
+	date: Date | string | null;
+	author: string;
+	authorId?: string | null;
+	tags?: Array<{ name: string }>;
+	coverImage?: string | null;
+	bgColor?: string;
+	linkClassName?: string;
+	imageSizeClassName?: string;
 };
 
 const ArticleCard = ({
-  id,
-  title,
-  author,
-  authorId,
-  date,
-  tags = [],
-  coverImage,
-  bgColor,
-  linkClassName,
-  imageSizeClassName,
+	id,
+	title,
+	summary,
+	author,
+	authorId,
+	date,
+	tags = [],
+	coverImage,
+	bgColor,
+	linkClassName,
+	imageSizeClassName,
 }: ArticleCardProps) => {
-  const visibleTags = tags.slice(0, 3);
+	const visibleTags = tags.slice(0, 3);
 
-  return (
+	return (
 		<article
 			className={cn(
 				"flex gap-3 w-full min-w-0",
@@ -77,7 +79,7 @@ const ArticleCard = ({
 			<div
 				className={cn(
 					"flex flex-col flex-1 min-w-0",
-					"justify-center",
+					"justify-center lg:justify-start",
 					"lg:p-4 lg:rounded-b-3xl",
 					"xl:p-5",
 					"2xl:p-6",
@@ -91,6 +93,16 @@ const ArticleCard = ({
 						<span className="bold line-clamp-2">{title}</span>
 					</TypographyLarge>
 				</Link>
+				{summary && (
+					<p
+						className={cn(
+							"mt-1 line-clamp-3 text-xs leading-5 text-k-olive-dark sm:text-sm sm:leading-6",
+							bgColor && "lg:text-white/85",
+						)}
+					>
+						{summary}
+					</p>
+				)}
 				<TypographyMuted className="flex flex-col">
 					<span
 						className={cn(
@@ -133,6 +145,10 @@ const ArticleCard = ({
 						</span>
 					)}
 				</TypographyMuted>
+				{/* Reserva o espaço das tags para manter os cards alinhados. */}
+				{visibleTags.length === 0 && (
+					<span aria-hidden="true" className="mt-2 hidden lg:block h-5" />
+				)}
 			</div>
 		</article>
 	);
