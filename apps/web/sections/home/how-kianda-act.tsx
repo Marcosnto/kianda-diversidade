@@ -145,10 +145,10 @@ export default function KiandaCarousel() {
 			<div className="hidden w-full md:grid md:grid-cols-2 md:gap-9 lg:gap-y-16 xl:grid-cols-2 xl:gap-x-12 2xl:grid-cols-4 2xl:gap-x-8">
 				{cards.map((card) => (
 					<div
-						className="w-full max-w-[396px] justify-self-center"
+						className="flex w-full max-w-[396px] flex-col justify-self-center"
 						key={card.id}
 					>
-						<div className="relative h-[294px] sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px] xl:h-[380px] 2xl:h-[300px]">
+						<div className="relative h-[294px] shrink-0 sm:h-[362px] md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px] xl:h-[380px] 2xl:h-[300px]">
 							<Image
 								className="mb-[6px] rounded-[1.75rem] object-cover"
 								fill
@@ -157,7 +157,7 @@ export default function KiandaCarousel() {
 							/>
 						</div>
 						<div
-							className={`${colorMap[card.backgroundColor]} h-[226px] rounded-[15px] text-center md:rounded-[15px] lg:h-[310px]`}
+							className={`${colorMap[card.backgroundColor]} flex flex-1 flex-col rounded-[15px] text-center md:rounded-[15px]`}
 						>
 							<h1
 								className="border-b-2 border-b-k_yellow_light pb-[12.5px] pt-[11.77px] font-medium text-white text-2xl xl:text-3xl"

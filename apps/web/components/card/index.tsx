@@ -52,7 +52,7 @@ const ArticleCard = ({
 			>
 				<div
 					className={cn(
-						"relative w-full overflow-hidden rounded-3xl bg-k-olive-light/20 lg:rounded-b-2xl",
+						"relative w-full overflow-hidden rounded-[1.75rem] bg-k-olive-light/20",
 						"h-[100px]",
 						"sm:h-[120px]",
 						"md:h-[140px]",
@@ -80,7 +80,7 @@ const ArticleCard = ({
 				className={cn(
 					"flex flex-col flex-1 min-w-0",
 					"justify-center lg:justify-start",
-					"lg:p-4 lg:rounded-b-3xl",
+					"rounded-[15px] lg:p-4",
 					"xl:p-5",
 					"2xl:p-6",
 					bgColor && `${bgColor}`,
@@ -90,7 +90,7 @@ const ArticleCard = ({
 					<TypographyLarge
 						className={cn("mb-0.5 xl:mb-1", bgColor && "lg:text-white")}
 					>
-						<span className="bold line-clamp-2">{title}</span>
+						<span className="bold line-clamp-3">{title}</span>
 					</TypographyLarge>
 				</Link>
 				{summary && (

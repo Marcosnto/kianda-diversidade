@@ -2,6 +2,7 @@
 
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
+import { cn } from "@workspace/ui/lib/utils";
 import type { PublicAuthorListItem } from "@workspace/db/authors";
 import { Search, X } from "lucide-react";
 import { useState } from "react";
@@ -78,29 +79,37 @@ export function AuthorsFilter({ authors }: AuthorsFilterProps) {
 			</div>
 
 			{filteredAuthors.length > 0 ? (
-				<ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+				<ul
+					className={cn(
+						"my-8 grid grid-cols-1 gap-6 sm:my-10 sm:gap-8",
+						"md:grid-cols-1",
+						"lg:grid-cols-2 lg:gap-8",
+						"xl:grid-cols-2 xl:gap-8",
+						"2xl:grid-cols-4 2xl:gap-8",
+					)}
+				>
 					{filteredAuthors.map((author) => (
-						<li key={author.id}>
+						<li className="w-full" key={author.id}>
 							<Link
-								className="group mx-auto flex h-full w-full flex-col overflow-hidden rounded-lg bg-k-olive-light text-white transition-transform hover:-translate-y-1"
+								className="group mx-auto flex h-full w-full gap-3 text-white transition-transform hover:-translate-y-1 sm:gap-3 lg:flex-col lg:gap-x-0"
 								href={`/authors/${author.id}`}
 							>
-								<div className="relative w-full overflow-hidden bg-k-olive-dark h-[294px] sm:h-[362px] md:h-[320px] lg:h-[362px] xl:h-[380px] 2xl:h-[300px]">
+								<div className="relative h-[100px] w-[120px] shrink-0 overflow-hidden rounded-[1.75rem] bg-k-off-white sm:h-[120px] sm:w-[140px] md:h-[140px] md:w-[151px] lg:h-[362px] lg:w-full xl:h-[380px] 2xl:h-[300px]">
 									{author.picture ? (
 										<Image
 											alt={author.name}
 											className="object-cover"
 											fill
-											sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+											sizes="(max-width: 640px) 120px, (max-width: 768px) 140px, (max-width: 1024px) 151px, (max-width: 1536px) 50vw, 25vw"
 											src={author.picture}
 										/>
 									) : (
-										<div className="flex h-full items-center justify-center text-5xl font-semibold">
+										<div className="flex h-full items-center justify-center rounded-[1.75rem] bg-k-olive-dark text-5xl font-semibold">
 											{getInitials(author.name)}
 										</div>
 									)}
 								</div>
-								<div className="flex flex-1 flex-col p-5">
+								<div className="flex flex-1 flex-col justify-center rounded-[15px] bg-k-olive-light p-3 pr-4 sm:p-4 lg:justify-start lg:p-5">
 									<h2 className="text-xl font-semibold">{author.name}</h2>
 									<p className="mt-2 line-clamp-3 text-sm leading-6 text-white/85">
 										{author.bio ??

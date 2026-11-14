@@ -44,17 +44,13 @@ export default async function Articles() {
 			<HomeTitle>Artigos e Publicações</HomeTitle>
 			<div className="grid grid-cols-1 gap-4 mb-2 md:grid-cols-1 md:gap-6 lg:grid-cols-2 lg:gap-8 xl:grid-cols-2 xl:gap-8 2xl:grid-cols-4 2xl:gap-8">
 				{articlesToDisplay.map(
-					(
-						{ id, title, summary, published_in, cover_image, tags, author },
-						index,
-					) => {
+					({ id, title, published_in, cover_image, tags, author }, index) => {
 						const bgColor = bgColors[index % bgColors.length];
 						return (
 							<ArticleCard
 								key={id}
 								id={id}
 								title={title}
-								summary={summary}
 								author={author?.name ?? "Kianda Diversidade"}
 								authorId={author?.id}
 								date={published_in}
