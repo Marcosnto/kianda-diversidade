@@ -129,13 +129,11 @@ function parseOptionalUrl(value: FormDataEntryValue | null) {
   const text = String(value ?? "").trim();
   if (!text) return null;
 
-  if (/^https:\/\//i.test(text)) {
+  // Aceita http:// e https:// (ex.: Currículo Lattes usa http).
+  if (/^https?:\/\//i.test(text)) {
     return text;
   }
 
-  if (!/^www\./i.test(text)) {
-    throw new Error("Os links devem começar com https:// ou www.");
-  }
-
+  // Sem protocolo: assume https:// (www é opcional).
   return `https://${text}`;
 }

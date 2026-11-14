@@ -26,48 +26,48 @@ type AuthorProfileFormProps = {
 };
 
 const SOCIAL_FIELDS = [
-  { name: "website", label: "Site", placeholder: "www.seusite.com" },
-  {
-    name: "instagram",
-    label: "Instagram",
-    placeholder: "www.instagram.com/seu-perfil",
-  },
-  {
-    name: "linkedin",
-    label: "LinkedIn",
-    placeholder: "www.linkedin.com/in/seu-perfil",
-  },
-  {
-    name: "youtube",
-    label: "YouTube",
-    placeholder: "www.youtube.com/@seu-canal",
-  },
-  {
-    name: "tiktok",
-    label: "TikTok",
-    placeholder: "www.tiktok.com/@seu-perfil",
-  },
-  { name: "x", label: "X", placeholder: "www.x.com/seu-perfil" },
-  {
-    name: "facebook",
-    label: "Facebook",
-    placeholder: "www.facebook.com/seu-perfil",
-  },
-  {
-    name: "threads",
-    label: "Threads",
-    placeholder: "www.threads.net/@seu-perfil",
-  },
-  {
-    name: "lattes",
-    label: "Lattes",
-    placeholder: "lattes.cnpq.br/seu-codigo",
-  },
-  {
-    name: "academia",
-    label: "Academia.edu",
-    placeholder: "seuperfil.academia.edu",
-  },
+	{ name: "website", label: "Site", placeholder: "seusite.com" },
+	{
+		name: "instagram",
+		label: "Instagram",
+		placeholder: "instagram.com/seu-perfil",
+	},
+	{
+		name: "linkedin",
+		label: "LinkedIn",
+		placeholder: "linkedin.com/in/seu-perfil",
+	},
+	{
+		name: "youtube",
+		label: "YouTube",
+		placeholder: "youtube.com/@seu-canal",
+	},
+	{
+		name: "tiktok",
+		label: "TikTok",
+		placeholder: "tiktok.com/@seu-perfil",
+	},
+	{ name: "x", label: "X", placeholder: "x.com/seu-perfil" },
+	{
+		name: "facebook",
+		label: "Facebook",
+		placeholder: "facebook.com/seu-perfil",
+	},
+	{
+		name: "threads",
+		label: "Threads",
+		placeholder: "threads.net/@seu-perfil",
+	},
+	{
+		name: "lattes",
+		label: "Lattes",
+		placeholder: "http://lattes.cnpq.br/seu-codigo",
+	},
+	{
+		name: "academia",
+		label: "Academia.edu",
+		placeholder: "seuperfil.academia.edu",
+	},
 ] as const;
 
 export function AuthorProfileForm({ defaults }: AuthorProfileFormProps) {

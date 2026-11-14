@@ -78,7 +78,7 @@ export default async function Footer() {
 					className="hidden xl:flex"
 					iconType="completeMoon"
 				>
-					2025
+					{new Date().getFullYear()}
 				</HomeTitle>
 			</div>
 
