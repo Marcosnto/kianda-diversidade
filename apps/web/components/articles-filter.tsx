@@ -167,20 +167,11 @@ export function ArticlesFilter({
 					)}
 				>
 					{filteredArticles.map(
-						({
-							id,
-							title,
-							summary,
-							published_in,
-							cover_image,
-							tags,
-							author,
-						}) => (
+						({ id, title, published_in, cover_image, tags, author }) => (
 							<li key={id} className="w-full">
 								<ArticleCard
 									id={id}
 									title={title}
-									summary={summary}
 									author={author?.name ?? LEGACY_ARTICLE_AUTHOR}
 									authorId={author?.id}
 									date={published_in}

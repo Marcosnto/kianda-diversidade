@@ -3,6 +3,7 @@ import {
 	getPublishedAuthorById,
 	getPublishedAuthors,
 } from "@workspace/db/authors";
+import { cn } from "@workspace/ui/lib/utils";
 import {
 	AtSign,
 	ExternalLink,
@@ -67,14 +68,14 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 	return (
 		<main className="mx-auto w-full px-4 pt-28 pb-16 sm:px-6 sm:pt-32 lg:px-8 xl:px-12 2xl:px-32">
 			<section className="flex flex-col items-start gap-7 border-b border-k-olive-light pb-10 lg:flex-row lg:gap-8">
-				<div className="relative w-full overflow-hidden rounded-lg bg-k-olive-dark text-white h-[294px] sm:h-[362px] md:h-[320px] lg:w-[30%] lg:flex-shrink-0 lg:h-[362px] xl:h-[380px] 2xl:w-[25%] 2xl:h-[300px]">
+				<div className="relative mx-auto aspect-square w-full max-w-[280px] overflow-hidden rounded-2xl bg-k-olive-dark text-white sm:max-w-[320px] lg:mx-0 lg:aspect-auto lg:h-[362px] lg:w-[30%] lg:max-w-none lg:flex-shrink-0 lg:rounded-lg xl:h-[380px] 2xl:h-[300px] 2xl:w-[calc((100%-3*2rem)/4)]">
 					{author.picture ? (
 						<Image
 							alt={author.name}
 							className="object-cover"
 							fill
 							priority
-							sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 30vw"
+							sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 30vw"
 							src={author.picture}
 						/>
 					) : (
@@ -84,7 +85,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 					)}
 				</div>
 
-				<div className="min-w-0 lg:flex-1">
+				<div className="w-full min-w-0 lg:flex-1">
 					<p className="text-sm font-semibold uppercase text-k-cinnamon">
 						Autor
 					</p>
@@ -96,22 +97,27 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 					</p>
 
 					{socialLinks.length > 0 && (
-						<ul className="mt-6 flex flex-wrap justify-center gap-2 lg:justify-start">
-							{socialLinks.map(({ label, url, icon: Icon }) => (
-								<li key={label}>
-									<a
-										className="inline-flex h-10 items-center gap-2 rounded-md border border-k-olive-light px-3 text-sm font-medium text-k-olive-dark transition-colors hover:bg-k-olive-light hover:text-white"
-										href={url}
-										rel="noreferrer"
-										target="_blank"
-									>
-										<Icon className="size-4" />
-										{label}
-										<ExternalLink className="size-3.5" />
-									</a>
-								</li>
-							))}
-						</ul>
+						<div className="mt-8">
+							<p className="text-xs font-semibold uppercase tracking-wide text-k-olive-dark/70">
+								Redes e links
+							</p>
+							<ul className="mt-3 grid max-w-xl grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+								{socialLinks.map(({ label, url, icon: Icon }) => (
+									<li key={label} className="min-w-0">
+										<a
+											className="group inline-flex h-11 w-full items-center gap-2.5 rounded-lg border border-k-olive-light/30 bg-k-off-white/60 px-3 text-sm font-medium text-k-olive-dark shadow-sm transition-all hover:border-k-olive-dark hover:bg-k-olive-dark hover:text-white hover:shadow-md focus-visible:ring-2 focus-visible:ring-k-olive-dark/30 focus-visible:outline-none"
+											href={url}
+											rel="noreferrer"
+											target="_blank"
+										>
+											<Icon className="size-4 shrink-0" />
+											<span className="truncate">{label}</span>
+											<ExternalLink className="ml-auto size-3.5 shrink-0 opacity-40 transition-opacity group-hover:opacity-100" />
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
 					)}
 				</div>
 			</section>
@@ -125,9 +131,17 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 						{author._count.articles} no total
 					</p>
 				</div>
-				<ul className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
+				<ul
+					className={cn(
+						"mt-8 grid grid-cols-1 gap-6 sm:gap-8",
+						"md:grid-cols-1",
+						"lg:grid-cols-2 lg:gap-8",
+						"xl:grid-cols-2 xl:gap-8",
+						"2xl:grid-cols-4 2xl:gap-8",
+					)}
+				>
 					{author.articles.map((article) => (
-						<li className="min-w-0" key={article.id}>
+						<li className="w-full" key={article.id}>
 							<ArticleCard
 								author={author.name}
 								authorId={author.id}
@@ -136,6 +150,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 								id={article.id}
 								tags={article.tags}
 								title={article.title}
+								linkClassName="w-full"
 							/>
 						</li>
 					))}

@@ -56,9 +56,9 @@ export default async function PostPage({ params }: Props) {
 					"lg:flex-row lg:gap-8 lg:items-start",
 				)}
 			>
-				<div className="flex flex-col min-w-0 lg:w-[30%] lg:flex-shrink-0 2xl:w-[25%]">
+				<div className="flex flex-col min-w-0 lg:w-[30%] lg:flex-shrink-0 2xl:w-[calc((100%-3*2rem)/4)]">
 					{cover_image?.url && (
-						<div className="relative w-full min-w-0 mb-3 h-[294px] overflow-hidden rounded-lg bg-k-olive-light/20 sm:h-[362px] sm:rounded-xl md:mb-2 md:h-[320px] lg:mb-6 lg:h-[362px] xl:h-[380px] 2xl:h-[300px]">
+						<div className="relative mb-3 h-[100px] w-full min-w-0 overflow-hidden rounded-lg bg-k-olive-light/20 sm:h-[120px] sm:rounded-xl md:mb-2 md:h-[140px] lg:mb-6 lg:h-[362px] xl:h-[380px] 2xl:h-[300px]">
 							<Image
 								src={cover_image.url}
 								alt={title || "Imagem do artigo"}

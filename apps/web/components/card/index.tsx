@@ -90,7 +90,7 @@ const ArticleCard = ({
 					<TypographyLarge
 						className={cn("mb-0.5 xl:mb-1", bgColor && "lg:text-white")}
 					>
-						<span className="bold line-clamp-2">{title}</span>
+						<span className="bold line-clamp-3">{title}</span>
 					</TypographyLarge>
 				</Link>
 				{summary && (

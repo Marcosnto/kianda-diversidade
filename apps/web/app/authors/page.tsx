@@ -12,7 +12,7 @@ export default async function AuthorsPage() {
 	const authors = await getPublishedAuthors();
 
 	return (
-		<main className="mx-auto w-full max-w-7xl px-4 pt-28 pb-16 sm:px-6 sm:pt-32 lg:px-8 xl:px-12">
+		<main className="mx-auto w-full px-4 pt-28 pb-16 sm:px-6 sm:pt-32 lg:px-8 xl:px-12 2xl:px-32">
 			<header className="max-w-3xl">
 				<h1 className="text-3xl font-semibold text-k-olive-deep sm:text-4xl">
 					Autores
