@@ -58,12 +58,12 @@ export default async function PostPage({ params }: Props) {
 			>
 				<div className="flex flex-col min-w-0 lg:w-[30%] lg:flex-shrink-0 2xl:w-[calc((100%-3*2rem)/4)]">
 					{cover_image?.url && (
-						<div className="relative mb-3 h-[100px] w-full min-w-0 overflow-hidden rounded-lg bg-k-olive-light/20 sm:h-[120px] sm:rounded-xl md:mb-2 md:h-[140px] lg:mb-6 lg:h-[362px] xl:h-[380px] 2xl:h-[300px]">
+						<div className="relative mb-3 aspect-[4/3] w-full min-w-0 overflow-hidden rounded-lg bg-k-olive-light/20 sm:rounded-xl lg:mb-6">
 							<Image
 								src={cover_image.url}
 								alt={title || "Imagem do artigo"}
 								fill
-								className="object-contain"
+								className="object-cover"
 								sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 30vw"
 							/>
 						</div>

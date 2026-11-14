@@ -30,6 +30,9 @@ import { useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { ImageCropDialog } from "@/components/image-crop-dialog";
+import { LoadingButton } from "@/components/loading-button";
+import { IMAGE_CROP_PRESETS } from "@/lib/image-crop-presets";
 
 const MDXEditor = dynamic(
   () => import("@/components/mdx-editor").then((m) => m.default),
@@ -110,6 +113,8 @@ export function ArticleForm({
   );
   const [isUploadingContentImage, setIsUploadingContentImage] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [pendingCoverFile, setPendingCoverFile] = useState<File | null>(null);
+  const [isCropOpen, setIsCropOpen] = useState(false);
   const contentImageUrlsRef = useRef(
     extractContentImageUrls(defaults?.content ?? ""),
   );
@@ -363,14 +368,19 @@ export function ArticleForm({
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      onChange(file);
-                      setCoverPreview(URL.createObjectURL(file));
+                      setPendingCoverFile(file);
+                      setIsCropOpen(true);
                     }
+                    // Permite selecionar o mesmo arquivo novamente.
+                    e.target.value = "";
                   }}
                   {...rest}
                 />
               </FormControl>
-              <FormDescription>JPG, PNG, WEBP ou GIF até 5MB.</FormDescription>
+              <FormDescription>
+                JPG, PNG, WEBP ou GIF até 5MB. Você poderá ajustar o
+                enquadramento.
+              </FormDescription>
               {coverPreview && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -497,15 +507,41 @@ export function ArticleForm({
           >
             Cancelar
           </Button>
-          <Button type="submit" disabled={isPending || isUploadingContentImage}>
-            {isUploadingContentImage
-              ? "Subindo imagem..."
-              : isPending
-                ? (pendingLabel ?? "Salvando...")
-                : submitLabel}
-          </Button>
+          <LoadingButton
+            type="submit"
+            loading={isPending || isUploadingContentImage}
+            loadingText={
+              isUploadingContentImage
+                ? "Subindo imagem..."
+                : (pendingLabel ?? "Salvando...")
+            }
+          >
+            {submitLabel}
+          </LoadingButton>
         </div>
       </form>
+
+      <ImageCropDialog
+        open={isCropOpen}
+        file={pendingCoverFile}
+        preset={IMAGE_CROP_PRESETS.articleCover}
+        onCancel={() => {
+          setIsCropOpen(false);
+          setPendingCoverFile(null);
+        }}
+        onConfirm={(cropped) => {
+          form.setValue("coverImage", cropped, {
+            shouldDirty: true,
+            shouldValidate: true,
+          });
+          setCoverPreview((current) => {
+            if (current?.startsWith("blob:")) URL.revokeObjectURL(current);
+            return URL.createObjectURL(cropped);
+          });
+          setIsCropOpen(false);
+          setPendingCoverFile(null);
+        }}
+      />
     </Form>
   );
 }

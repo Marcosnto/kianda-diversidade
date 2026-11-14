@@ -71,6 +71,9 @@ importers:
       react-dom:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
+      react-easy-crop:
+        specifier: ^6.2.5
+        version: 6.2.5(@types/react@19.2.15)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react-hook-form:
         specifier: ^7.68.0
         version: 7.76.0(react@19.2.4)
@@ -2818,6 +2821,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -3580,6 +3584,9 @@ packages:
     resolution: {integrity: sha512-pyFS63ptit/P5WqUkt+UUfe+4oevH+bFeIiPPdfb0pFeYEu/1ELnJu5l+5EcTKYL5M7zaAa7S8ddywgXypqKCw==}
     engines: {node: '>= 0.4'}
 
+  normalize-wheel@1.0.1:
+    resolution: {integrity: sha512-1OnlAPZ3zgrk8B91HyRj+eVv+kS5u+Z0SCsak6Xil/kmgEia50ga7zfkumayonZrImffAxPU/5WcyGhzetHNPA==}
+
   oauth4webapi@3.8.6:
     resolution: {integrity: sha512-iwemM91xz8nryHti2yTmg5fhyEMVOkOXwHNqbvcATjyajb5oQxCQzrNOA6uElRHuMhQQTKUyFKV9y/CNyg25BQ==}
 
@@ -3807,6 +3814,16 @@ packages:
     resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
     peerDependencies:
       react: 19.2.4
+
+  react-easy-crop@6.2.5:
+    resolution: {integrity: sha512-NoJ+mtq7vNu6b77VDT1g4D3GXrhp5N4zKR0r63yUbQzbUkr6/aPibFXAOEzxZcHfUB2/R4KwxOU8g3eB7hnKjQ==}
+    peerDependencies:
+      '@types/react': ^19.2.0
+      react: 19.2.4
+      react-dom: 19.2.4
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   react-error-boundary@3.1.4:
     resolution: {integrity: sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==}
@@ -8085,6 +8102,8 @@ snapshots:
       object.entries: 1.1.9
       semver: 6.3.1
 
+  normalize-wheel@1.0.1: {}
+
   oauth4webapi@3.8.6: {}
 
   object-assign@4.1.1: {}
@@ -8370,6 +8389,14 @@ snapshots:
     dependencies:
       react: 19.2.4
       scheduler: 0.27.0
+
+  react-easy-crop@6.2.5(@types/react@19.2.15)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      normalize-wheel: 1.0.1
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+    optionalDependencies:
+      '@types/react': 19.2.15
 
   react-error-boundary@3.1.4(react@19.2.4):
     dependencies:

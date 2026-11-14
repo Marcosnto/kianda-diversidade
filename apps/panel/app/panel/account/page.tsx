@@ -57,10 +57,8 @@ export default async function AccountPage() {
 				</p>
 			</header>
 
-			<section className="flex flex-col gap-5 rounded-lg border bg-background p-5 sm:flex-row sm:items-center sm:p-6">
-				<AccountPictureForm name={user.name} picture={user.picture} />
-
-				<div className="min-w-0 flex-1">
+			<section className="flex flex-col gap-6 rounded-lg border bg-background p-5 sm:p-6">
+				<div className="min-w-0">
 					<div className="flex flex-wrap items-center gap-2">
 						<h2 className="truncate text-xl font-semibold sm:text-2xl">
 							{user.name}
@@ -77,6 +75,10 @@ export default async function AccountPage() {
 						Nome e e-mail são sincronizados com o Auth0. A imagem pode ser
 						personalizada no painel.
 					</p>
+				</div>
+
+				<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
+					<AccountPictureForm name={user.name} picture={user.picture} />
 				</div>
 			</section>
 

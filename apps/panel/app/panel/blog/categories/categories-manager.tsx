@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/components/table";
-import { Check, Pencil, Plus, Trash2, X } from "lucide-react";
+import { Check, Loader2, Pencil, Plus, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -200,7 +200,11 @@ export function CategoriesManager({
                         {isEditing ? (
                           <>
                             <Button
+                              aria-busy={isPending || undefined}
                               aria-label="Salvar categoria"
+                              className={
+                                isPending ? "cursor-progress" : undefined
+                              }
                               disabled={
                                 isPending || editingName.trim().length < 2
                               }
@@ -208,7 +212,11 @@ export function CategoriesManager({
                               size="icon-sm"
                               type="button"
                             >
-                              <Check />
+                              {isPending ? (
+                                <Loader2 className="animate-spin" />
+                              ) : (
+                                <Check />
+                              )}
                             </Button>
                             <Button
                               aria-label="Cancelar edição"

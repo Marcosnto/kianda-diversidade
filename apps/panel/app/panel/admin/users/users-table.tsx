@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/components/table";
-import { ChevronLeft, ChevronRight, Save } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Save } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { updateUserRoleAction } from "./actions";
@@ -329,13 +329,15 @@ function UserRoleControl({
         </SelectContent>
       </Select>
       <Button
+        aria-busy={isPending || undefined}
         aria-label="Salvar perfil de acesso"
+        className={isPending ? "cursor-progress" : undefined}
         disabled={isPending || selectedRole === savedRole}
         onClick={saveRole}
         size="icon-sm"
         type="button"
       >
-        <Save />
+        {isPending ? <Loader2 className="animate-spin" /> : <Save />}
       </Button>
     </div>
   );

@@ -26,7 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/components/table";
-import { Pencil, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -168,14 +168,22 @@ export function ArticlesTable({
                           <Button
                             variant="ghost"
                             size="icon-sm"
+                            aria-busy={isPending || undefined}
                             aria-label="Remover artigo"
+                            className={
+                              isPending ? "cursor-progress" : undefined
+                            }
                             onClick={() => {
                               setDeleteError(null);
                               setConfirming(article);
                             }}
                             disabled={isPending}
                           >
-                            <Trash2 className="text-destructive" />
+                            {isPending ? (
+                              <Loader2 className="animate-spin" />
+                            ) : (
+                              <Trash2 className="text-destructive" />
+                            )}
                           </Button>
                         )}
                       </div>
@@ -221,9 +229,17 @@ export function ArticlesTable({
                 confirmDelete();
               }}
               disabled={pendingId === confirming?.id}
+              aria-busy={pendingId === confirming?.id || undefined}
               className="bg-destructive hover:bg-destructive/90 text-white"
             >
-              {pendingId === confirming?.id ? "Removendo..." : "Remover"}
+              {pendingId === confirming?.id ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Removendo...
+                </>
+              ) : (
+                "Remover"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

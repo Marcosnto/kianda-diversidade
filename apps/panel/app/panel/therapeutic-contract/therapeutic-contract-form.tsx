@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Switch } from "@workspace/ui/components/switch";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { LoadingButton } from "@/components/loading-button";
 import {
   EDUCATION_LEVELS,
   EMERGENCY_RELATIONSHIPS,
@@ -393,9 +393,14 @@ export function TherapeuticContractForm({
         />
       </fieldset>
 
-      <Button className="w-full sm:w-fit" disabled={isPending} type="submit">
-        {isPending ? "Salvando..." : "Salvar contrato terapêutico"}
-      </Button>
+      <LoadingButton
+        className="w-full sm:w-fit"
+        loading={isPending}
+        loadingText="Salvando..."
+        type="submit"
+      >
+        Salvar contrato terapêutico
+      </LoadingButton>
     </form>
   );
 }

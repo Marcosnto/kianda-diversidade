@@ -52,23 +52,12 @@ const ArticleCard = ({
 			>
 				<div
 					className={cn(
-						"relative w-full overflow-hidden rounded-[1.75rem] bg-k-olive-light/20",
-						"h-[100px]",
-						"sm:h-[120px]",
-						"md:h-[140px]",
-						"lg:h-[362px]",
-						"xl:h-[380px]",
-						"2xl:h-[300px]",
+						"relative aspect-[4/3] w-full overflow-hidden rounded-[1.75rem] bg-k-olive-light/20",
 						imageSizeClassName,
 					)}
 				>
 					{coverImage ? (
-						<Image
-							className="object-contain"
-							src={coverImage}
-							alt={title}
-							fill
-						/>
+						<Image className="object-cover" src={coverImage} alt={title} fill />
 					) : (
 						<div className="flex h-full w-full items-center justify-center px-4 text-center text-xs font-semibold text-k-olive-dark/70 sm:text-sm">
 							Kianda Diversidade

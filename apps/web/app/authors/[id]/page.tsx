@@ -25,7 +25,7 @@ type AuthorPageProps = {
 	params: Promise<{ id: string }>;
 };
 
-export const revalidate = 15;
+export const revalidate = 5;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

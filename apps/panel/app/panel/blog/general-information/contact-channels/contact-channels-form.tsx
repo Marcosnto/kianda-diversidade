@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import {
@@ -12,11 +11,12 @@ import {
   Music2,
   Youtube,
 } from "lucide-react";
-import { useState, useTransition, type ComponentType } from "react";
+import { type ComponentType, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { LoadingButton } from "@/components/loading-button";
 import {
-  updateContactChannelsAction,
   type UpdateContactChannelsResult,
+  updateContactChannelsAction,
 } from "./actions";
 
 type SocialField = {
@@ -140,9 +140,13 @@ export function ContactChannelsForm({
       </p>
 
       <div className="flex justify-end">
-        <Button disabled={isPending} type="submit">
-          {isPending ? "Salvando..." : "Salvar links"}
-        </Button>
+        <LoadingButton
+          loading={isPending}
+          loadingText="Salvando..."
+          type="submit"
+        >
+          Salvar links
+        </LoadingButton>
       </div>
     </form>
   );

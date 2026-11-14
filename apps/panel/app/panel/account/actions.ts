@@ -58,6 +58,9 @@ export async function updateAccountPictureAction(
 
     revalidatePath("/panel/account");
     revalidatePath("/panel", "layout");
+    // Site público: lista de autores e página do autor.
+    revalidatePath("/authors");
+    revalidatePath(`/authors/${user.id}`);
 
     return { ok: true, picture: media.url };
   } catch (error) {
@@ -92,6 +95,9 @@ export async function updateAuthorProfileAction(
     });
 
     revalidatePath("/panel/account");
+    // Site público: lista de autores e página do autor.
+    revalidatePath("/authors");
+    revalidatePath(`/authors/${user.id}`);
     return { ok: true };
   } catch (error) {
     console.error("Erro ao atualizar perfil público", error);

@@ -1,7 +1,7 @@
 import { getPublishedAuthors } from "@workspace/db/authors";
 import { AuthorsFilter } from "@/components/authors-filter";
 
-export const revalidate = 15;
+export const revalidate = 5;
 
 export const metadata = {
 	title: "Autores",

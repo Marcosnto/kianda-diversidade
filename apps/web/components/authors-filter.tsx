@@ -94,7 +94,7 @@ export function AuthorsFilter({ authors }: AuthorsFilterProps) {
 								className="group mx-auto flex h-full w-full gap-3 text-white transition-transform hover:-translate-y-1 sm:gap-3 lg:flex-col lg:gap-x-0"
 								href={`/authors/${author.id}`}
 							>
-								<div className="relative h-[100px] w-[120px] shrink-0 overflow-hidden rounded-[1.75rem] bg-k-off-white sm:h-[120px] sm:w-[140px] md:h-[140px] md:w-[151px] lg:h-[362px] lg:w-full xl:h-[380px] 2xl:h-[300px]">
+								<div className="relative aspect-[4/3] w-[120px] shrink-0 overflow-hidden rounded-[1.75rem] bg-k-off-white sm:w-[140px] md:w-[151px] lg:w-full">
 									{author.picture ? (
 										<Image
 											alt={author.name}
