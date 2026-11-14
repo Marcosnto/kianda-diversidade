@@ -109,13 +109,15 @@ export function AuthorsFilter({ authors }: AuthorsFilterProps) {
 										</div>
 									)}
 								</div>
-								<div className="flex flex-1 flex-col justify-center rounded-[15px] bg-k-olive-light p-3 pr-4 sm:p-4 lg:justify-start lg:p-5">
-									<h2 className="text-xl font-semibold">{author.name}</h2>
-									<p className="mt-2 line-clamp-3 text-sm leading-6 text-white/85">
+								<div className="flex min-w-0 flex-1 flex-col justify-center overflow-hidden rounded-[15px] bg-k-olive-light px-3 py-2 sm:px-4 sm:py-2.5 lg:justify-start lg:p-5">
+									<h2 className="truncate text-base font-semibold sm:text-lg lg:text-xl">
+										{author.name}
+									</h2>
+									<p className="mt-1 hidden text-xs leading-5 text-white/85 sm:line-clamp-2 sm:text-sm sm:leading-6 lg:mt-2 lg:line-clamp-3">
 										{author.bio ??
 											"Conheça os conteúdos publicados por este autor."}
 									</p>
-									<p className="mt-auto pt-5 text-sm font-medium text-k-yellow-light">
+									<p className="mt-1 text-[11px] font-medium text-k-yellow-light sm:text-xs lg:mt-auto lg:pt-5 lg:text-sm">
 										{author._count.articles === 1
 											? "1 artigo publicado"
 											: `${author._count.articles} artigos publicados`}
