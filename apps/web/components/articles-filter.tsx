@@ -5,7 +5,7 @@ import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { cn } from "@workspace/ui/lib/utils";
 import { ChevronDown, Filter, Search, X } from "lucide-react";
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const LEGACY_ARTICLE_AUTHOR = "Kianda Diversidade";
 
@@ -227,14 +227,14 @@ export function ArticlesFilter({
 					{normalizedSearch && (
 						<>
 							{" "}
-							para <strong className="font-semibold">“{inputValue.trim()}”</strong>
+							para{" "}
+							<strong className="font-semibold">“{inputValue.trim()}”</strong>
 						</>
 					)}
 					{category !== ALL_CATEGORIES && (
 						<>
 							{" "}
-							na categoria{" "}
-							<strong className="font-semibold">{category}</strong>
+							na categoria <strong className="font-semibold">{category}</strong>
 						</>
 					)}
 					.
@@ -278,10 +278,10 @@ export function ArticlesFilter({
 					</p>
 					<Button
 						className="mt-6 rounded-lg bg-k-olive-dark px-6 text-k-yellow-light hover:bg-k-olive-deep"
-						onClick={clearSearch}
+						onClick={clearFilters}
 						type="button"
 					>
-						Limpar pesquisa
+						Limpar filtros
 					</Button>
 				</div>
 			)}

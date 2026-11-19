@@ -8,12 +8,11 @@ import {
   SidebarRail,
 } from "@workspace/ui/components/sidebar";
 import {
-  Bot,
-  ClipboardPenLine,
-  GalleryVerticalEnd,
-  type LucideIcon,
-  SquareTerminal,
-  UsersRound,
+	Bot,
+	ClipboardPenLine,
+	type LucideIcon,
+	SquareTerminal,
+	UsersRound,
 } from "lucide-react";
 import type * as React from "react";
 import { NavMain } from "@/components/nav-main";
@@ -121,25 +120,25 @@ export function AppSidebar({
   }
 
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher
-          teams={[
-            {
-              name: "Kianda",
-              logo: GalleryVerticalEnd,
-              plan: access.roleLabel,
-            },
-          ]}
-        />
-      </SidebarHeader>
-      <SidebarContent>
-        {navMain.length > 0 && <NavMain items={navMain} />}
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={user} />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
-  );
+		<Sidebar collapsible="icon" {...props}>
+			<SidebarHeader>
+				<TeamSwitcher
+					teams={[
+						{
+							name: "Kianda",
+							logo: "/icon.svg",
+							plan: access.roleLabel,
+						},
+					]}
+				/>
+			</SidebarHeader>
+			<SidebarContent>
+				{navMain.length > 0 && <NavMain items={navMain} />}
+			</SidebarContent>
+			<SidebarFooter>
+				<NavUser user={user} />
+			</SidebarFooter>
+			<SidebarRail />
+		</Sidebar>
+	);
 }
