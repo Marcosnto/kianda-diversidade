@@ -57,6 +57,27 @@ test("renders images, lists and external links without escaping markdown", () =>
 	);
 });
 
+test("decodes numeric HTML entities serialized by the editor", () => {
+	const html = processRichTextContent("Conteúdo teste&#x20;");
+
+	assert.equal(html, "<p>Conteúdo teste</p>");
+	assert.doesNotMatch(html, /&#x20;/);
+	assert.doesNotMatch(html, /&amp;#x20;/);
+});
+
+test("decodes numeric entities between words", () => {
+	const html = processRichTextContent("Conteúdo&#x20;teste");
+
+	assert.equal(html, "<p>Conteúdo teste</p>");
+	assert.doesNotMatch(html, /&#x20;/);
+});
+
+test("decodes decimal and hexadecimal entities in inline text", () => {
+	const html = processRichTextContent("Aspas &#39;simples&#39; e &#x27;também&#x27;");
+
+	assert.equal(html, "<p>Aspas 'simples' e 'também'</p>");
+});
+
 test("renders a YouTube directive as a responsive iframe", () => {
 	const html = processRichTextContent(
 		'::video{url="https://www.youtube.com/watch?v=-8kX9kLb8K0"}',

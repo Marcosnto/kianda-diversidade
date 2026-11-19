@@ -5,6 +5,30 @@ function escapeHtml(value: string) {
 		.replaceAll(">", "&gt;");
 }
 
+/**
+ * O MDXEditor serializa espaços no fim de linhas como `&#x20;` (e alguns
+ * caracteres como `&#39;`). Como o conteúdo é escapado antes de virar HTML,
+ * essas entidades apareceriam como texto literal no site. Aqui elas são
+ * convertidas para os caracteres correspondentes antes do escape.
+ */
+function decodeNumericHtmlEntities(value: string) {
+	return value.replace(/&#(x[0-9a-f]+|\d+);/gi, (match, code: string) => {
+		const codePoint = code[0]?.toLowerCase() === "x"
+			? Number.parseInt(code.slice(1), 16)
+			: Number.parseInt(code, 10);
+
+		if (!Number.isFinite(codePoint) || codePoint <= 0 || codePoint > 0x10ffff) {
+			return match;
+		}
+
+		try {
+			return String.fromCodePoint(codePoint);
+		} catch {
+			return match;
+		}
+	});
+}
+
 function escapeAttribute(value: string) {
 	return escapeHtml(value).replaceAll('"', "&quot;");
 }
@@ -103,7 +127,6 @@ function renderInlineMarkdown(value: string) {
 function renderParagraph(value: string) {
 	return `<p>${renderInlineMarkdown(value).replace(/\n/g, "<br />")}</p>`;
 }
-
 function renderBlockquote(value: string) {
 	const quote = value
 		.split("\n")
@@ -269,7 +292,7 @@ export function processRichTextContent(content: string): string {
 	// Content saved from Windows (or serialized with CRLF) must be normalized
 	// first: a trailing "\r" makes block detection fail, so headings and quotes
 	// would be rendered as literal "#" and ">" characters.
-	const normalizedContent = content
+	const normalizedContent = decodeNumericHtmlEntities(content)
 		.replace(/\r\n?/g, "\n")
 		.replace(/^\\(#{1,6})\s+/gm, "$1 ")
 		.replace(/^\\>\s?/gm, "> ");
