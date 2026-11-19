@@ -16,6 +16,7 @@ import {
   useSidebar,
 } from "@workspace/ui/components/sidebar";
 import { ChevronsUpDown, Plus } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
 
 export function TeamSwitcher({
@@ -47,14 +48,16 @@ export function TeamSwitcher({
 		return (
 			<SidebarMenu>
 				<SidebarMenuItem>
-					<SidebarMenuButton size="lg">
-						<div className="flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-							{renderLogo(activeTeam.logo, "size-full object-cover")}
-						</div>
-						<div className="grid flex-1 text-left text-sm leading-tight">
-							<span className="truncate font-medium">{activeTeam.name}</span>
-							<span className="truncate text-xs">{activeTeam.plan}</span>
-						</div>
+					<SidebarMenuButton size="lg" asChild>
+						<Link href="/panel">
+							<div className="flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+								{renderLogo(activeTeam.logo, "size-full object-cover")}
+							</div>
+							<div className="grid flex-1 text-left text-sm leading-tight">
+								<span className="truncate font-medium">{activeTeam.name}</span>
+								<span className="truncate text-xs">{activeTeam.plan}</span>
+							</div>
+						</Link>
 					</SidebarMenuButton>
 				</SidebarMenuItem>
 			</SidebarMenu>
