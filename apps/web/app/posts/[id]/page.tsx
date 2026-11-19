@@ -120,8 +120,13 @@ export default async function PostPage({ params }: Props) {
 								"text-left lg:text-justify",
 								"[&_p]:mb-4 sm:[&_p]:mb-5 lg:[&_p]:mb-6 [&_p:last-child]:mb-0",
 								"[&_p]:text-left lg:[&_p]:text-justify",
+								// Alinhamento de imagens/vídeos: o container [data-align]
+								// define o text-align e o bloco interno deve respeitá-lo.
+								"[&_[data-align]_p]:text-inherit",
+								"[&_[data-align]_img]:inline-block",
+								"[&_[data-align]_figure]:inline-block [&_[data-align]_figure]:w-full [&_[data-align]_figure]:max-w-2xl [&_[data-align]_figure]:align-top",
 								"[&_*]:text-white [&_*]:break-words",
-								"[&_img]:max-w-full [&_img]:h-auto [&_img]:my-6 [&_img]:rounded-lg",
+								"[&_img]:my-6 [&_img]:max-w-full [&_img]:rounded-lg",
 								"[&_pre]:overflow-x-auto [&_pre]:max-w-full [&_pre]:my-4 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:bg-black/20",
 								"[&_code]:break-words [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:bg-black/20",
 								"[&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mt-8 [&_h1]:mb-4",

@@ -26,6 +26,26 @@ function getHtmlAttribute(tag: string, attribute: string) {
 	)?.[1];
 }
 
+/**
+ * Extrai width/height de um `<img>` e devolve os atributos normalizados.
+ * Aceita apenas valores numéricos (px) para evitar injeção de CSS.
+ */
+function imageSizeAttributes(tag: string) {
+	const width = getHtmlAttribute(tag, "width");
+	const height = getHtmlAttribute(tag, "height");
+
+	const attributes: string[] = [];
+
+	if (width && /^\d+$/.test(width.trim())) {
+		attributes.push(`width="${width.trim()}"`);
+	}
+	if (height && /^\d+$/.test(height.trim())) {
+		attributes.push(`height="${height.trim()}"`);
+	}
+
+	return attributes.length ? ` ${attributes.join(" ")}` : "";
+}
+
 function renderInlineMarkdown(value: string) {
 	const images: string[] = [];
 	const withHtmlImages = value.replace(/<img\b[^>]*\/?\s*>/gi, (tag) => {
@@ -35,7 +55,7 @@ function renderInlineMarkdown(value: string) {
 		const marker = `@@KIANDA-IMAGE-${images.length}@@`;
 		const alt = getHtmlAttribute(tag, "alt") ?? "";
 		images.push(
-			`<img src="${escapeAttribute(decodeBasicHtmlEntities(src))}" alt="${escapeAttribute(decodeBasicHtmlEntities(alt))}" loading="lazy" />`,
+			`<img src="${escapeAttribute(decodeBasicHtmlEntities(src))}" alt="${escapeAttribute(decodeBasicHtmlEntities(alt))}"${imageSizeAttributes(tag)} loading="lazy" />`,
 		);
 		return marker;
 	});
@@ -280,7 +300,45 @@ export function processRichTextContent(content: string): string {
 			(_, url: string) => addVideoEmbed(url),
 		);
 
-	return withEmbeds
+	// Containers de alinhamento gerados pelo editor:
+	//   :::align{type="center"}
+	//   ![alt](url)
+	//   :::
+	// São convertidos em <div data-align="..."> para preservar o alinhamento.
+	const withAlignment = withEmbeds.replace(
+		/:::align\{type=(?:"(left|center|right)"|'(left|center|right)')\}\s*\n([\s\S]*?)\n\s*:::/g,
+		(
+			_,
+			doubleQuoted: string | undefined,
+			singleQuoted: string | undefined,
+			inner: string,
+		) => {
+			const direction = doubleQuoted ?? singleQuoted ?? "left";
+			const innerHtml = inner
+				.split(/\n{2,}/)
+				.map((block) => {
+					const trimmed = block.trim();
+					if (!trimmed) return "";
+					return /^(?:__KIANDA_VIDEO_EMBED_|__KIANDA_RICH_TEXT_BLOCK_)\d+__$/.test(
+						trimmed,
+					)
+						? trimmed
+						: renderBlock(block);
+				})
+				.join("");
+			// O `prose` do Tailwind força `text-align` nos parágrafos, então
+			// o alinhamento também é aplicado diretamente em cada <p>.
+			const alignedInner = innerHtml.replace(
+				/<p>/g,
+				`<p style="text-align: ${direction}">`,
+			);
+			return addRichTextBlock(
+				`<div data-align="${direction}" style="text-align: ${direction}">${alignedInner}</div>`,
+			);
+		},
+	);
+
+	return withAlignment
 		.split(/\n{2,}/)
 		.map((block) => {
 			const trimmed = block.trim();
