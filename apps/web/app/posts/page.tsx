@@ -7,6 +7,7 @@ export const revalidate = 15;
 type PostsPageProps = {
   searchParams: Promise<{
     busca?: string | string[];
+    categoria?: string | string[];
   }>;
 };
 
@@ -16,6 +17,10 @@ const Posts = async ({ searchParams }: PostsPageProps) => {
     ? params.busca[0]
     : params.busca;
   const initialSearch = rawSearch?.trim() ?? "";
+  const rawCategory = Array.isArray(params.categoria)
+    ? params.categoria[0]
+    : params.categoria;
+  const initialCategory = rawCategory?.trim() || undefined;
   const data = await getPublishedArticles();
 
   if (!data.length) {
@@ -29,7 +34,11 @@ const Posts = async ({ searchParams }: PostsPageProps) => {
 
   return (
 		<div className="mx-auto w-full px-4 pt-28 pb-16 sm:px-6 sm:pt-32 lg:px-8 xl:px-12 2xl:px-32">
-			<ArticlesFilter articles={data} initialSearch={initialSearch} />
+			<ArticlesFilter
+				articles={data}
+				initialSearch={initialSearch}
+				initialCategory={initialCategory}
+			/>
 		</div>
 	);
 };

@@ -4,7 +4,7 @@ import ArticleCard from "@/components/card";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { cn } from "@workspace/ui/lib/utils";
-import { Search, X } from "lucide-react";
+import { ChevronDown, Filter, Search, X } from "lucide-react";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 
 const LEGACY_ARTICLE_AUTHOR = "Kianda Diversidade";
@@ -20,6 +20,10 @@ type FilterArticle = {
 	tags: Array<{
 		name: string;
 	}>;
+	categories: Array<{
+		id: number;
+		name: string;
+	}>;
 	author: {
 		id: string;
 		name: string;
@@ -29,7 +33,10 @@ type FilterArticle = {
 type ArticlesFilterProps = {
   articles: FilterArticle[];
   initialSearch?: string;
+  initialCategory?: string;
 };
+
+const ALL_CATEGORIES = "todas";
 
 function normalizeSearchValue(value: string) {
   return value
@@ -39,7 +46,7 @@ function normalizeSearchValue(value: string) {
     .trim();
 }
 
-function updateSearchUrl(search: string) {
+function updateSearchUrl(search: string, category: string) {
   const url = new URL(window.location.href);
 
   if (search) {
@@ -48,23 +55,53 @@ function updateSearchUrl(search: string) {
     url.searchParams.delete("busca");
   }
 
+  if (category && category !== ALL_CATEGORIES) {
+    url.searchParams.set("categoria", category);
+  } else {
+    url.searchParams.delete("categoria");
+  }
+
   window.history.pushState(null, "", url);
 }
 
 export function ArticlesFilter({
   articles,
   initialSearch = "",
+  initialCategory = ALL_CATEGORIES,
 }: ArticlesFilterProps) {
   const [inputValue, setInputValue] = useState(initialSearch);
-  const [search, setSearch] = useState(initialSearch);
-  const normalizedSearch = normalizeSearchValue(search);
+  const [category, setCategory] = useState(initialCategory);
+  const normalizedSearch = normalizeSearchValue(inputValue);
+
+  // Categorias disponíveis, com contagem de artigos publicados.
+  const categoryOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+
+    for (const article of articles) {
+      for (const item of article.categories) {
+        counts.set(item.name, (counts.get(item.name) ?? 0) + 1);
+      }
+    }
+
+    return [...counts.entries()]
+      .sort(([a], [b]) => a.localeCompare(b, "pt-BR"))
+      .map(([name, count]) => ({ name, count }));
+  }, [articles]);
+
+  // Sincroniza a URL com a busca (instantânea) e a categoria.
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateSearchUrl(inputValue.trim(), category);
+    }, 250);
+
+    return () => clearTimeout(timeout);
+  }, [inputValue, category]);
 
   useEffect(() => {
     const handlePopState = () => {
-      const value =
-        new URLSearchParams(window.location.search).get("busca")?.trim() ?? "";
-      setInputValue(value);
-      setSearch(value);
+      const params = new URLSearchParams(window.location.search);
+      setInputValue(params.get("busca")?.trim() ?? "");
+      setCategory(params.get("categoria")?.trim() || ALL_CATEGORIES);
     };
 
     window.addEventListener("popstate", handlePopState);
@@ -72,9 +109,16 @@ export function ArticlesFilter({
   }, []);
 
   const filteredArticles = useMemo(() => {
-    if (!normalizedSearch) return articles;
+    const byCategory =
+      category && category !== ALL_CATEGORIES
+        ? articles.filter((article) =>
+            article.categories.some((item) => item.name === category),
+          )
+        : articles;
 
-    return articles.filter((article) => {
+    if (!normalizedSearch) return byCategory;
+
+    return byCategory.filter((article) => {
       const searchableValues = [
         article.title,
         article.author?.name ?? LEGACY_ARTICLE_AUTHOR,
@@ -85,27 +129,23 @@ export function ArticlesFilter({
         normalizeSearchValue(value).includes(normalizedSearch),
       );
     });
-  }, [articles, normalizedSearch]);
+  }, [articles, normalizedSearch, category]);
 
-  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const nextSearch = inputValue.trim();
-    setSearch(nextSearch);
-    updateSearchUrl(nextSearch);
+  const handleCategoryChange = (nextCategory: string) => {
+    setCategory(nextCategory);
   };
 
-  const clearSearch = () => {
+  const clearFilters = () => {
     setInputValue("");
-    setSearch("");
-    updateSearchUrl("");
+    setCategory(ALL_CATEGORIES);
   };
+
+  const hasActiveFilters =
+    inputValue.trim().length > 0 || category !== ALL_CATEGORIES;
 
   return (
 		<>
-			<form
-				className="mx-auto flex w-full max-w-3xl flex-col gap-3 sm:flex-row"
-				onSubmit={submitSearch}
-			>
+			<div className="mx-auto flex w-full max-w-3xl flex-col gap-3 sm:flex-row">
 				<div className="relative min-w-0 flex-1">
 					<Search
 						aria-hidden="true"
@@ -113,46 +153,91 @@ export function ArticlesFilter({
 					/>
 					<Input
 						aria-label="Pesquisar artigos"
-						className="h-12 rounded-lg border-k-olive-light bg-white pr-4 pl-11 text-base text-k-olive-deep shadow-none placeholder:text-k-olive-dark/60 focus-visible:border-k-olive-dark focus-visible:ring-k-olive-light/30"
+						className="h-12 rounded-lg border-k-olive-light bg-white pr-11 pl-11 text-base text-k-olive-deep shadow-none placeholder:text-k-olive-dark/60 focus-visible:border-k-olive-dark focus-visible:ring-k-olive-light/30"
 						name="busca"
 						onChange={(event) => setInputValue(event.target.value)}
 						placeholder="Pesquisar por título, tag ou autor"
 						type="search"
 						value={inputValue}
 					/>
-				</div>
-				<div className="flex gap-2">
-					<Button
-						className="h-12 flex-1 rounded-lg bg-k-olive-dark px-6 text-k-yellow-light hover:bg-k-olive-deep sm:flex-none"
-						type="submit"
-					>
-						<Search />
-						Pesquisar
-					</Button>
-					{search && (
-						<Button
+					{inputValue && (
+						<button
 							aria-label="Limpar pesquisa"
-							className="size-12 rounded-lg border-k-olive-light bg-transparent text-k-olive-dark hover:bg-k-olive-light/10"
-							onClick={clearSearch}
-							size="icon"
+							className="absolute top-1/2 right-2 flex size-8 -translate-y-1/2 items-center justify-center rounded-md text-k-olive-dark/60 transition-colors hover:bg-k-olive-light/15 hover:text-k-olive-dark"
+							onClick={() => setInputValue("")}
 							type="button"
-							variant="outline"
 						>
-							<X />
-						</Button>
+							<X className="size-4" />
+						</button>
 					)}
 				</div>
-			</form>
 
-			{search && (
+				{categoryOptions.length > 0 && (
+					<div className="relative min-w-0 sm:w-60">
+						<label className="sr-only" htmlFor="categoria">
+							Filtrar por categoria
+						</label>
+						<select
+							className="h-12 w-full cursor-pointer appearance-none rounded-lg border border-k-olive-light bg-white pr-10 pl-11 text-base text-k-olive-deep shadow-none outline-none transition-colors hover:border-k-olive-dark/50 focus-visible:border-k-olive-dark focus-visible:ring-2 focus-visible:ring-k-olive-light/30"
+							id="categoria"
+							onChange={(event) => handleCategoryChange(event.target.value)}
+							value={category}
+						>
+							<option value={ALL_CATEGORIES}>
+								Todas as categorias ({articles.length})
+							</option>
+							{categoryOptions.map((option) => (
+								<option key={option.name} value={option.name}>
+									{option.name} ({option.count})
+								</option>
+							))}
+						</select>
+						<Filter
+							aria-hidden="true"
+							className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-k-olive-dark/70"
+						/>
+						<ChevronDown
+							aria-hidden="true"
+							className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-k-olive-dark/60"
+						/>
+					</div>
+				)}
+
+				{hasActiveFilters && (
+					<Button
+						className="h-12 rounded-lg border-k-olive-light bg-transparent px-4 text-k-olive-dark hover:bg-k-olive-light/10 sm:shrink-0"
+						onClick={clearFilters}
+						type="button"
+						variant="outline"
+					>
+						<X />
+						<span className="sm:hidden">Limpar filtros</span>
+					</Button>
+				)}
+			</div>
+
+			{hasActiveFilters && (
 				<p
 					aria-live="polite"
-					className="mt-5 text-sm text-k-olive-dark sm:text-base"
+					className="mx-auto mt-5 w-full max-w-3xl text-sm text-k-olive-dark sm:text-base"
 				>
 					{filteredArticles.length === 1
 						? "1 artigo encontrado"
-						: `${filteredArticles.length} artigos encontrados`}{" "}
-					para <strong className="font-semibold">“{search}”</strong>.
+						: `${filteredArticles.length} artigos encontrados`}
+					{normalizedSearch && (
+						<>
+							{" "}
+							para <strong className="font-semibold">“{inputValue.trim()}”</strong>
+						</>
+					)}
+					{category !== ALL_CATEGORIES && (
+						<>
+							{" "}
+							na categoria{" "}
+							<strong className="font-semibold">{category}</strong>
+						</>
+					)}
+					.
 				</p>
 			)}
 

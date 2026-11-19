@@ -67,8 +67,8 @@ export default async function RootLayout({
 						PERMISSIONS.createArticles,
 					),
 					canManageSite: hasPermission(authorization, PERMISSIONS.manageSite),
-				canReadUsers: hasPermission(authorization, PERMISSIONS.readUsers),
-				isPatient: hasRole(authorization, "patient"),
+					canReadUsers: hasPermission(authorization, PERMISSIONS.readUsers),
+					isPatient: hasRole(authorization, "patient"),
 				}}
 			/>
 			<SidebarInset className="px-4">
@@ -91,9 +91,9 @@ export default async function RootLayout({
 							</BreadcrumbList>
 						</Breadcrumb>
 					</div>
-					<div className="ml-auto flex items-center gap-2">
+					{/* <div className="ml-auto flex items-center gap-2">
 						<ThemeToggle />
-					</div>
+					</div> */}
 				</header>
 				{children}
 			</SidebarInset>
