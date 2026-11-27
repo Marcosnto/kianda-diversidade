@@ -32,7 +32,9 @@
     "./article-status": "./src/article-status.ts",
     "./categories": "./src/categories.ts",
     "./contact-channels": "./src/contact-channels.ts",
+    "./email-templates": "./src/email-templates.ts",
     "./media": "./src/media.ts",
+    "./newsletter": "./src/newsletter.ts",
     "./prisma": "./src/prisma.ts",
     "./users": "./src/users.ts",
     "./therapeutic-contract": "./src/therapeutic-contract.ts"

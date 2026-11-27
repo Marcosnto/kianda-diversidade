@@ -2,6 +2,16 @@
 
 import type { PanelUserListItem } from "@workspace/db/users";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@workspace/ui/components/alert-dialog";
+import {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -24,10 +34,10 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/components/table";
-import { ChevronLeft, ChevronRight, Loader2, Save } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Save, Trash2 } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { updateUserRoleAction } from "./actions";
+import { deleteUserAction, updateUserRoleAction } from "./actions";
 
 const PAGE_SIZE = 8;
 
@@ -42,6 +52,7 @@ type UsersTableProps = {
   roles: RoleOption[];
   initialRoleAssignments: Record<string, string[]>;
   canManageRoles: boolean;
+  canDeleteUsers: boolean;
   currentAuth0Id: string;
 };
 
@@ -88,6 +99,7 @@ export function UsersTable({
   roles,
   initialRoleAssignments,
   canManageRoles,
+  canDeleteUsers,
   currentAuth0Id,
 }: UsersTableProps) {
   const [search, setSearch] = useState("");
@@ -95,12 +107,22 @@ export function UsersTable({
   const [roleAssignments, setRoleAssignments] = useState(
     initialRoleAssignments,
   );
+  const [deletedIds, setDeletedIds] = useState<string[]>([]);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const [confirmingUser, setConfirmingUser] =
+    useState<PanelUserListItem | null>(null);
+  const [isDeleting, startDelete] = useTransition();
+
+  const visibleUsers = useMemo(
+    () => users.filter((user) => !deletedIds.includes(user.id)),
+    [deletedIds, users],
+  );
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return users;
+    if (!q) return visibleUsers;
 
-    return users.filter((user) => {
+    return visibleUsers.filter((user) => {
       const provider = getAuthProvider(user.auth0_id).toLowerCase();
       const assignedRoles = roleAssignments[user.auth0_id] ?? [];
       return (
@@ -113,12 +135,32 @@ export function UsersTable({
         )
       );
     });
-  }, [roleAssignments, users, search]);
+  }, [roleAssignments, visibleUsers, search]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const start = (currentPage - 1) * PAGE_SIZE;
   const paginated = filtered.slice(start, start + PAGE_SIZE);
+
+  const confirmDelete = () => {
+    if (!confirmingUser) return;
+    const user = confirmingUser;
+    setPendingDeleteId(user.id);
+
+    startDelete(async () => {
+      const result = await deleteUserAction(user.id);
+      setPendingDeleteId(null);
+
+      if (!result.ok) {
+        toast.error(result.error ?? "Falha ao excluir o usuário.");
+        return;
+      }
+
+      setDeletedIds((current) => [...current, user.id]);
+      setConfirmingUser(null);
+      toast.success(`Usuário ${user.name} excluído.`);
+    });
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -133,7 +175,7 @@ export function UsersTable({
           value={search}
         />
         <span className="text-muted-foreground text-sm">
-          {filtered.length} de {users.length}
+          {filtered.length} de {visibleUsers.length}
         </span>
       </div>
 
@@ -149,6 +191,9 @@ export function UsersTable({
               <TableHead className="hidden w-28 lg:table-cell">
                 Cadastro
               </TableHead>
+              {canDeleteUsers && (
+                <TableHead className="w-16 text-right">Ações</TableHead>
+              )}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -156,7 +201,7 @@ export function UsersTable({
               <TableRow>
                 <TableCell
                   className="text-muted-foreground h-24 text-center"
-                  colSpan={6}
+                  colSpan={canDeleteUsers ? 7 : 6}
                 >
                   Nenhum usuário encontrado.
                 </TableCell>
@@ -215,6 +260,33 @@ export function UsersTable({
                   <TableCell className="text-muted-foreground hidden lg:table-cell">
                     {formatDate(user.created_at)}
                   </TableCell>
+                  {canDeleteUsers && (
+                    <TableCell className="text-right">
+                      <Button
+                        aria-label={`Excluir ${user.name}`}
+                        disabled={
+                          isDeleting ||
+                          user.auth0_id === currentAuth0Id ||
+                          pendingDeleteId === user.id
+                        }
+                        onClick={() => setConfirmingUser(user)}
+                        size="icon-sm"
+                        title={
+                          user.auth0_id === currentAuth0Id
+                            ? "Você não pode excluir a própria conta"
+                            : "Excluir usuário"
+                        }
+                        type="button"
+                        variant="ghost"
+                      >
+                        {pendingDeleteId === user.id ? (
+                          <Loader2 className="animate-spin" />
+                        ) : (
+                          <Trash2 className="text-destructive" />
+                        )}
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             )}
@@ -251,6 +323,48 @@ export function UsersTable({
           </Button>
         </div>
       </div>
+
+      <AlertDialog
+        onOpenChange={(open) => {
+          if (!open && !isDeleting) setConfirmingUser(null);
+        }}
+        open={confirmingUser !== null}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir usuário</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação remove permanentemente{" "}
+              <strong>{confirmingUser?.name}</strong>
+              {confirmingUser?.email ? ` (${confirmingUser.email})` : ""} do
+              painel e do Auth0. Os artigos publicados permanecem no site, mas
+              ficarão sem autor. Não é possível desfazer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-white hover:bg-destructive/90"
+              disabled={isDeleting}
+              onClick={(event) => {
+                event.preventDefault();
+                confirmDelete();
+              }}
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Excluindo...
+                </>
+              ) : (
+                "Excluir"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

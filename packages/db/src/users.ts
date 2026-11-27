@@ -75,6 +75,14 @@ export async function updateUserPicture(id: string, picture: string | null) {
   });
 }
 
+export async function getUserById(id: string) {
+  return prisma.user.findUnique({ where: { id } });
+}
+
+export async function deleteUser(id: string) {
+  await prisma.user.delete({ where: { id } });
+}
+
 export async function updateAuthorProfile(
   id: string,
   profile: AuthorProfileInput,

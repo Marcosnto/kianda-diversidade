@@ -13,6 +13,7 @@
     "test:rich-text": "tsc --project tsconfig.rich-text-test.json && node --test .test-build/lib/rich-text.test.js"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.1178.0",
     "@hookform/resolvers": "^5.2.2",
     "@workspace/db": "workspace:*",
     "@workspace/ui": "workspace:*",

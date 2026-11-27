@@ -85,6 +85,31 @@ export function isManagedRoleName(value: string): value is ManagedRoleName {
   return MANAGED_ROLE_NAMES.includes(value.toLowerCase() as ManagedRoleName);
 }
 
+/**
+ * Remove o usuário do Auth0. Retorna `false` quando o usuário já não existe
+ * (404), para que a exclusão no banco possa continuar.
+ */
+export async function deleteManagedUser(auth0Id: string) {
+  const { domain } = getManagementConfig();
+  const accessToken = await getManagementToken();
+  const response = await fetch(
+    `https://${domain}/api/v2/users/${encodeURIComponent(auth0Id)}`,
+    {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      cache: "no-store",
+    },
+  );
+
+  if (response.status === 404) return false;
+  if (response.status === 204 || response.ok) return true;
+
+  const body = (await response.json().catch(() => null)) as {
+    message?: string;
+  } | null;
+  throw new Error(body?.message ?? `Auth0 respondeu com ${response.status}.`);
+}
+
 async function managementRequest<T = void>(
   path: string,
   init?: RequestInit,

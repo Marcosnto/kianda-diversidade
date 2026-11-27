@@ -13,6 +13,7 @@ export default async function UsersPage() {
   const authorization = await requirePagePermission(PERMISSIONS.readUsers);
   const users = await getUsers();
   const canManageRoles = hasPermission(authorization, PERMISSIONS.manageUsers);
+  const canDeleteUsers = hasPermission(authorization, PERMISSIONS.manageUsers);
   let roles: Awaited<ReturnType<typeof getManagedRoles>> = [];
   let roleAssignments: Record<string, string[]> = {};
   let roleManagementError: string | null = null;
@@ -50,6 +51,7 @@ export default async function UsersPage() {
         roles={roles}
         initialRoleAssignments={roleAssignments}
         canManageRoles={canManageRoles && !roleManagementError}
+        canDeleteUsers={canDeleteUsers}
         currentAuth0Id={authorization.session.user.sub}
       />
     </div>

@@ -89,6 +89,34 @@ export async function getPublishedArticles() {
   });
 }
 
+export async function getLatestPublishedArticles(limit: number) {
+	return prisma.article.findMany({
+		where: {
+			published_in: {
+				lte: new Date(),
+			},
+		},
+		include: articleInclude,
+		orderBy: [{ published_in: "desc" }, { created_at: "desc" }],
+		take: Math.max(1, Math.min(limit, 50)),
+	});
+}
+
+export async function getArticlesByIds(ids: string[]) {
+	if (ids.length === 0) return [];
+
+	const articles = await prisma.article.findMany({
+		where: { id: { in: ids } },
+		include: articleInclude,
+	});
+
+	const byId = new Map(articles.map((article) => [article.id, article]));
+
+	return ids
+		.map((id) => byId.get(id))
+		.filter((article): article is (typeof articles)[number] => Boolean(article));
+}
+
 export async function getArticleById(id: string) {
   return prisma.article.findUnique({
     where: { id },

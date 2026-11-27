@@ -8,11 +8,12 @@ import {
   SidebarRail,
 } from "@workspace/ui/components/sidebar";
 import {
-	Bot,
-	ClipboardPenLine,
-	type LucideIcon,
-	SquareTerminal,
-	UsersRound,
+  Bot,
+  ClipboardPenLine,
+  type LucideIcon,
+  Mail,
+  SquareTerminal,
+  UsersRound,
 } from "lucide-react";
 import type * as React from "react";
 import { NavMain } from "@/components/nav-main";
@@ -89,6 +90,26 @@ export function AppSidebar({
         },
       ],
     });
+
+    navMain.push({
+      title: "Email",
+      url: "/panel/email",
+      icon: Mail,
+      items: [
+        {
+          title: "Modelos de e-mail",
+          url: "/panel/email",
+        },
+        {
+          title: "Disparar newsletter",
+          url: "/panel/blog/newsletter",
+        },
+        {
+          title: "Inscritos na newsletter",
+          url: "/panel/blog/newsletter/subscribers",
+        },
+      ],
+    });
   }
 
   if (access.canReadUsers) {
@@ -120,25 +141,25 @@ export function AppSidebar({
   }
 
   return (
-		<Sidebar collapsible="icon" {...props}>
-			<SidebarHeader>
-				<TeamSwitcher
-					teams={[
-						{
-							name: "Kianda",
-							logo: "/icon.svg",
-							plan: access.roleLabel,
-						},
-					]}
-				/>
-			</SidebarHeader>
-			<SidebarContent>
-				{navMain.length > 0 && <NavMain items={navMain} />}
-			</SidebarContent>
-			<SidebarFooter>
-				<NavUser user={user} />
-			</SidebarFooter>
-			<SidebarRail />
-		</Sidebar>
-	);
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <TeamSwitcher
+          teams={[
+            {
+              name: "Kianda",
+              logo: "/icon.svg",
+              plan: access.roleLabel,
+            },
+          ]}
+        />
+      </SidebarHeader>
+      <SidebarContent>
+        {navMain.length > 0 && <NavMain items={navMain} />}
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={user} />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  );
 }

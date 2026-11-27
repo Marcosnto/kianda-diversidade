@@ -5,6 +5,7 @@ import { JSXElementConstructor, ReactElement } from "react";
 import { getSocialMediaInfos } from "./social-media-icons/infos";
 import Section from "@/components/section";
 import HomeTitle from "@/components/home-title";
+import { NewsletterForm } from "./newsletter-form/newsletter-form";
 import { getContactChannels } from "@workspace/db/contact-channels";
 
 export default async function Footer() {
@@ -55,12 +56,12 @@ export default async function Footer() {
 					</div>
 				</div>
 				<div className="px-4 md:px-0 md:flex md:flex-col-reverse w-full lg:w-127 xl:w-[58%]">
-					{/* <div>
-            <div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] xl:text-xl">
-              <h1>Receba nossos conteúdos por email:</h1>
-            </div>
-            <NewsletterForm />
-          </div> */}
+					<div>
+						<div className="mb-1 mt-[10px] flex justify-start text-[13px] font-normal text-black md:text-[16px] xl:text-xl">
+							<h1>Receba nossos conteúdos por email:</h1>
+						</div>
+						<NewsletterForm />
+					</div>
 					<div className="mt-4 relative h-68.75 w-full md:flex md:h-92.75 2xl:h-112.5">
 						<Image
 							src="/imgs/footer_img-fullhd.png"
