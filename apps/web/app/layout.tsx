@@ -4,6 +4,7 @@ import "@workspace/ui/globals.css";
 import "./fonts.css";
 
 import Footer from "@/components/footer";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import HeaderMenu from "@/components/header-menu";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
 	return (
 		<html lang="pt-BR">
 			<body className="font-sans antialiased bg-k-yellow-light">
+				<GoogleAnalytics />
 				<HeaderMenu />
 				{children}
 				<Footer />
