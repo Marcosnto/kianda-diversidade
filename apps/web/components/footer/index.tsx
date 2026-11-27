@@ -73,11 +73,7 @@ export default async function Footer() {
 			</div>
 
 			<div className="flex flex-col items-center justify-center text-sm md:col-span-3">
-				<HomeTitle
-					showDivider
-					className="hidden xl:flex"
-					iconType="completeMoon"
-				>
+				<HomeTitle showDivider iconType="completeMoon">
 					{new Date().getFullYear()}
 				</HomeTitle>
 			</div>

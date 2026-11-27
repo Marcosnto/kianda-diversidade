@@ -25,6 +25,11 @@ type AuthorPageProps = {
 	params: Promise<{ id: string }>;
 };
 
+const portugueseCollator = new Intl.Collator("pt-BR", {
+	sensitivity: "base",
+	numeric: true,
+});
+
 export const revalidate = 5;
 export const dynamicParams = true;
 
@@ -64,6 +69,10 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 		{ label: "Lattes", url: author.lattes, icon: FileText },
 		{ label: "Academia.edu", url: author.academia, icon: GraduationCap },
 	].filter((link): link is typeof link & { url: string } => Boolean(link.url));
+
+	const sortedArticles = [...author.articles].sort((first, second) =>
+		portugueseCollator.compare(first.title, second.title),
+	);
 
 	return (
 		<main className="mx-auto w-full px-4 pt-28 pb-16 sm:px-6 sm:pt-32 lg:px-8 xl:px-12 2xl:px-32">
@@ -140,7 +149,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 						"2xl:grid-cols-4 2xl:gap-8",
 					)}
 				>
-					{author.articles.map((article) => (
+					{sortedArticles.map((article) => (
 						<li className="w-full" key={article.id}>
 							<ArticleCard
 								author={author.name}

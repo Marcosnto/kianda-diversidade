@@ -26,13 +26,14 @@ const HomeTitle = ({
 			<span
 				className={cn(
 					`text-[18px] md:text-[24px] lg:text-[28px] flex  italic ${className}`,
-					children ? "justify-between" : "justify-end",
+					children ? "justify-center md:justify-between" : "justify-end",
 				)}
 			>
 				{children}
-				<span className="mt-2">
+				<span className="mt-2 hidden md:block">
 					{iconType === "completeMoon" ? (
 						<Image
+							className="size-7 md:size-12"
 							alt="half moon"
 							src="/imgs/complete_moon.svg"
 							width={48}
